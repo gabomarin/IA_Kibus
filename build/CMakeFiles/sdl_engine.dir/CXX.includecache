@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/gabriel/projects/sdl_engine/include/hero.hpp
+SDL/SDL.h
+-
+SDL/SDL_image.h
+-
+iostream
+-
+string
+-
+vector
+-
+
+/home/gabriel/projects/sdl_engine/src/hero.cpp
+../include/hero.hpp
+/home/gabriel/projects/sdl_engine/include/hero.hpp
+
