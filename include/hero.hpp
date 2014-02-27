@@ -47,7 +47,7 @@ using namespace std;
 class hero
 {
 public:
-    hero();
+    hero(int map_width, int map_height);
     ~hero();
     SDL_Surface * getSurface();
 	int getDirection();
@@ -67,6 +67,7 @@ public:
 	void handle_events(vector <string> map);
     void show();
 	bool checkColision(vector <string > map);
+	bool animate_stack();
 	
 	
 	
@@ -81,6 +82,8 @@ private:
 	
 	SDL_Event gEvent;
 	int status;
+	int map_height,map_width;
+	vector <int> movement_stack;
 	//int frame_index[MAX_STATE][MAX_FRAMES];
 	
 	

@@ -28,13 +28,16 @@
 #include "hero.hpp"
 #include "timer.hpp"
 
-#define WIDTH 640 //512
-#define HEIGHT 640
-#define BPP 24
 
 #define TILE_SIZE 64 	//tamaño de cada cuadro de la cuadricula
-#define MAP_HEIGHT 8
-#define MAP_WIDTH 10
+#define MAP_HEIGHT 10
+#define MAP_WIDTH 15
+
+#define WIDTH MAP_WIDTH*64//512
+#define HEIGHT (MAP_HEIGHT*64)+192
+#define BPP 24
+
+
 
 
 

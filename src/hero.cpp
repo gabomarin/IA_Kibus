@@ -17,7 +17,7 @@
 
 #include "../include/hero.hpp"
 
-hero::hero()
+hero::hero(int map_width, int map_height)
 {
 	file= "resources/sprites/gold.png";
 	sprite= IMG_Load(file.c_str());
@@ -48,7 +48,8 @@ hero::hero()
 	x_=0;
 	y_=(HERO_HEIGHT-HERO_WIDTH)*-1;
 	animation=false;
-	
+	this->map_height= map_height;
+	this->map_width=map_width;
 
 	status=STAND;
 
@@ -153,23 +154,25 @@ void hero:: handle_events(vector <string> map)
 				switch(event.key.keysym.sym /*dir*/)
 				{
 					case SDLK_RIGHT: 
-						if(x_/HERO_WIDTH<9)
+						if(x_/HERO_WIDTH<map_width-1)
 						if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='A')
 						{
 						
 							//no hacer nada
 						}
-						else if(x_/HERO_WIDTH>8)
+						else if(x_/HERO_WIDTH>map_width-2)
 						{
 							//no hacer nada
 						}
 						else
 						{
-							cout <<x_/HERO_WIDTH+1<<endl;
+							
 							direction=HERO_RIGHT;
 							status=MOVEMENT;
 							current_frame=0;
 							animation_frame=0;
+							movement_stack.push_back(HERO_RIGHT);
+							cout <<movement_stack.size()<<endl;
 						}
 						//x_ += HERO_WIDTH/4 ;
 							
@@ -188,11 +191,13 @@ void hero:: handle_events(vector <string> map)
 							}
 							else
 							{
-								cout <<x_/HERO_WIDTH+1<<endl;
+								
 								direction=HERO_LEFT;
 								status=MOVEMENT;
 								current_frame=0;
 								animation_frame=0;
+								movement_stack.push_back(HERO_LEFT);
+								cout <<movement_stack.size()<<endl;
 							}
 					break;
 					
@@ -210,33 +215,37 @@ void hero:: handle_events(vector <string> map)
 						}
 						else
 						{
-							cout <<y_/HERO_HEIGHT+1<<endl;
+							
 							direction=HERO_UP;
 							status=MOVEMENT;
 							current_frame=0;
 							animation_frame=0;
+							movement_stack.push_back(HERO_UP);
+							cout <<movement_stack.size()<<endl;
 						}
 					break;
 					
 					case SDLK_DOWN:
 						 
-						if(y_/HERO_WIDTH<7)
+						if(y_/HERO_WIDTH<map_height-1)
 							if((map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='A')
 							{
 								
 								//no hacer nada
 							}
-							else if(y_/HERO_WIDTH>6)
+							else if(y_/HERO_WIDTH>map_height-2)
 							{
 								//no hacer nada
 							}
 							else
 							{
-								cout <<x_/HERO_WIDTH+1<<endl;
+								
 								direction=HERO_DOWN;
 								status=MOVEMENT;
 								current_frame=0;
 								animation_frame=0;
+								movement_stack.push_back(HERO_DOWN);
+								cout <<movement_stack.size()<<endl;
 							}
 						break;
 					
@@ -312,3 +321,123 @@ bool hero::checkColision(vector <string> map)
 
 
 
+
+
+bool hero::animate_stack()
+{
+	
+	if(movement_stack.size()==0)
+		return false;
+	
+	cout <<movement_stack.size()<<endl;
+	cout << movement_stack.back() << endl;
+	if(status==STAND)
+	{
+		
+			switch( movement_stack.back() )
+			{
+				case HERO_RIGHT: 
+
+							//cout <<x_/HERO_WIDTH+1<<endl;
+							direction=HERO_LEFT;
+							status=MOVEMENT;
+							current_frame=0;
+							animation_frame=0;
+						
+						break;
+				case HERO_LEFT: 
+	
+							
+							direction=HERO_RIGHT;
+							status=MOVEMENT;
+							current_frame=0;
+							animation_frame=0;
+						
+						break;
+						
+				case HERO_UP:
+	
+	
+							direction=HERO_DOWN;
+							status=MOVEMENT;
+							current_frame=0;
+							animation_frame=0;
+							
+
+						break;
+						
+				case HERO_DOWN:
+					
+
+							//cout <<x_/HERO_WIDTH+1<<endl;
+							direction=HERO_UP;
+							status=MOVEMENT;
+							current_frame=0;
+							animation_frame=0;
+
+						
+						break;
+						
+			}
+		
+	}
+	
+	if(status==MOVEMENT		)
+	{
+		//status=STAND;
+		//animation_frame=1;
+		int movement=0;
+		if(current_frame<=7)
+		{
+			switch(current_frame)
+			{
+				case 0: case 4:
+					animation_frame=2;
+					break;
+					
+				case 1 :case 5:
+					animation_frame=1;
+					break;
+					
+				case 2:case 6:
+					animation_frame=0;
+					break;
+					
+				case 3:
+					animation_frame=1;
+					break;
+				case 7:
+					animation_frame=1;
+					//movement=16;
+					status=STAND;
+					movement_stack.pop_back();
+					break;
+			}
+			switch(direction)
+			{
+				case HERO_DOWN:
+					y_ += HERO_HEIGHT/8 -movement;
+					break;
+					
+				case HERO_UP:
+					y_ -= HERO_HEIGHT/8 -movement;
+					break;
+					
+				case HERO_LEFT:
+					x_ -= HERO_WIDTH/8 -movement;
+					break;
+					
+				case HERO_RIGHT:
+					x_ += HERO_WIDTH/8 -movement;
+					break;
+			}
+			current_frame++;
+		}
+		
+		
+		
+		
+		
+	}
+	
+}

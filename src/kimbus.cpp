@@ -130,7 +130,7 @@ void kimbus::drawmap()
 {
 	int i,j;
 
-	
+
 	
 	for(i=0;i<MAP_WIDTH;++i)
 	{
@@ -141,7 +141,7 @@ void kimbus::drawmap()
  			char c=map.at(j).at(i);
 // 			cout<< c <<endl;
 			//draw map tiles
-			if(map.at(j).at(i)=='C')
+			if(c=='C')
 			{
  				addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
 				/*
@@ -152,15 +152,16 @@ void kimbus::drawmap()
 				
 			}
 			
-			else if(map.at(j).at(i)=='A')
+			else if(c=='A')
 			{
 				addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
 				addToScreen(tree,i*TILE_SIZE,j*TILE_SIZE,NULL);
 			}
-			else if(map.at(j).at(i)=='T')
+			else if(c=='T')
 			{
 				addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
 				addToScreen(tallgrass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+				
 			}
 		}
 	}
@@ -191,28 +192,37 @@ bool kimbus::loadTiles()
 
 void kimbus::mainloop()
 {
-	hero gold;
+	hero gold(MAP_WIDTH,MAP_HEIGHT);
 	bool quit;
 	Timer fps;
-	
+	string caption;
 	int nLoop=0;
-	int fast;
+	int fast=false;
+	bool pop_movement=false;;
 	while(!quit)
 	{
 		fps.start();
-		while( SDL_PollEvent( &event ) )
+		
+		
+		if(pop_movement==true)
 		{
-			
-						
-			switch(event.type)
+			pop_movement=gold.animate_stack();
+		}
+		else
+		{
+			while( SDL_PollEvent( &event ) )
 			{
-				case SDL_QUIT:
-					quit = true;
-					break;
-					
-				case SDL_KEYDOWN:
-					
-					
+				
+				
+				switch(event.type)
+				{
+					case SDL_QUIT:
+						quit = true;
+						break;
+						
+					case SDL_KEYDOWN:
+						
+						
 						switch (event.key.keysym.sym)
 						{
 							case SDLK_ESCAPE:
@@ -227,27 +237,34 @@ void kimbus::mainloop()
 								
 							case SDLK_SPACE:
 								fast=true;
-							break;
-// 							case SDLK_UP:
-// 								
-// 								
-// 								break;
-// 								
-// 							case SDLK_DOWN:
-// 								
-// 								
-// 								break;
-// 								
-// 							case SDLK_LEFT:
-// 								
-// 								
-// 								break;
-// 								
-// 								
-// 							case SDLK_RIGHT:
-// 								
-// 								
-// 								break;
+								break;
+								
+								
+								
+							case SDLK_k:
+								pop_movement=gold.animate_stack();
+							
+								break;
+								// 							case SDLK_UP:
+								// 								
+								// 								
+								// 								break;
+								// 								
+								// 							case SDLK_DOWN:
+								// 								
+								// 								
+								// 								break;
+								// 								
+								// 							case SDLK_LEFT:
+								// 								
+								// 								
+								// 								break;
+								// 								
+								// 								
+								// 							case SDLK_RIGHT:
+								// 								
+								// 								
+								// 								break;
 						}
 						
 						break;
@@ -256,37 +273,43 @@ void kimbus::mainloop()
 								if(event.key.keysym.sym==SDLK_SPACE)
 									fast=false;
 								break;
-					}
-
-						
-						
-					
-						
-					
-			
-			
-		}
-		if(nLoop>0)
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+			}
 			gold.handle_events(map);
+		}
 		
-		//addToScreen(gold.getSurface(), 0,0);
+// 		if(nLoop>0)
+// 		{
+// 		}
+		
+		
 		drawmap();
 		
 	
-		//gold.setY(TILE_SIZE*(MAP_HEIGHT-1));
+
 
 		addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
 		addToScreen(mapsurface,0,0,NULL);
 		
 		
 		updateScreen();
-		cout <<fps.get_ticks()<<endl;
+		//cout <<fps.get_ticks()<<endl;
 		
 		if(fast==false)
 		{
 			if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
 			{
-
+				
+				
+				//SDL_WM_SetCaption(caption.c_str(),NULL);
 				SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
 			}
 		}
@@ -299,7 +322,8 @@ void kimbus::mainloop()
 				SDL_Delay( ( 1000 / (FRAMES_PER_SECOND *4)) - fps.get_ticks() );
 			}
 		}
-		nLoop++;
+		//nLoop++;
+		//cout <<nLoop <<endl;
 		
 		
 		//SDL_Delay(100);
