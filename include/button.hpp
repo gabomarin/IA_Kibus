@@ -33,6 +33,7 @@ private:
     int y;
     int x;
 	SDL_Surface * image;
+	SDL_Event bEvent;
 	
 	
 public:
@@ -43,6 +44,7 @@ public:
 	int getY();
 	void setY(int y);
 	SDL_Surface * getImage();
+	
 };
 
 #endif // BUTTON_H

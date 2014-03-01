@@ -59,6 +59,7 @@ private:
 	Uint8 *keys;
 	vector <string> map;
 	ifstream map_file;
+	int homeX,homeY;
 	
 	
 	
@@ -77,6 +78,7 @@ public:
 	void drawmap();
 	
 	bool loadTiles();
+	void setHome();
 	
 	
 	

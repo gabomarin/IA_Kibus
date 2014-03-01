@@ -49,6 +49,7 @@ kimbus::kimbus()
 	else
 	{
 		cout << "Mundo de Kimbus Iniciado"<< endl;
+		setHome();
 		
 	}
 	SDL_EnableKeyRepeat(1, 0);
@@ -190,7 +191,35 @@ bool kimbus::loadTiles()
 }
 
 
-
+void kimbus::setHome()
+{
+	int i,j;
+	
+	
+	
+	for(i=0;i<MAP_WIDTH;++i)
+	{
+		
+		for(j=0;j<MAP_HEIGHT;++j)
+		{
+			
+			char c=map.at(j).at(i);
+			// 			cout<< c <<endl;
+			//draw map tiles
+			
+			
+			if(c=='H')
+			{
+				homeX=i;
+				homeY=j;
+			}
+			
+			
+		}
+	}
+	//mapsurface=screen;
+	
+}
 
 
 
@@ -198,13 +227,19 @@ void kimbus::mainloop()
 {
 	hero gold(MAP_WIDTH,MAP_HEIGHT);
 
-	button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3));
+	gold.setX((homeX*TILE_SIZE));
+	gold.setY((homeY*TILE_SIZE));
+	cout << homeX<<endl;
+	cout << homeY<<endl;
+	
+	button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
 	bool quit;
 	Timer fps;
 	string caption;
 	int nLoop=0;
 	int fast=false;
-	bool pop_movement=false;;
+	bool pop_movement=false;
+	
 	while(!quit)
 	{
 		fps.start();
