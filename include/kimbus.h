@@ -27,14 +27,15 @@
 
 #include "hero.hpp"
 #include "timer.hpp"
+#include "button.hpp"
 
 
-#define TILE_SIZE 64 	//tamaño de cada cuadro de la cuadricula
+#define TILE_SIZE 48 	//tamaño de cada cuadro de la cuadricula
 #define MAP_HEIGHT 10
 #define MAP_WIDTH 15
 
-#define WIDTH MAP_WIDTH*64//512
-#define HEIGHT (MAP_HEIGHT*64)+192
+#define WIDTH MAP_WIDTH*TILE_SIZE
+#define HEIGHT (MAP_HEIGHT*TILE_SIZE)+TILE_SIZE*3
 #define BPP 24
 
 
@@ -50,7 +51,7 @@ class kimbus
 private:
 	
 	SDL_Surface *screen;
-	SDL_Surface *tree,*grass,*mapsurface,*tallgrass;
+	SDL_Surface *tree,*grass,*mapsurface,*tallgrass,*textbox, *home;
 
 	SDL_Rect dest;
 	//SDL_Event event;

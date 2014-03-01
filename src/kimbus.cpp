@@ -20,8 +20,6 @@
 #include <string>
 #include <cstdlib>
 
-
-
 using namespace std;
 kimbus::kimbus()
 {
@@ -141,28 +139,32 @@ void kimbus::drawmap()
  			char c=map.at(j).at(i);
 // 			cout<< c <<endl;
 			//draw map tiles
-			if(c=='C')
+			
+			
+			switch(c)
 			{
- 				addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
-				/*
-				dest.x=i*64;
-				dest.y=j*64;
-				SDL_BlitSurface(grass,NULL,screen,&dest);*/
-				//updateScreen();
-				
+				case 'C':
+					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					break;
+					
+					
+				case 'A':
+					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					addToScreen(tree,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					break;
+					
+				case 'T':
+					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					addToScreen(tallgrass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					break;
+					
+				case 'H':
+					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					addToScreen(home,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					break;
 			}
 			
-			else if(c=='A')
-			{
-				addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
-				addToScreen(tree,i*TILE_SIZE,j*TILE_SIZE,NULL);
-			}
-			else if(c=='T')
-			{
-				addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
-				addToScreen(tallgrass,i*TILE_SIZE,j*TILE_SIZE,NULL);
-				
-			}
+			
 		}
 	}
 	//mapsurface=screen;
@@ -176,7 +178,9 @@ bool kimbus::loadTiles()
 	grass= IMG_Load("resources/sprites/grass_tile.png");
 	tree=IMG_Load("resources/sprites/tree_tile.png");
 	tallgrass=IMG_Load("resources/sprites/tall_grass.png");
-	if(!grass || !tree || !tallgrass)
+	textbox=IMG_Load("resources/sprites/textbox.png");
+	home=IMG_Load("resources/sprites/home.png");
+	if(!grass || !tree || !tallgrass || !textbox)
 	{
 		cout << "No se pudieron cargar algunos tiles. " <<SDL_GetError()<<endl;
 		return false;
@@ -193,6 +197,8 @@ bool kimbus::loadTiles()
 void kimbus::mainloop()
 {
 	hero gold(MAP_WIDTH,MAP_HEIGHT);
+
+	button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3));
 	bool quit;
 	Timer fps;
 	string caption;
@@ -242,6 +248,7 @@ void kimbus::mainloop()
 								
 								
 							case SDLK_k:
+								if(pop_movement==false)
 								pop_movement=gold.animate_stack();
 							
 								break;
@@ -285,21 +292,13 @@ void kimbus::mainloop()
 			}
 			gold.handle_events(map);
 		}
-		
-// 		if(nLoop>0)
-// 		{
-// 		}
-		
-		
+
 		drawmap();
-		
-	
-
-
+		addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
+		addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),NULL);
+		addToScreen(backbtn.getImage(),backbtn.getX(),backbtn.getY(),NULL);
 		addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
-		addToScreen(mapsurface,0,0,NULL);
-		
-		
+		//addToScreen(mapsurface,0,0,NULL);
 		updateScreen();
 		//cout <<fps.get_ticks()<<endl;
 		

@@ -34,8 +34,8 @@
 #define HERO_UP 2
 #define HERO_RIGHT 3
 
-#define HERO_WIDTH 64
-#define HERO_HEIGHT 64
+#define HERO_WIDTH 48
+#define HERO_HEIGHT 48
 
 #define STAND 0
 #define MOVEMENT 1

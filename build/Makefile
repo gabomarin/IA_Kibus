@@ -171,6 +171,21 @@ main.s:
 .PHONY : main.s
 
 # target to build an object file
+src/button.o:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/button.o
+.PHONY : src/button.o
+
+# target to preprocess a source file
+src/button.i:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/button.i
+.PHONY : src/button.i
+
+# target to generate assembly for a file
+src/button.s:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/button.s
+.PHONY : src/button.s
+
+# target to build an object file
 src/hero.o:
 	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/hero.o
 .PHONY : src/hero.o
@@ -231,6 +246,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/button.o"
+	@echo "... src/button.i"
+	@echo "... src/button.s"
 	@echo "... src/hero.o"
 	@echo "... src/hero.i"
 	@echo "... src/hero.s"
