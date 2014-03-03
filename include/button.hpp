@@ -23,6 +23,12 @@
 #include <SDL/SDL_image.h>
 #include <iostream>
 
+
+#define MOUSEOVER 1
+#define MOUSEOUT 0
+
+#define CLICK 1
+
 using namespace std;
 
 
@@ -34,16 +40,23 @@ private:
     int x;
 	SDL_Surface * image;
 	SDL_Event bEvent;
+	int numFrames,currentFrame;
+	SDL_Rect frame[2];
 	
 	
 public:
 	button(string src, int x, int y);
 	button();
+	~button();
 	int getX();
 	void setX(int x);
 	int getY();
 	void setY(int y);
 	SDL_Surface * getImage();
+	int handleEvents(SDL_Event event);
+	SDL_Rect * getFrame();
+	int getWidth();
+	int getHeight();
 	
 };
 

@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/gabriel/projects/sdl_engine/include/button.hpp
-string
--
-SDL/SDL.h
--
-SDL/SDL_image.h
--
-iostream
--
-
 /home/gabriel/projects/sdl_engine/include/hero.hpp
 SDL/SDL.h
 -
@@ -28,33 +18,7 @@ string
 vector
 -
 
-/home/gabriel/projects/sdl_engine/include/kimbus.h
-iostream
--
-string
--
-SDL/SDL.h
--
-vector
--
-fstream
--
-hero.hpp
+/home/gabriel/projects/sdl_engine/src/hero.cpp
+../include/hero.hpp
 /home/gabriel/projects/sdl_engine/include/hero.hpp
-timer.hpp
-/home/gabriel/projects/sdl_engine/include/timer.hpp
-button.hpp
-/home/gabriel/projects/sdl_engine/include/button.hpp
-
-/home/gabriel/projects/sdl_engine/include/timer.hpp
-SDL/SDL.h
--
-
-/home/gabriel/projects/sdl_engine/src/kimbus.cpp
-../include/kimbus.h
-/home/gabriel/projects/sdl_engine/include/kimbus.h
-string
--
-cstdlib
--
 

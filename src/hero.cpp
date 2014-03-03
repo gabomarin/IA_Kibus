@@ -155,7 +155,8 @@ void hero:: handle_events(vector <string> map)
 				{
 					case SDLK_RIGHT: 
 						if(x_/HERO_WIDTH<map_width-1)
-						if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='A')
+						if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='A'  
+							|| (map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='R')
 						{
 						
 							//no hacer nada
@@ -180,7 +181,8 @@ void hero:: handle_events(vector <string> map)
 					break;
 					case SDLK_LEFT: 
 						if(x_/HERO_WIDTH>0)
-							if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='A'))
+							if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='A')
+								||(map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='R')	)
 							{
 								
 								//no hacer nada
@@ -204,7 +206,8 @@ void hero:: handle_events(vector <string> map)
 					case SDLK_UP:
 						
 						if(y_/HERO_HEIGHT>0)
-							if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='A'))
+							if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='A')
+								|| (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='R'))
 							{
 								
 								//no hacer nada
@@ -228,7 +231,8 @@ void hero:: handle_events(vector <string> map)
 					case SDLK_DOWN:
 						 
 						if(y_/HERO_WIDTH<map_height-1)
-							if((map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='A')
+							if((map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='A'
+								||(map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='R')
 							{
 								
 								//no hacer nada

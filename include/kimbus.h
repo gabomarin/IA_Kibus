@@ -24,6 +24,7 @@
 #include <SDL/SDL.h>
 #include <vector>
 #include <fstream>
+#include <SDL/SDL_getenv.h>
 
 #include "hero.hpp"
 #include "timer.hpp"
@@ -31,13 +32,18 @@
 
 
 #define TILE_SIZE 48 	//tamaño de cada cuadro de la cuadricula
-#define MAP_HEIGHT 10
-#define MAP_WIDTH 15
+#define MAP_HEIGHT 11
+#define MAP_WIDTH 18
 
 #define WIDTH MAP_WIDTH*TILE_SIZE
 #define HEIGHT (MAP_HEIGHT*TILE_SIZE)+TILE_SIZE*3
 #define BPP 24
 
+#define HOME 1
+#define GRASS 2
+#define TALL_GRASS 3
+#define TREE 4
+#define ROCK 5
 
 
 
@@ -46,6 +52,10 @@
 
 using namespace std;
 
+typedef struct  coor
+{
+	int x,y;
+}posicion;
 class kimbus
 {
 private:
@@ -59,7 +69,11 @@ private:
 	Uint8 *keys;
 	vector <string> map;
 	ifstream map_file;
-	int homeX,homeY;
+	posicion pos;
+    SDL_Surface* rock;
+	
+
+	
 	
 	
 	
@@ -79,6 +93,11 @@ public:
 	
 	bool loadTiles();
 	void setHome();
+	void initializeMap();
+	void setTile(int click, int tile, SDL_Rect* tilePos);
+	posicion getHome();
+	void savemap();
+	
 	
 	
 	

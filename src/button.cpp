@@ -33,6 +33,22 @@ button::button(string src, int x,int y){
 	this->x=x;
 	this->y=y;
 	visible=true;
+	for(int i=0;i<2;++i)
+	{
+
+		frame[i].x=i*image->w/2;
+		frame[i].y=0;
+		frame[i].w=image->w/2;
+		frame[i].h=image->w/2;
+		
+	}
+	currentFrame=MOUSEOUT;
+	
+}
+
+button:: ~button()
+{
+	SDL_FreeSurface(image);
 	
 }
 
@@ -61,4 +77,72 @@ void button::setY(int y)
 SDL_Surface * button::getImage()
 {
 	return image;
+}
+
+int button::handleEvents(SDL_Event event)
+{
+	int mouse_x,mouse_y; //posicion del mouse
+	if( event.type == SDL_MOUSEMOTION ) { //Get the mouse offsets 
+		mouse_x = event.motion.x; 
+		mouse_y = event.motion.y;
+		//If the mouse is over the button 
+		if( ( mouse_x > x ) && (mouse_x < x + (image->w/2) ) && ( mouse_y > y ) && ( mouse_y < y + (image->h) ) ) 
+		{ //Set the button sprite 
+			//clip = &clips[ CLIP_MOUSEOVER ];
+			currentFrame=MOUSEOVER;
+			
+			
+		} 
+		//If not 
+		else { 
+			//Set the button sprite 
+			//clip = &clips[ CLIP_MOUSEOUT ]; 
+			currentFrame=MOUSEOUT;
+			
+		} 
+		
+	}
+	
+	if( event.type == SDL_MOUSEBUTTONDOWN ) 
+	{ 
+		//If the left mouse button was pressed 
+		if( event.button.button == SDL_BUTTON_LEFT ) 
+		{
+			
+			//Get the mouse offsets
+			mouse_x = event.button.x;
+			mouse_y = event.button.y; 
+			//If the mouse is over the button 
+			if( ( mouse_x > x ) && (mouse_x < x + image->w/2 ) && ( mouse_y > y ) && ( mouse_y < y + (image->h) ) ) 
+			{ //Set the button sprite 
+				cout << "click en el boton" <<endl;
+				return CLICK;
+				
+			} 
+			
+		} 
+		
+	}
+	
+	
+	return 0;
+}
+
+
+SDL_Rect * button::getFrame()
+{
+	return &frame[currentFrame];
+}
+
+
+
+int button::getHeight()
+{
+	return image->h;
+}
+
+
+int button::getWidth()
+{
+	return image->w;
 }
