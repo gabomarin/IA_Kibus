@@ -216,6 +216,21 @@ src/kimbus.s:
 .PHONY : src/kimbus.s
 
 # target to build an object file
+src/slider.o:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/slider.o
+.PHONY : src/slider.o
+
+# target to preprocess a source file
+src/slider.i:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/slider.i
+.PHONY : src/slider.i
+
+# target to generate assembly for a file
+src/slider.s:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/slider.s
+.PHONY : src/slider.s
+
+# target to build an object file
 src/timer.o:
 	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/timer.o
 .PHONY : src/timer.o
@@ -255,6 +270,9 @@ help:
 	@echo "... src/kimbus.o"
 	@echo "... src/kimbus.i"
 	@echo "... src/kimbus.s"
+	@echo "... src/slider.o"
+	@echo "... src/slider.i"
+	@echo "... src/slider.s"
 	@echo "... src/timer.o"
 	@echo "... src/timer.i"
 	@echo "... src/timer.s"

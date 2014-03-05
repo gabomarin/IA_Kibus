@@ -4,6 +4,7 @@
 CMakeFiles/sdl_engine.dir/main.o: ../include/button.hpp
 CMakeFiles/sdl_engine.dir/main.o: ../include/hero.hpp
 CMakeFiles/sdl_engine.dir/main.o: ../include/kimbus.h
+CMakeFiles/sdl_engine.dir/main.o: ../include/slider.hpp
 CMakeFiles/sdl_engine.dir/main.o: ../include/timer.hpp
 CMakeFiles/sdl_engine.dir/main.o: ../main.cpp
 
@@ -16,8 +17,12 @@ CMakeFiles/sdl_engine.dir/src/hero.o: ../src/hero.cpp
 CMakeFiles/sdl_engine.dir/src/kimbus.o: ../include/button.hpp
 CMakeFiles/sdl_engine.dir/src/kimbus.o: ../include/hero.hpp
 CMakeFiles/sdl_engine.dir/src/kimbus.o: ../include/kimbus.h
+CMakeFiles/sdl_engine.dir/src/kimbus.o: ../include/slider.hpp
 CMakeFiles/sdl_engine.dir/src/kimbus.o: ../include/timer.hpp
 CMakeFiles/sdl_engine.dir/src/kimbus.o: ../src/kimbus.cpp
+
+CMakeFiles/sdl_engine.dir/src/slider.o: ../include/slider.hpp
+CMakeFiles/sdl_engine.dir/src/slider.o: ../src/slider.cpp
 
 CMakeFiles/sdl_engine.dir/src/timer.o: ../include/timer.hpp
 CMakeFiles/sdl_engine.dir/src/timer.o: ../src/timer.cpp

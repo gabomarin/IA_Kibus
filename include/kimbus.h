@@ -25,11 +25,13 @@
 #include <vector>
 #include <fstream>
 #include <SDL/SDL_getenv.h>
+#include <SDL/SDL_ttf.h>
+#include <ctime>
 
 #include "hero.hpp"
 #include "timer.hpp"
 #include "button.hpp"
-
+#include "slider.hpp"
 
 #define TILE_SIZE 48 	//tamaño de cada cuadro de la cuadricula
 #define MAP_HEIGHT 11
@@ -94,6 +96,7 @@ public:
 	bool loadTiles();
 	void setHome();
 	void initializeMap();
+	void randomMap(int value);
 	void setTile(int click, int tile, SDL_Rect* tilePos);
 	posicion getHome();
 	void savemap();

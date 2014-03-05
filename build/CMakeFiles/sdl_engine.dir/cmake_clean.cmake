@@ -1,4 +1,5 @@
 FILE(REMOVE_RECURSE
+  "CMakeFiles/sdl_engine.dir/src/slider.o"
   "CMakeFiles/sdl_engine.dir/src/button.o"
   "CMakeFiles/sdl_engine.dir/src/kimbus.o"
   "CMakeFiles/sdl_engine.dir/src/hero.o"

@@ -5,6 +5,7 @@ CMakeFiles/sdl_engine.dir/main.o
  /home/gabriel/projects/sdl_engine/include/button.hpp
  /home/gabriel/projects/sdl_engine/include/hero.hpp
  /home/gabriel/projects/sdl_engine/include/kimbus.h
+ /home/gabriel/projects/sdl_engine/include/slider.hpp
  /home/gabriel/projects/sdl_engine/include/timer.hpp
  /home/gabriel/projects/sdl_engine/main.cpp
 CMakeFiles/sdl_engine.dir/src/button.o
@@ -17,8 +18,12 @@ CMakeFiles/sdl_engine.dir/src/kimbus.o
  /home/gabriel/projects/sdl_engine/include/button.hpp
  /home/gabriel/projects/sdl_engine/include/hero.hpp
  /home/gabriel/projects/sdl_engine/include/kimbus.h
+ /home/gabriel/projects/sdl_engine/include/slider.hpp
  /home/gabriel/projects/sdl_engine/include/timer.hpp
  /home/gabriel/projects/sdl_engine/src/kimbus.cpp
+CMakeFiles/sdl_engine.dir/src/slider.o
+ /home/gabriel/projects/sdl_engine/include/slider.hpp
+ /home/gabriel/projects/sdl_engine/src/slider.cpp
 CMakeFiles/sdl_engine.dir/src/timer.o
  /home/gabriel/projects/sdl_engine/include/timer.hpp
  /home/gabriel/projects/sdl_engine/src/timer.cpp

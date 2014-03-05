@@ -19,7 +19,7 @@
 
 #include <string>
 #include <cstdlib>
-
+#include <cstring>
 using namespace std;
 kimbus::kimbus()
 {
@@ -28,8 +28,9 @@ kimbus::kimbus()
 	SDL_WM_SetCaption( "Mundo de kimbus", NULL );
 	SDL_WM_SetIcon(SDL_LoadBMP("resources/sprites/icon.bmp"),NULL);
 	//cout <<SDL_GetError();
-
-	putenv("SDL_VIDEO_CENTERED=1"); 
+	char var[40];
+	strcpy(var,"SDL_VIDEO_CENTERED=1");
+	putenv(var); 
 	//Set up screen 
 	screen = SDL_SetVideoMode(WIDTH, HEIGHT, BPP, SDL_HWSURFACE );
 	if(!screen)
@@ -48,10 +49,17 @@ kimbus::kimbus()
 	{
 		exit(1);
 	}
+	//Initialize SDL_ttf 
+	else if( TTF_Init() == -1 )
+	{
+		exit(1);
+		
+	}
 	else
 	{
 		cout << "Mundo de Kimbus Iniciado"<< endl;
 		setHome();
+		srand(time(NULL));
 		
 	}
 	SDL_EnableKeyRepeat(1, 0);
@@ -413,7 +421,7 @@ void kimbus::initializeMap()
 	SDL_Rect selectedTile;
 	SDL_Surface * selected;
 	selected=IMG_Load("resources/sprites/outline.png");
-	int click=false,tile=false;
+	int click=false,tile=false,left_click=false;
 	int mouse_x,mouse_y;
 	SDL_Rect mouseTile;
 	mouseTile.x=0;
@@ -432,8 +440,13 @@ void kimbus::initializeMap()
 	button treebtn("resources/sprites/treebtn.png",homebtn.getX()+homebtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
 	button grassbtn("resources/sprites/grassbtn.png",treebtn.getX()+treebtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
 	button tGrassbtn("resources/sprites/tallgrassbtn.png",grassbtn.getX()+grassbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
-	button startbtn("resources/sprites/comenzar.png",tGrassbtn.getX()+tGrassbtn.getWidth()/2+100,HEIGHT-(TILE_SIZE*3)+20);
+	
 	button rockbtn("resources/sprites/rockbtn.png",20,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
+	
+	//slider de porcentaje, ancho,valor inicial, posicion X, posicion Y
+	slider porcentaje(251,50,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10);
+	button randombtn("resources/sprites/randombtn.png", porcentaje.getX()+porcentaje.getRealWidth()+10,HEIGHT-(TILE_SIZE*3)+20);
+	button startbtn("resources/sprites/comenzar.png",randombtn.getX()+randombtn.getWidth(),HEIGHT-(TILE_SIZE*3)+20);
 	while(!done)
 	{
 		drawmap();
@@ -528,13 +541,49 @@ void kimbus::initializeMap()
 			tile=ROCK;
 			click=true;
 		}
+		
+		if(randombtn.handleEvents(event)==CLICK)
+		{
+			randomMap(porcentaje.getValue());
+		}
+		
+		
+		left_click=porcentaje.handleEvents(event);
+		switch(left_click)
+		{
+			case 0:
+				break;
+				
+			case CLICK:
+				//cout << "click en slider"<< endl;
+				porcentaje.calculateValue();
+				break;
+				
+			case 2:
+				//cout <<"click suelto slider" <<endl;
+				porcentaje.calculateValue();
+				//porcentaje.calculateValue();
+				
+				break;
+		}
+		
+		
 		addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
 		addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
 		addToScreen(treebtn.getImage(),treebtn.getX(),treebtn.getY(),treebtn.getFrame());
 		addToScreen(grassbtn.getImage(),grassbtn.getX(),grassbtn.getY(),grassbtn.getFrame());
 		addToScreen(tGrassbtn.getImage(),tGrassbtn.getX(),tGrassbtn.getY(),tGrassbtn.getFrame());
+		addToScreen(randombtn.getImage(),randombtn.getX(),randombtn.getY(),randombtn.getFrame());
 		addToScreen(startbtn.getImage(),startbtn.getX(),startbtn.getY(),startbtn.getFrame());
 		addToScreen(rockbtn.getImage(),rockbtn.getX(),rockbtn.getY(),rockbtn.getFrame());
+		
+		addToScreen(porcentaje.updateSlider(),porcentaje.getX(),porcentaje.getY(),NULL);
+		//porcentaje.setValue(porcentaje.getValue()+1);
+		//porcentaje.calculateValue();
+		
+		
+		
+		//porcentaje.setValue(porcentaje.getValue()+1);
 		if(click==true)
 		{
 			addToScreen(selected,selectedTile.x,selectedTile.y,NULL);
@@ -614,5 +663,61 @@ void kimbus::savemap()
 
 
 
+
+void kimbus::randomMap(int value)
+{
+	int i,j,total=0,cantidad;
+	total=MAP_WIDTH*MAP_HEIGHT;
+	int random;
+	int x1,y1;
+	cout << total;
+	cantidad= (total*value)/100;
+	for(i=0;i<MAP_WIDTH;++i)
+	{
+		for(j=0;j<MAP_HEIGHT;++j)
+		{
+			map.at(j).at(i)='C';
+		}
+	}
+	//c t a r
+	
+	i=0;
+	while(i<cantidad)
+	{
+		do
+		{
+			y1=rand()%MAP_HEIGHT;
+			x1=rand()%MAP_WIDTH;
+			
+		}while(map.at(y1).at(x1)=='R'|| map.at(y1).at(x1)=='A');
+		
+		random=rand()%21;
+		if(random<10)
+		{
+			map.at(y1).at(x1)='A';
+			i++;
+		}
+		else if(random >=10 && random <17)
+		{
+			map.at(y1).at(x1)='T';
+			//No se considera obstaculo
+		}
+		else
+		{
+			map.at(y1).at(x1)='R';
+			i++;
+		}
+		
+		//map[x1][y1]=157;
+		
+	}
+	
+	y1=rand()%MAP_HEIGHT;
+	x1=rand()%MAP_WIDTH;
+	map.at(y1).at(x1)='H';
+	pos.x=x1;
+	pos.y=y1;
+	//getHome();
+}
 
  

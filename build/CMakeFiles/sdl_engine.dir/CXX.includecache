@@ -6,19 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/gabriel/projects/sdl_engine/include/hero.hpp
+/home/gabriel/projects/sdl_engine/include/slider.hpp
+string
+-
 SDL/SDL.h
 -
 SDL/SDL_image.h
 -
 iostream
 -
-string
+SDL/SDL_ttf.h
 -
-vector
+boost/lexical_cast.hpp
 -
 
-/home/gabriel/projects/sdl_engine/src/hero.cpp
-../include/hero.hpp
-/home/gabriel/projects/sdl_engine/include/hero.hpp
+/home/gabriel/projects/sdl_engine/src/slider.cpp
+../include/slider.hpp
+/home/gabriel/projects/sdl_engine/include/slider.hpp
 

@@ -1,6 +1,6 @@
 project(sdl_engine)
 
-add_executable(sdl_engine  ../src/button.cpp ../src/kimbus.cpp  src/hero.cpp main.cpp src/timer.cpp)
+add_executable(sdl_engine ../src/slider.cpp  ../src/button.cpp ../src/kimbus.cpp  src/hero.cpp main.cpp src/timer.cpp)
 
 install(TARGETS sdl_engine RUNTIME DESTINATION bin)
 

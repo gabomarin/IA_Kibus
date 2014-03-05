@@ -52,9 +52,32 @@ include CMakeFiles/sdl_engine.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/sdl_engine.dir/flags.make
 
+CMakeFiles/sdl_engine.dir/src/slider.o: CMakeFiles/sdl_engine.dir/flags.make
+CMakeFiles/sdl_engine.dir/src/slider.o: ../src/slider.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/sdl_engine.dir/src/slider.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/sdl_engine.dir/src/slider.o -c /home/gabriel/projects/sdl_engine/src/slider.cpp
+
+CMakeFiles/sdl_engine.dir/src/slider.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sdl_engine.dir/src/slider.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/gabriel/projects/sdl_engine/src/slider.cpp > CMakeFiles/sdl_engine.dir/src/slider.i
+
+CMakeFiles/sdl_engine.dir/src/slider.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sdl_engine.dir/src/slider.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/gabriel/projects/sdl_engine/src/slider.cpp -o CMakeFiles/sdl_engine.dir/src/slider.s
+
+CMakeFiles/sdl_engine.dir/src/slider.o.requires:
+.PHONY : CMakeFiles/sdl_engine.dir/src/slider.o.requires
+
+CMakeFiles/sdl_engine.dir/src/slider.o.provides: CMakeFiles/sdl_engine.dir/src/slider.o.requires
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/slider.o.provides.build
+.PHONY : CMakeFiles/sdl_engine.dir/src/slider.o.provides
+
+CMakeFiles/sdl_engine.dir/src/slider.o.provides.build: CMakeFiles/sdl_engine.dir/src/slider.o
+
 CMakeFiles/sdl_engine.dir/src/button.o: CMakeFiles/sdl_engine.dir/flags.make
 CMakeFiles/sdl_engine.dir/src/button.o: ../src/button.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/sdl_engine.dir/src/button.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/sdl_engine.dir/src/button.o -c /home/gabriel/projects/sdl_engine/src/button.cpp
 
@@ -77,7 +100,7 @@ CMakeFiles/sdl_engine.dir/src/button.o.provides.build: CMakeFiles/sdl_engine.dir
 
 CMakeFiles/sdl_engine.dir/src/kimbus.o: CMakeFiles/sdl_engine.dir/flags.make
 CMakeFiles/sdl_engine.dir/src/kimbus.o: ../src/kimbus.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/sdl_engine.dir/src/kimbus.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/sdl_engine.dir/src/kimbus.o -c /home/gabriel/projects/sdl_engine/src/kimbus.cpp
 
@@ -100,7 +123,7 @@ CMakeFiles/sdl_engine.dir/src/kimbus.o.provides.build: CMakeFiles/sdl_engine.dir
 
 CMakeFiles/sdl_engine.dir/src/hero.o: CMakeFiles/sdl_engine.dir/flags.make
 CMakeFiles/sdl_engine.dir/src/hero.o: ../src/hero.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/sdl_engine.dir/src/hero.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/sdl_engine.dir/src/hero.o -c /home/gabriel/projects/sdl_engine/src/hero.cpp
 
@@ -123,7 +146,7 @@ CMakeFiles/sdl_engine.dir/src/hero.o.provides.build: CMakeFiles/sdl_engine.dir/s
 
 CMakeFiles/sdl_engine.dir/main.o: CMakeFiles/sdl_engine.dir/flags.make
 CMakeFiles/sdl_engine.dir/main.o: ../main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/sdl_engine.dir/main.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/sdl_engine.dir/main.o -c /home/gabriel/projects/sdl_engine/main.cpp
 
@@ -146,7 +169,7 @@ CMakeFiles/sdl_engine.dir/main.o.provides.build: CMakeFiles/sdl_engine.dir/main.
 
 CMakeFiles/sdl_engine.dir/src/timer.o: CMakeFiles/sdl_engine.dir/flags.make
 CMakeFiles/sdl_engine.dir/src/timer.o: ../src/timer.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/sdl_engine.dir/src/timer.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/sdl_engine.dir/src/timer.o -c /home/gabriel/projects/sdl_engine/src/timer.cpp
 
@@ -169,6 +192,7 @@ CMakeFiles/sdl_engine.dir/src/timer.o.provides.build: CMakeFiles/sdl_engine.dir/
 
 # Object files for target sdl_engine
 sdl_engine_OBJECTS = \
+"CMakeFiles/sdl_engine.dir/src/slider.o" \
 "CMakeFiles/sdl_engine.dir/src/button.o" \
 "CMakeFiles/sdl_engine.dir/src/kimbus.o" \
 "CMakeFiles/sdl_engine.dir/src/hero.o" \
@@ -178,6 +202,7 @@ sdl_engine_OBJECTS = \
 # External object files for target sdl_engine
 sdl_engine_EXTERNAL_OBJECTS =
 
+sdl_engine: CMakeFiles/sdl_engine.dir/src/slider.o
 sdl_engine: CMakeFiles/sdl_engine.dir/src/button.o
 sdl_engine: CMakeFiles/sdl_engine.dir/src/kimbus.o
 sdl_engine: CMakeFiles/sdl_engine.dir/src/hero.o
@@ -192,6 +217,7 @@ sdl_engine: CMakeFiles/sdl_engine.dir/link.txt
 CMakeFiles/sdl_engine.dir/build: sdl_engine
 .PHONY : CMakeFiles/sdl_engine.dir/build
 
+CMakeFiles/sdl_engine.dir/requires: CMakeFiles/sdl_engine.dir/src/slider.o.requires
 CMakeFiles/sdl_engine.dir/requires: CMakeFiles/sdl_engine.dir/src/button.o.requires
 CMakeFiles/sdl_engine.dir/requires: CMakeFiles/sdl_engine.dir/src/kimbus.o.requires
 CMakeFiles/sdl_engine.dir/requires: CMakeFiles/sdl_engine.dir/src/hero.o.requires

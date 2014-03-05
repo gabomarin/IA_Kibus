@@ -8,6 +8,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/gabriel/projects/sdl_engine/src/button.cpp" "/home/gabriel/projects/sdl_engine/build/CMakeFiles/sdl_engine.dir/src/button.o"
   "/home/gabriel/projects/sdl_engine/src/hero.cpp" "/home/gabriel/projects/sdl_engine/build/CMakeFiles/sdl_engine.dir/src/hero.o"
   "/home/gabriel/projects/sdl_engine/src/kimbus.cpp" "/home/gabriel/projects/sdl_engine/build/CMakeFiles/sdl_engine.dir/src/kimbus.o"
+  "/home/gabriel/projects/sdl_engine/src/slider.cpp" "/home/gabriel/projects/sdl_engine/build/CMakeFiles/sdl_engine.dir/src/slider.o"
   "/home/gabriel/projects/sdl_engine/src/timer.cpp" "/home/gabriel/projects/sdl_engine/build/CMakeFiles/sdl_engine.dir/src/timer.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
