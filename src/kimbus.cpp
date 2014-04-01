@@ -63,6 +63,20 @@ kimbus::kimbus()
 		
 	}
 	SDL_EnableKeyRepeat(1, 0);
+	gold.create( MAP_WIDTH,MAP_HEIGHT,pos.x,pos.y);
+	cout << pos.x<<endl;
+	cout <<pos.y<< endl;
+	gold.setDirection(HERO_DOWN);
+	bool valido=false;
+	
+	do
+	{
+		posH.y=rand()%MAP_HEIGHT;
+		posH.x=rand()%MAP_WIDTH;
+		//cout <<posH.x<<endl;
+		//cout <<posH.y<<endl;
+	}while(map.at(posH.y).at(posH.x)=='R'|| map.at(posH.y).at(posH.x)=='A');
+
  
 	
 	
@@ -256,12 +270,12 @@ void kimbus::setHome()
 
 void kimbus::mainloop()
 {
-	hero gold(MAP_WIDTH,MAP_HEIGHT);
-
-	gold.setX((pos.x*TILE_SIZE));
-	gold.setY((pos.y*TILE_SIZE));
-	cout << pos.x<<endl;
-	cout << pos.y<<endl;
+	
+	
+	gold.setX((posH.x*TILE_SIZE));
+	gold.setY((posH.y*TILE_SIZE));
+	//cout << pos.x<<endl;
+	//cout << pos.y<<endl;
 	
 	button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
 	bool quit;
@@ -270,6 +284,7 @@ void kimbus::mainloop()
 	int nLoop=0;
 	int fast=false;
 	bool pop_movement=false;
+	int resultado;
 	
 	while(!quit)
 	{
@@ -286,7 +301,7 @@ void kimbus::mainloop()
 			{
 				
 				
-				switch(event.type)
+				switch(event.type) 
 				{
 					case SDL_QUIT:
 						quit = true;
@@ -356,7 +371,30 @@ void kimbus::mainloop()
 				
 				
 			}
-			gold.handle_events(map);
+			resultado=gold.handle_events(map);
+			/*if(resultado==1) //se calcula de nuevo la linea
+			{
+				
+				while(resultado!=2)
+				{
+					resultado=gold.handle_events(map);	
+					addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
+					updateScreen();
+				}
+				bresenham(posH.x,posH.y,pos.x,pos.y);
+			}
+			if(resultado==2)
+			{
+				while(resultado!=2)
+				{
+					resultado=gold.handle_events(map);	
+					addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
+					updateScreen();
+				}
+				bresenham(posH.x,posH.y,pos.x,pos.y);
+			
+				
+			}*/
 			
 			if(homebtn.handleEvents(event)==CLICK)
 			{
@@ -374,7 +412,7 @@ void kimbus::mainloop()
 		drawmap();
 		addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
 		addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
-		addToScreen(backbtn.getImage(),backbtn.getX(),backbtn.getY(),backbtn.getFrame());
+		addToScreen(backbtn.getImage() , backbtn.getX(),backbtn.getY(),backbtn.getFrame());
 		addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
 		//addToScreen(mapsurface,0,0,NULL);
 		updateScreen();
@@ -442,11 +480,17 @@ void kimbus::initializeMap()
 	button tGrassbtn("resources/sprites/tallgrassbtn.png",grassbtn.getX()+grassbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
 	
 	button rockbtn("resources/sprites/rockbtn.png",20,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
+	button herobtn("resources/sprites/herobtn.png",rockbtn.getX()+rockbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
 	
 	//slider de porcentaje, ancho,valor inicial, posicion X, posicion Y
 	slider porcentaje(251,50,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10);
 	button randombtn("resources/sprites/randombtn.png", porcentaje.getX()+porcentaje.getRealWidth()+10,HEIGHT-(TILE_SIZE*3)+20);
+	
 	button startbtn("resources/sprites/comenzar.png",randombtn.getX()+randombtn.getWidth(),HEIGHT-(TILE_SIZE*3)+20);
+	
+	
+	
+	bresenham(posH.x,posH.y,pos.x,pos.y);
 	while(!done)
 	{
 		drawmap();
@@ -506,6 +550,7 @@ void kimbus::initializeMap()
 			selectedTile.y=homebtn.getY();
 			tile= HOME;
 			click=true;
+			bresenham(posH.x,posH.y,pos.x,pos.y);
 			
 		}
 		
@@ -519,6 +564,8 @@ void kimbus::initializeMap()
 		if(startbtn.handleEvents(event)==CLICK)
 		{
 			done=true;
+			bresenham(posH.x,posH.y,pos.x,pos.y);
+			savemap();
 		}
 		if(grassbtn.handleEvents(event)==CLICK)
 		{
@@ -545,8 +592,22 @@ void kimbus::initializeMap()
 		if(randombtn.handleEvents(event)==CLICK)
 		{
 			randomMap(porcentaje.getValue());
+			SDL_Delay(250);
 		}
 		
+		
+		if(herobtn.handleEvents(event)==CLICK)
+		{
+			
+			selectedTile.x=herobtn.getX();
+			selectedTile.y=herobtn.getY();
+			tile=HERO;
+			click=true;
+			bresenham(posH.x,posH.y,pos.x,pos.y);
+			
+			
+		
+		}
 		
 		left_click=porcentaje.handleEvents(event);
 		switch(left_click)
@@ -576,6 +637,8 @@ void kimbus::initializeMap()
 		addToScreen(randombtn.getImage(),randombtn.getX(),randombtn.getY(),randombtn.getFrame());
 		addToScreen(startbtn.getImage(),startbtn.getX(),startbtn.getY(),startbtn.getFrame());
 		addToScreen(rockbtn.getImage(),rockbtn.getX(),rockbtn.getY(),rockbtn.getFrame());
+		addToScreen(herobtn.getImage(),herobtn.getX(),herobtn.getY(),herobtn.getFrame());
+		addToScreen(gold.getSurface(),posH.x*48,posH.y*48,gold.getFrame());
 		
 		addToScreen(porcentaje.updateSlider(),porcentaje.getX(),porcentaje.getY(),NULL);
 		//porcentaje.setValue(porcentaje.getValue()+1);
@@ -630,6 +693,14 @@ void kimbus::setTile(int click, int tile,SDL_Rect * tilePos)
 		case ROCK:
 			map.at(y).at(x)='R';
 			break;
+			
+		case HERO:
+			if(map.at(y).at(x)!='R'&& map.at(y).at(x)!='A'){
+			
+				posH.x=x;
+				posH.y=y;
+			}
+			break;
 	}
 }
 
@@ -670,7 +741,7 @@ void kimbus::randomMap(int value)
 	total=MAP_WIDTH*MAP_HEIGHT;
 	int random;
 	int x1,y1;
-	cout << total;
+	//cout << total;
 	cantidad= (total*value)/100;
 	for(i=0;i<MAP_WIDTH;++i)
 	{
@@ -715,9 +786,86 @@ void kimbus::randomMap(int value)
 	y1=rand()%MAP_HEIGHT;
 	x1=rand()%MAP_WIDTH;
 	map.at(y1).at(x1)='H';
+	
 	pos.x=x1;
 	pos.y=y1;
+	do
+	{
+		y1=rand()%MAP_HEIGHT;
+		x1=rand()%MAP_WIDTH;
+		
+	}while(map.at(y1).at(x1)=='R'|| map.at(y1).at(x1)=='A');
+	posH.x=x1;
+	posH.y=y1;
 	//getHome();
+}
+
+
+void kimbus:: bresenham(int x1, int y1, int x2, int y2)
+{
+	int delta_x(x2 - x1);
+	// if x1 == x2, then it does not matter what we set here
+	signed char const ix((delta_x > 0) - (delta_x < 0));
+	delta_x = std::abs(delta_x) << 1;
+	
+	int delta_y(y2 - y1);
+	// if y1 == y2, then it does not matter what we set here
+	signed char const iy((delta_y > 0) - (delta_y < 0));
+	delta_y = std::abs(delta_y) << 1;
+	gold.dropList();
+	
+	addToScreen(gold.getSurface(),x1*48,y1*48,gold.getFrame());
+	
+	gold.pushLine(x1,y1);
+	
+	if (delta_x >= delta_y)
+	{
+		// error may go below zero
+		int error(delta_y - (delta_x >> 1));
+		
+		while (x1 != x2)
+		{
+			if ((error >= 0) && (error || (ix > 0)))
+			{
+				error -= delta_x;
+				y1 += iy;
+			}
+			// else do nothing
+			
+			error += delta_y;
+			x1 += ix;
+			
+			addToScreen(gold.getSurface(),x1*48,y1*48,gold.getFrame());
+			gold.pushLine(x1,y1);
+		}
+	}
+	else
+	{
+		// error may go below zero
+		int error(delta_x - (delta_y >> 1));
+		
+		while (y1 != y2)
+		{
+			if ((error >= 0) && (error || (iy > 0)))
+			{
+				error -= delta_y;
+				x1 += ix;
+			}
+			// else do nothing
+			
+			error += delta_x;
+			y1 += iy;
+			
+			//plot(x1, y1);
+			addToScreen(gold.getSurface(),x1*48,y1*48,gold.getFrame());
+			gold.pushLine(x1,y1);
+		}
+	}
+	//for(int i=0;i<gold.)
+	//gold.printList();
+	gold.popLine();
+	//cout <<"Despues "<<endl;
+	//gold.printList();
 }
 
  

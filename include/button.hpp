@@ -29,8 +29,9 @@
 
 #define CLICK 1
 
-using namespace std;
 
+using namespace std;
+SDL_Event bEvent;
 
 class button
 {
@@ -39,7 +40,7 @@ private:
     int y;
     int x;
 	SDL_Surface * image;
-	SDL_Event bEvent;
+	SDL_Event *evento;
 	int numFrames,currentFrame;
 	SDL_Rect frame[2];
 	
@@ -58,6 +59,10 @@ public:
 	int getWidth();
 	int getHeight();
 	
+
+	
 };
 
+
+/*button::bEvent= SDL_PollEvent( &bEvent );*/	
 #endif // BUTTON_H

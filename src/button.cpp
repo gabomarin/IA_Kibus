@@ -44,6 +44,9 @@ button::button(string src, int x,int y){
 	}
 	currentFrame=MOUSEOUT;
 	
+
+
+	
 }
 
 button:: ~button()
@@ -82,9 +85,14 @@ SDL_Surface * button::getImage()
 int button::handleEvents(SDL_Event event)
 {
 	int mouse_x,mouse_y; //posicion del mouse
+	
+	
 	if( event.type == SDL_MOUSEMOTION ) { //Get the mouse offsets 
 		mouse_x = event.motion.x; 
 		mouse_y = event.motion.y;
+		
+		//cout << mouse_x;
+		//cout << mouse_y;
 		//If the mouse is over the button 
 		if( ( mouse_x > x ) && (mouse_x < x + (image->w/2) ) && ( mouse_y > y ) && ( mouse_y < y + (image->h) ) ) 
 		{ //Set the button sprite 
@@ -102,20 +110,21 @@ int button::handleEvents(SDL_Event event)
 		} 
 		
 	}
+
 	
 	if( event.type == SDL_MOUSEBUTTONDOWN ) 
 	{ 
 		//If the left mouse button was pressed 
 		if( event.button.button == SDL_BUTTON_LEFT ) 
 		{
-			
+			//cout <<"Has hecho click "<< endl;
 			//Get the mouse offsets
 			mouse_x = event.button.x;
 			mouse_y = event.button.y; 
 			//If the mouse is over the button 
 			if( ( mouse_x > x ) && (mouse_x < x + image->w/2 ) && ( mouse_y > y ) && ( mouse_y < y + (image->h) ) ) 
 			{ //Set the button sprite 
-				cout << "click en el boton" <<endl;
+				//cout << "click en el boton" <<endl;
 				return CLICK;
 				
 			} 
@@ -123,6 +132,7 @@ int button::handleEvents(SDL_Event event)
 		} 
 		
 	}
+	
 	
 	
 	return 0;
@@ -146,3 +156,6 @@ int button::getWidth()
 {
 	return image->w;
 }
+
+
+

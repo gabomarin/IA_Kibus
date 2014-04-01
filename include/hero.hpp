@@ -23,6 +23,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <boost/concept_check.hpp>
 
 #define MAX_FRAMES 3	/*Numero maximo de frames que tendra la animacion de
 							algun estado del personaje*/
@@ -33,6 +34,10 @@
 #define HERO_LEFT 1
 #define HERO_UP 2
 #define HERO_RIGHT 3
+#define UP_LEFT 4
+#define UP_RIGHT 5
+#define DOWN_LEFT 6
+#define DOWN_RIGHT 7
 
 #define HERO_WIDTH 48
 #define HERO_HEIGHT 48
@@ -48,6 +53,7 @@ class hero
 {
 public:
     hero(int map_width, int map_height);
+	hero();
     ~hero();
     SDL_Surface * getSurface();
 	int getDirection();
@@ -64,31 +70,39 @@ public:
 	int getAnimationFrame();
 	
 	void move();
-	void handle_events(vector <string> map);
+	   int handle_events(vector< string > map);
     void show();
 	bool checkColision(vector <string > map);
 	bool animate_stack();
-	
-	
+	void create(int map_width, int map_height, int posx, int posy);
+	void pushLine(int x, int y);
+	SDL_Rect popLine();
+	int getLineX();//regresan el primer elemento de la lista
+	int getLineY();
+    void printList();
+	void dropList();
+    int calculateDirection();
+	void bresenham(int x1, int y1, int x2, int y2);
+	void insertFirst(int x, int y);
 	
 private:
 	
 	string file;
 	SDL_Surface *sprite;
-	SDL_Rect frame[MAX_FRAMES][NUM_DIRECTIONS];
+	SDL_Rect frame[MAX_FRAMES][NUM_DIRECTIONS],lastPosition;
 	int direction,animation_frame,current_frame;
 	int x_,y_;
+	int destx,desty;
 	bool animation;
 	
 	SDL_Event gEvent;
 	int status;
 	int map_height,map_width;
 	vector <int> movement_stack;
+	vector <SDL_Rect> line_stack;
+	int obstaculo;
 	//int frame_index[MAX_STATE][MAX_FRAMES];
-	
-	
-	
-		
+
 	
 
 };

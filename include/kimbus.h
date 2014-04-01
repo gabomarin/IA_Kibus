@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include <SDL/SDL.h>
 #include <vector>
 #include <fstream>
@@ -34,7 +35,7 @@
 #include "slider.hpp"
 
 #define TILE_SIZE 48 	//tamaño de cada cuadro de la cuadricula
-#define MAP_HEIGHT 11
+#define MAP_HEIGHT 13
 #define MAP_WIDTH 18
 
 #define WIDTH MAP_WIDTH*TILE_SIZE
@@ -44,8 +45,14 @@
 #define HOME 1
 #define GRASS 2
 #define TALL_GRASS 3
+#define FLAG_1 4
+#define FLAG_2 5
+#define FLAG_3 6
+
+
 #define TREE 4
 #define ROCK 5
+#define HERO 6
 
 
 
@@ -73,6 +80,9 @@ private:
 	ifstream map_file;
 	posicion pos;
     SDL_Surface* rock;
+	int startx,starty;
+    SDL_Rect posH;
+	hero gold;
 	
 
 	
@@ -100,6 +110,7 @@ public:
 	void setTile(int click, int tile, SDL_Rect* tilePos);
 	posicion getHome();
 	void savemap();
+	void bresenham(int x1,int y1,int x2,int y2);
 	
 	
 	
