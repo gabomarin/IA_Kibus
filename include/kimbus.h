@@ -33,13 +33,15 @@
 #include "timer.hpp"
 #include "button.hpp"
 #include "slider.hpp"
+#include "functions.hpp"
 
-#define TILE_SIZE 48 	//tamaño de cada cuadro de la cuadricula
-#define MAP_HEIGHT 13
-#define MAP_WIDTH 18
+
+#define TILE_SIZE 32 	//tamaño de cada cuadro de la cuadricula
+#define MAP_HEIGHT 17
+#define MAP_WIDTH 22
 
 #define WIDTH MAP_WIDTH*TILE_SIZE
-#define HEIGHT (MAP_HEIGHT*TILE_SIZE)+TILE_SIZE*3
+#define HEIGHT (MAP_HEIGHT*TILE_SIZE)+(TILE_SIZE*3)
 #define BPP 24
 
 #define HOME 1
@@ -83,6 +85,9 @@ private:
 	int startx,starty;
     SDL_Rect posH;
 	hero gold;
+    SDL_Surface* water3;
+    SDL_Surface* water2;
+    SDL_Surface* water1;
 	
 
 	
@@ -111,6 +116,8 @@ public:
 	posicion getHome();
 	void savemap();
 	void bresenham(int x1,int y1,int x2,int y2);
+    void clearmap();
+
 	
 	
 	

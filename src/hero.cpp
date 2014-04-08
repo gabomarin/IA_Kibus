@@ -51,7 +51,6 @@ hero::hero(int map_width, int map_height)
     this->map_height= map_height;
     this->map_width=map_width;
 
-    status=STAND;
 
 
 }
@@ -195,15 +194,15 @@ void hero::move()
     }
 }
 
-int hero:: handle_events(vector <string> map) // si regresa true se calcula la linea de nuevo
+int hero:: handle_events(vector <string> &map) // si regresa true se calcula la linea de nuevo
 {
 
     //If a key was pressed
     int resultado=false;
     bool ciclo=false;
-	int cont=0;
+    int cont=0;
     int movement;
-	//SDL_Rect 
+    //SDL_Rect
     if(line_stack.size()>0) {
 
 
@@ -216,101 +215,154 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
         {
             movement=calculateDirection();
             //printList();
+
             while(ciclo==false)
             {
-				if(cont==10)
-				{
-					//cout<< "D:"<<endl;
-					//printList();
-					popLine();
-					movement=calculateDirection();
-					cont=0;
-				}
-				if(cont<10)
-					cont+=1;
-				//cout << cont <<endl;
-				
-				
+                int cont_rep=0;  //contara cuantas veces cae en el random la misma posicion,
+
+                if(cont==30)
+                {
+                    //cout<< "D:"<<endl;
+                    //printList();
+                    popLine();
+                    movement=calculateDirection();
+                    
+                }
+                else if(cont>=60)
+                {
+					
+                    return -2;
+                }
+                if(cont<60)
+                    cont+=1;
+                //cout << cont <<endl;
+
+
                 switch(movement)
                 {
                 case HERO_UP:
-					cout << "arriba"<<endl;
+                    cout << "arriba"<<endl;
 
                     if(y_/HERO_HEIGHT>0)
+                    {
+                        cout << map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))<<endl;
                         if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='A')
-                                || (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='R'))
+                                || (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='R')||
+                                (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='3'))
                         {
 
                             //no hacer nada
                             do
                             {
                                 movement=rand()%8;
-                            } while(movement==HERO_UP);
 
+                                if(movement!=HERO_UP)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+ 								setBanderin(map,lastp);	
+							}
+	
                             resultado=true;
                             obstaculo=1;
-                            continue;
-
-
-
+							//continue;
+                            
                         }
-                        else if(y_/HERO_HEIGHT<=0)
-                        {
-							do
-							{
-								movement=rand()%8;
-							} while(movement==HERO_UP);
+                        else 
+						{
 							
-							resultado=true;
-							obstaculo=1;
-							continue;
-                        }
-                        else
-                        {
+							direction=HERO_UP;
+							status=MOVEMENT;
+							current_frame=0;
+							animation_frame=0;
+							// 							movement_stack.push_back(HERO_UP);
+							// 							cout <<movement_stack.size()<<endl;
+							lastPosition.x=x_/HERO_WIDTH;
+							lastPosition.y=y_/HERO_HEIGHT;
+							lastp=HERO_DOWN;
+							//line_stack.erase(line_stack.begin());
+							printList();
+							ciclo=true;
+							
+							//ciclo=true;
+						}
 
-                            direction=HERO_UP;
-                            status=MOVEMENT;
-                            current_frame=0;
-                            animation_frame=0;
-// 							movement_stack.push_back(HERO_UP);
-// 							cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
-                            printList();
-                            ciclo=true;
-                            //ciclo=true;
-                        }
+
+                    }
+                    
+                    /*else if(y_/HERO_HEIGHT<0)
+                    {
+                    	do
+                    	{
+                    		movement=rand()%8;
+
+                    		if(movement!=HERO_UP)
+                    		{
+                    			cont_rep=8;
+                    		}
+                    		cont_rep++;
+                    	} while(cont_rep<8);
+
+                    	resultado=true;
+                    	obstaculo=1;
+                    	continue;
+                    }
+                    	*/
+                    
+
                     break;
 
                 case HERO_DOWN:
-					cout << "abajo"<<endl;
+                    cout << "abajo"<<endl;
                     if(y_/HERO_WIDTH<map_height-1)
                         if((map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='A'
-                                ||(map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='R')
+                                ||(map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='R' ||
+                                (map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH)=='3'))
                         {
 
                             //no hacer nada
-                            //do
-                            //{
-                            //    movement=rand()%8;
-                            //} while(movement==HERO_DOWN);
-							movement=DOWN_LEFT;
+
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=HERO_DOWN)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+								setBanderin(map,lastp);	
+							}
+
+                            //movement=DOWN_LEFT;
                             resultado=true;
                             obstaculo=1;
-                            continue;
+                            //continue;
                         }
                         else if(y_/HERO_WIDTH>map_height-2)
                         {
                             //no hacer nada
-							do
-							{
-								movement=rand()%8;
-							} while(movement==HERO_DOWN);
-							
-							resultado=true;
-							obstaculo=1;
-							continue;
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=HERO_DOWN)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+
+                            resultado=true;
+                            obstaculo=1;
+                            //continue;
                         }
                         else
                         {
@@ -321,42 +373,60 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                             animation_frame=0;
 // 							movement_stack.push_back(HERO_DOWN);
 // 							cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
+                            lastPosition.x=x_/HERO_WIDTH;
+                            lastPosition.y=y_/HERO_HEIGHT;
+							lastp=HERO_UP;
+                            //line_stack.erase(line_stack.begin());
                             printList();
                             ciclo=true;
                         }
                     break;
 
                 case HERO_LEFT:
-					cout << "izquierda"<<endl;
+                    cout << "izquierda"<<endl;
                     if(x_/HERO_WIDTH>0)
                         if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='A')
-                                ||(map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='R')	)
+                                ||(map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='R')||
+                                (map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='3'))
                         {
 
                             //no hacer nada
                             do
                             {
                                 movement=rand()%8;
-                            } while(movement==HERO_LEFT);
+
+                                if(movement!=HERO_LEFT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+								setBanderin(map,lastp);	
+							}
 
                             resultado=true;
                             obstaculo=1;
-                            continue;
+                            //continue;
                         }
                         else if(x_/HERO_WIDTH<=0)
                         {
                             //no hacer nada
-							do
-							{
-								movement=rand()%8;
-							} while(movement==HERO_LEFT);
-							
-							resultado=true;
-							obstaculo=1;
-							continue;
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=HERO_LEFT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+
+                            resultado=true;
+                            obstaculo=1;
+                            //continue;
                         }
                         else
                         {
@@ -367,9 +437,10 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                             animation_frame=0;
 // 							movement_stack.push_back(HERO_LEFT);
 // 							cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
+							lastPosition.x=x_/HERO_WIDTH;
+							lastPosition.y=y_/HERO_HEIGHT;
+							lastp=HERO_RIGHT;
+                            //line_stack.erase(line_stack.begin());
                             printList();
                             ciclo=true;
                         }
@@ -377,33 +448,53 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
 
 
                 case HERO_RIGHT:
-					cout << "derecha"<<endl;
+                    cout << "derecha"<<endl;
                     if(x_/HERO_WIDTH<map_width-1)
                         if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='A'
-                                || (map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='R')
+                                || (map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='R'||
+                                (map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1)=='3'))
                         {
 
                             //no hacer nada
                             do
                             {
                                 movement=rand()%8;
-                            } while(movement==HERO_RIGHT);
+
+                                if(movement!=HERO_RIGHT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+								setBanderin(map,lastp);	
+							}
 
                             resultado=true;
                             obstaculo=1;
-                            continue;
+                            //continue;
                         }
                         else if(x_/HERO_WIDTH>map_width-2  )
                         {
                             //no hacer nada
-							do
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=HERO_RIGHT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
 							{
-								movement=rand()%8;
-							} while(movement==HERO_RIGHT);
-							
-							resultado=true;
-							obstaculo=1;
-							continue;
+								setBanderin(map,lastp);	
+							}
+                            resultado=true;
+                            obstaculo=1;
+                            //continue;
                         }
                         else
                         {
@@ -414,42 +505,60 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                             animation_frame=0;
                             //movement_stack.push_back(HERO_RIGHT);
                             //cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
+							lastPosition.x=x_/HERO_WIDTH;
+							lastPosition.y=y_/HERO_HEIGHT;
+							lastp=HERO_LEFT;
+                            //line_stack.erase(line_stack.begin());
                             printList();
                             ciclo=true;
                         }
                     break;
 
                 case UP_RIGHT:
-					cout << "arriba derecha"<<endl;
+                    cout << "arriba derecha"<<endl;
                     if(x_/HERO_WIDTH<map_width-1 && y_/HERO_HEIGHT>0)
                         if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)+1))=='A'
-                                || (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)+1))=='R')
+                                || (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)+1))=='R'||
+                                (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)+1)=='3'))
                         {
 
                             //no hacer nada
                             do
                             {
                                 movement=rand()%8;
-                            } while(movement==UP_RIGHT);
 
+                                if(movement!=UP_RIGHT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+								setBanderin(map,lastp);	
+							}
+							
                             resultado=true;
                             obstaculo=1;
-                            continue;
+                            //continue;
                         }
                         else if(x_/HERO_WIDTH>map_width-2 || y_/HERO_HEIGHT<=0)
                         {
                             //no hacer nada
-							do
-							{
-								movement=rand()%8;
-							} while(movement==UP_RIGHT);
-							
-							resultado=true;
-							obstaculo=1;
-							continue;
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=UP_RIGHT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+
+                            resultado=true;
+                            obstaculo=1;
+                            //continue;
                         }
                         else
                         {
@@ -460,9 +569,10 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                             animation_frame=0;
                             //movement_stack.push_back(HERO_RIGHT);
                             //cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
+							lastPosition.x=x_/HERO_WIDTH;
+							lastPosition.y=y_/HERO_HEIGHT;
+							lastp=DOWN_LEFT;
+                            //line_stack.erase(line_stack.begin());
                             printList();
                             ciclo=true;
                         }
@@ -471,32 +581,49 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                     break;
 
                 case DOWN_RIGHT:
-					cout << "abajo derecha"<<endl;
+                    cout << "abajo derecha"<<endl;
                     if(x_/HERO_WIDTH<map_width-1 && y_/HERO_WIDTH<map_height-1)
                         if((map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)+1))=='A'
-                                || (map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)+1))=='R')
+                                || (map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)+1))=='R'||
+                                (map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)+1)=='3'))
                         {
 
                             //no hacer nada
                             do
                             {
                                 movement=rand()%8;
-                            } while(movement==DOWN_RIGHT);
+
+                                if(movement!=DOWN_RIGHT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+								setBanderin(map,lastp);	
+							}
                             resultado=true;
                             obstaculo=1;
-                            continue;
+                            //continue;
                         }
                         else if(x_/HERO_WIDTH>map_width-2 || y_/HERO_WIDTH>map_height-2)
                         {
                             //no hacer nada
-							do
-							{
-								movement=rand()%8;
-							} while(movement==DOWN_RIGHT);
-							
-							resultado=true;
-							obstaculo=1;
-							continue;
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=DOWN_RIGHT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+
+                            resultado=true;
+                            obstaculo=1;
+                            //continue;
                         }
                         else
                         {
@@ -507,9 +634,10 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                             animation_frame=0;
                             //movement_stack.push_back(HERO_RIGHT);
                             //cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
+							lastPosition.x=x_/HERO_WIDTH;
+							lastPosition.y=y_/HERO_HEIGHT;
+							lastp=UP_LEFT;
+                            //line_stack.erase(line_stack.begin());
                             printList();
                             ciclo=true;
                         }
@@ -519,32 +647,49 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
 
 
                 case UP_LEFT:
-					cout << "arriba izquierda"<<endl;
+                    cout << "arriba izquierda"<<endl;
                     if(x_/HERO_WIDTH>0 && y_/HERO_HEIGHT>0)
                         if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)-1)=='A')
-                                ||(map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)-1)=='R')	)
+                                ||(map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)-1)=='R')||
+                                (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)-1)=='3'))
                         {
 
                             //no hacer nada
                             do
                             {
                                 movement=rand()%8;
-                            } while(movement==UP_LEFT);
+
+                                if(movement!=UP_LEFT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+								setBanderin(map,lastp);	
+							}
                             obstaculo=1;
                             resultado=true;
-                            continue;
+                            //continue;
                         }
                         else if(x_/HERO_WIDTH<=0 || y_/HERO_HEIGHT<=0)
                         {
                             //no hacer nada
-							do
-							{
-								movement=rand()%8;
-							} while(movement==UP_LEFT);
-							
-							resultado=true;
-							obstaculo=1;
-							continue;
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=UP_LEFT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+
+                            resultado=true;
+                            obstaculo=1;
+                            //continue;
                         }
                         else
                         {
@@ -555,9 +700,10 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                             animation_frame=0;
                             // 							movement_stack.push_back(HERO_LEFT);
                             // 							cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
+							lastPosition.x=x_/HERO_WIDTH;
+							lastPosition.y=y_/HERO_HEIGHT;
+							lastp=DOWN_RIGHT;
+                            //line_stack.erase(line_stack.begin());
                             printList();
                             ciclo=true;
                         }
@@ -565,32 +711,48 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                     break;
 
                 case DOWN_LEFT:
-					cout << "abajo izquierda"<<endl;
+                    cout << "abajo izquierda"<<endl;
                     if(y_/HERO_WIDTH<map_height-1 &&x_/HERO_WIDTH>0)
                         if((map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)-1)=='A')
-                                ||(map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)-1)=='R')	)
+                                ||(map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)-1)=='R')||
+                                (map.at((y_/HERO_HEIGHT)+1).at((x_/HERO_WIDTH)-1)=='3'))
                         {
 
                             //no hacer nada
                             do
                             {
                                 movement=rand()%8;
-                            } while(movement==DOWN_LEFT);
+
+                                if(movement!=DOWN_LEFT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+							if(movement==lastp)
+							{
+								setBanderin(map,lastp);	
+							}
                             obstaculo=1;
                             resultado=true;
-                            continue;
+                            //continue;
                         }
                         else if(x_/HERO_WIDTH<=0 || y_/HERO_WIDTH>map_height-2)
                         {
-                            //no hacer nada
-							do
-							{
-								movement=rand()%8;
-							} while(movement==DOWN_LEFT);
-							
-							resultado=true;
-							obstaculo=1;
-							continue;
+                            do
+                            {
+                                movement=rand()%8;
+
+                                if(movement!=DOWN_LEFT)
+                                {
+                                    cont_rep=8;
+                                }
+                                cont_rep++;
+                            } while(cont_rep<8);
+
+                            resultado=true;
+                            obstaculo=1;
+                            //continue;
                         }
                         else
                         {
@@ -601,136 +763,28 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                             animation_frame=0;
                             // 							movement_stack.push_back(HERO_LEFT);
                             // 							cout <<movement_stack.size()<<endl;
-                            lastPosition.x=line_stack.front().x;
-                            lastPosition.y=line_stack.front().y;
-                            line_stack.erase(line_stack.begin());
+							lastPosition.x=x_/HERO_WIDTH;
+							lastPosition.y=y_/HERO_HEIGHT;
+							lastp=UP_RIGHT;
+                            //line_stack.erase(line_stack.begin());
                             printList();
                             ciclo=true;
                         }
 
 
                     break;
-					
-				case 8://caso extraño que no deberia de llegar aqui, pero sucede y es la unica fora de arreglarlo
-					//cout <<"Algo paso"<<endl;
-					//popLine();
-					SDL_Delay(1999);
-					bresenham(x_/HERO_WIDTH,y_/HERO_HEIGHT,destx,desty);
-					movement=calculateDirection();
-					//movement=calculateDirection();
-					break;
+
+                case 8://caso extraño que no deberia de llegar aqui, pero sucede y es la unica fora de arreglarlo
+                    //cout <<"Algo paso"<<endl;
+                    //popLine();
+
+                    bresenham(x_/HERO_WIDTH,y_/HERO_HEIGHT,destx,desty);
+                    movement=calculateDirection();
+                    //movement=calculateDirection();
+                    break;
                 }
             }
 
-
-            /*if( event.type == SDL_KEYDOWN )
-            {
-            	//Set the velocity
-            	int dir=SDLK_RIGHT;
-            	switch(event.key.keysym.sym )
-            	{
-            		case SDLK_RIGHT: case SDLK_d:
-            			if(x_/HERO_WIDTH<map_width-1)
-            			if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='A'
-            				|| (map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)+1))=='R')
-            			{
-
-            				//no hacer nada
-            			}
-            			else if(x_/HERO_WIDTH>map_width-2)
-            			{
-            				//no hacer nada
-            			}
-            			else
-            			{
-
-            				direction=HERO_RIGHT;
-            				status=MOVEMENT;
-            				current_frame=0;
-            				animation_frame=0;
-            				movement_stack.push_back(HERO_RIGHT);
-            				cout <<movement_stack.size()<<endl;
-            			}
-            			//x_ += HERO_WIDTH/4 ;
-
-            			;
-            		break;
-            		case SDLK_LEFT: case SDLK_a:
-            			if(x_/HERO_WIDTH>0)
-            				if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='A')
-            					||(map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='R')	)
-            				{
-
-            					//no hacer nada
-            				}
-            				else if(x_/HERO_WIDTH<=0)
-            				{
-            					//no hacer nada
-            				}
-            				else
-            				{
-
-            					direction=HERO_LEFT;
-            					status=MOVEMENT;
-            					current_frame=0;
-            					animation_frame=0;
-            					movement_stack.push_back(HERO_LEFT);
-            					cout <<movement_stack.size()<<endl;
-            				}
-            		break;
-
-            		case SDLK_UP: case SDLK_w:
-
-            			if(y_/HERO_HEIGHT>0)
-            				if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='A')
-            					|| (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='R'))
-            				{
-
-            					//no hacer nada
-            				}
-            			else if(y_/HERO_HEIGHT<=0)
-            			{
-
-            			}
-            			else
-            			{
-
-            				direction=HERO_UP;
-            				status=MOVEMENT;
-            				current_frame=0;
-            				animation_frame=0;
-            				movement_stack.push_back(HERO_UP);
-            				cout <<movement_stack.size()<<endl;
-            			}
-            		break;
-
-            		case SDLK_DOWN: case SDLK_s:
-
-            			if(y_/HERO_WIDTH<map_height-1)
-            				if((map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='A'
-            					||(map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH))=='R')
-            				{
-
-            					//no hacer nada
-            				}
-            				else if(y_/HERO_WIDTH>map_height-2)
-            				{
-            					//no hacer nada
-            				}
-            				else
-            				{
-
-            					direction=HERO_DOWN;
-            					status=MOVEMENT;
-            					current_frame=0;
-            					animation_frame=0;
-            					movement_stack.push_back(HERO_DOWN);
-            					cout <<movement_stack.size()<<endl;
-            				}
-            			break;
-
-            	}
-            }*/
         }
 
         if(status==MOVEMENT		)
@@ -738,44 +792,7 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
             //status=STAND;
             //animation_frame=1;
             //int movement=0;
-            if(current_frame<=7)
-            {
-                switch(current_frame)
-                {
-                case 0:
-                case 4:
-                    animation_frame=2;
-                    break;
-
-                case 1 :
-                case 5:
-                    animation_frame=1;
-                    break;
-
-                case 2:
-                case 6:
-                    animation_frame=0;
-                    break;
-
-                case 3:
-                    animation_frame=1;
-                    break;
-                case 7:
-                    animation_frame=1;
-                    //movement=16;
-                    status=STAND;
-                    if(obstaculo==1)
-                    {
-                        //cout << "x sss "<<destx<<" y "<<desty;
-                        //SDL_Delay(2000);
-                        bresenham(x_/HERO_WIDTH,y_/HERO_HEIGHT,destx,desty);
-						obstaculo=0;
-						
-                        printList();
-
-                    }
-                    break;
-                }
+            
                 switch(direction)
                 {
                 case HERO_DOWN:
@@ -814,8 +831,69 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                     y_ += HERO_HEIGHT/8;
                     break;
                 }
-                current_frame++;
-
+               
+				if(current_frame<=7)
+				{
+					switch(current_frame)
+					{
+						case 0:
+						case 4:
+							animation_frame=2;
+							break;
+							
+						case 1 :
+						case 5:
+							animation_frame=1;
+							break;
+							
+						case 2:
+						case 6:
+							animation_frame=0;
+							break;
+							
+						case 3:
+							animation_frame=1;
+							break;
+						case 7:
+							animation_frame=1;
+							//movement=16;
+							status=STAND;
+							
+							if(obstaculo==1)
+							{
+								//cout << "x sss "<<destx<<" y "<<desty;
+								//SDL_Delay(2000);
+// 								bresenham(x_/HERO_WIDTH,y_/HERO_HEIGHT,destx,desty);
+// 								if(line_stack.at(0).x==lastPosition.x &&
+// 									line_stack.at(0).y==lastPosition.y)
+// 								{
+// 									if(map.at(lastPosition.y).at(lastPosition.x)=='C' || map.at(y_/HERO_HEIGHT).at(lastPosition.x)=='T')
+// 									{
+// 										map.at(lastPosition.y).at(lastPosition.x)='1';
+// 									}
+// 									else if(map.at(lastPosition.y).at(lastPosition.x)=='1')
+// 									{
+// 										map.at(lastPosition.y).at(lastPosition.x)='2';
+// 									}
+// 									else if(map.at(lastPosition.y).at(lastPosition.x)=='2')
+// 									{
+// 										map.at(lastPosition.y).at(lastPosition.x)='3';
+// 									}
+// 									
+// 									printMap(map);
+// 								}
+								obstaculo=0;
+								
+								
+								printList();
+								
+							}
+							else
+								line_stack.erase(line_stack.begin());
+							break;
+							
+					}
+					current_frame++;
             }
 
 
@@ -857,6 +935,7 @@ int hero:: handle_events(vector <string> map) // si regresa true se calcula la l
                     animation_frame=1;
                     //movement=16;
                     status=STAND;
+					line_stack.erase(line_stack.begin());
                     break;
                 }
                 switch(direction)
@@ -1053,10 +1132,10 @@ void hero::pushLine(int x, int y)
 
 void hero:: insertFirst(int x, int y)
 {
-	SDL_Rect temp;
-	temp.x=x;
-	temp.y=y;
-	line_stack.insert(line_stack.begin(),temp);
+    SDL_Rect temp;
+    temp.x=x;
+    temp.y=y;
+    line_stack.insert(line_stack.begin(),temp);
 }
 
 
@@ -1114,62 +1193,68 @@ void hero::dropList()
 int hero::calculateDirection()
 {
     int movement;
+	SDL_Rect hero;
     SDL_Rect temp;
     temp= line_stack.front();
     int tempx, tempy;
+	
 
-
-
+	hero.x=x_/HERO_WIDTH;
+	hero.y=y_/HERO_HEIGHT;
     //verifica que tipo de movimiento tendra que hacer
-    tempx=temp.x-(x_/48);
-    tempy=temp.y-(y_/48);
+	tempx=hero.x-temp.x;
+	tempy=hero.y-temp.y;
+	
     //cout << "tempx "<<tempx<< endl;
     //cout <<"temp.x "<<temp.x<<endl;
     //cout << "tempy"<<tempy<<endl;
 
 
     //verifica en que direccion debe de ir
-    if(tempx==1&&tempy==-1)
+    if(tempx==-1&&tempy==1)
     {
         //tomaria diagonal derecha hacia arriba
         movement=UP_RIGHT;
     }
-    else if(tempx==1 &&tempy==0)
+    else if(tempx==-1 &&tempy==0)
     {
         movement=HERO_RIGHT;
 
 
     }
-    else if(tempx==1 && tempy==1)
+    else if(tempx==-1 && tempy==-1)
     {
         movement=DOWN_RIGHT;
     }
 
-    else if(tempx==0 && tempy==1)
+    else if(tempx==0 && tempy==-1)
     {
         movement=HERO_DOWN;
     }
 
-    else if(tempx==-1 && tempy==1)
+    else if(tempx==1 && tempy==-1)
     {
         movement=DOWN_LEFT;
     }
 
-    else if(tempx==-1 && tempy==0)
+    else if(tempx==1 && tempy==0)
     {
         movement=HERO_LEFT;
     }
 
-    else if(tempx==-1 && tempy==-1)
+    else if(tempx==1 && tempy==1)
     {
         movement=UP_LEFT;
     }
 
-    else if(tempx==0 && tempy==-1)
+    else if(tempx==0 && tempy==1)
     {
         movement=HERO_UP;
     }
-    else movement=8;
+    else
+	{
+		movement=8;
+	}
     return movement;
 }
 
@@ -1239,5 +1324,86 @@ void hero:: bresenham(int x1, int y1, int x2, int y2)
     popLine();
     cout <<"Despues "<<endl;
     printList();
+}
+
+void hero::printMap(vector <string > map)
+{
+    for(int i=0; i<map.size(); i++)
+    {
+        cout <<map.at(i)<<endl;
+    }
+}
+
+
+void hero::setHouse(int posx, int posy)
+{
+    destx=posx;
+    desty=posy;
+}
+
+
+void hero::setLastPosition(int x, int y)
+{
+	lastPosition.x=x;
+	lastPosition.y=y;
+}
+
+
+void hero::setBanderin(vector <string> &map, int posicion)
+{
+	int x=0,y=0;
+	switch(posicion)
+	{
+		case HERO_UP:
+			y=1;
+			
+			break;
+			
+		case HERO_DOWN:
+			y=-1;
+			break;
+			
+		case HERO_LEFT:
+			x=1;
+			break;
+			
+		case HERO_RIGHT:
+			x=-1;
+			break;
+			
+		case UP_LEFT:
+			y=1;
+			x=1;
+			break;
+			
+		case UP_RIGHT:
+			y=1;
+			x=-1;
+			break;
+			
+		case DOWN_LEFT:
+			x=1;
+			y=-1;
+			break;
+			
+		case DOWN_RIGHT:
+			x=-1;
+			y=-1;
+			break;
+	}
+	if(map.at(lastPosition.y+y).at(lastPosition.x+x)=='C' || map.at(lastPosition.y+y).at(lastPosition.x+x)=='T')
+	{
+		map.at(lastPosition.y+y).at(lastPosition.x+x)='1';
+	}
+	else if(map.at(lastPosition.y+y).at(lastPosition.x+x)=='1')
+	{
+		map.at(lastPosition.y+y).at(lastPosition.x+x)='2';
+	}
+	else if(map.at(lastPosition.y+y).at(lastPosition.x+x)=='2')
+	{
+		map.at(lastPosition.y+y).at(lastPosition.x+x)='3';
+	}
+	
+	
 }
 

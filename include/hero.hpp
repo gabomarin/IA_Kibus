@@ -25,6 +25,8 @@
 #include <vector>
 #include <boost/concept_check.hpp>
 
+#include "functions.hpp"
+
 #define MAX_FRAMES 3	/*Numero maximo de frames que tendra la animacion de
 							algun estado del personaje*/
 #define NUM_DIRECTIONS 4   /*Numero maximo de direcciones posibles que tiene el personaje, arriba, abajo,izquierda,derechs*/
@@ -39,8 +41,8 @@
 #define DOWN_LEFT 6
 #define DOWN_RIGHT 7
 
-#define HERO_WIDTH 48
-#define HERO_HEIGHT 48
+#define HERO_WIDTH 32
+#define HERO_HEIGHT 32
 
 #define STAND 0
 #define MOVEMENT 1
@@ -70,7 +72,7 @@ public:
 	int getAnimationFrame();
 	
 	void move();
-	   int handle_events(vector< string > map);
+	   int handle_events(vector< string >& map);
     void show();
 	bool checkColision(vector <string > map);
 	bool animate_stack();
@@ -84,12 +86,17 @@ public:
     int calculateDirection();
 	void bresenham(int x1, int y1, int x2, int y2);
 	void insertFirst(int x, int y);
+	void printMap(vector <string> map);
+    void setHouse(int posx, int posy);
+	void setLastPosition(int x, int y);
+    void setBanderin(vector< string >& map, int posicion);
 	
 private:
 	
 	string file;
 	SDL_Surface *sprite;
 	SDL_Rect frame[MAX_FRAMES][NUM_DIRECTIONS],lastPosition;
+	int lastp;
 	int direction,animation_frame,current_frame;
 	int x_,y_;
 	int destx,desty;
