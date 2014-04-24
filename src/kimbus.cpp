@@ -69,6 +69,8 @@ kimbus::kimbus()
 	gold.setDirection(HERO_DOWN);
 	bool valido=false;
 	
+	beedrill.create();
+	
 	do
 	{
 		posH.y=rand()%(MAP_HEIGHT-1)+1;
@@ -169,8 +171,16 @@ void kimbus::drawmap()
 {
 	int i,j;
 
-
-	
+	SDL_Surface *redAlpha = SDL_CreateRGBSurface(SDL_SWSURFACE, TILE_SIZE,TILE_SIZE,24 ,
+							screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,
+							screen->format->Amask  );
+	SDL_Rect alphaPos;
+	alphaPos.h= TILE_SIZE;
+	alphaPos.w=TILE_SIZE;
+	alphaPos.x=0;
+	alphaPos.y=0;
+	SDL_FillRect( redAlpha, &alphaPos,0xDD1110);
+	int alpha=255;
 	for(i=0;i<MAP_WIDTH;++i)
 	{
 
@@ -185,51 +195,72 @@ void kimbus::drawmap()
 			switch(c)
 			{
 				case 'C': 
-					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);					
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					break;
 					
 					
 				case 'A':
 					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					
 					addToScreen(tree,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					break;
 					
 				case 'T':
 					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					addToScreen(tallgrass,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					break;
 					
 				case 'H':
 					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					addToScreen(home,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					break;
 					
 				case 'R':
 					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					addToScreen(rock,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					break;
 					
 				case '1':
 					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					addToScreen(water1,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					break;
 					
 				case '2':
 					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					
 					addToScreen(water2,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					break;
 					
 				case '3':
 					addToScreen(grass,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					
 					addToScreen(water3,i*TILE_SIZE,j*TILE_SIZE,NULL);
+					SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+					addToScreen(redAlpha,i*TILE_SIZE,j*TILE_SIZE,NULL);
 					
 					break;
 			}
 			
 			
 		}
+		alpha-=20;
 	}
 	//mapsurface=screen;
+	SDL_FreeSurface(redAlpha);
 	
 }
 
@@ -295,10 +326,18 @@ void kimbus::mainloop()
 	
  	gold.setX((posH.x*TILE_SIZE));
  	gold.setY((posH.y*TILE_SIZE));
+	beedrill.setX((posH.x)*TILE_SIZE);
+	beedrill.setY( (posH.y)*TILE_SIZE);
 	
 	gold.setHouse( pos.x, pos.y);
+	beedrill.setHouse(pos.x, pos.y);
 	gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
+	
+	beedrill.bresenham(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT,pos.x,pos.y);
+	
 	gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
+	
+	beedrill.setLastPosition(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT);
 	//cout << pos.x<<endl;
 	//cout << pos.y<<endl;
 	
@@ -397,6 +436,7 @@ void kimbus::mainloop()
 				
 			}
 			resultado=gold.handle_events(map);
+			beedrill.handle_events(map);
 			if(resultado==-2)
 			{
 				SDL_Delay(1000);
@@ -444,6 +484,9 @@ void kimbus::mainloop()
 		addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
 		addToScreen(backbtn.getImage() , backbtn.getX(),backbtn.getY(),backbtn.getFrame());
 		addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
+	
+		addToScreen(beedrill.getSurface(), beedrill.getX(),beedrill.getY(),beedrill.getFrame());		
+	
 		//addToScreen(mapsurface,0,0,NULL);
 		updateScreen();
 		//cout <<fps.get_ticks()<<endl;

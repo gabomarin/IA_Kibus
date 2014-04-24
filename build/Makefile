@@ -171,6 +171,21 @@ main.s:
 .PHONY : main.s
 
 # target to build an object file
+src/bee.o:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/bee.o
+.PHONY : src/bee.o
+
+# target to preprocess a source file
+src/bee.i:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/bee.i
+.PHONY : src/bee.i
+
+# target to generate assembly for a file
+src/bee.s:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/bee.s
+.PHONY : src/bee.s
+
+# target to build an object file
 src/button.o:
 	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/button.o
 .PHONY : src/button.o
@@ -261,6 +276,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/bee.o"
+	@echo "... src/bee.i"
+	@echo "... src/bee.s"
 	@echo "... src/button.o"
 	@echo "... src/button.i"
 	@echo "... src/button.s"

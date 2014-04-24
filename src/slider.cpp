@@ -115,7 +115,9 @@ void slider::setValue(int value)
 SDL_Surface * slider::updateSlider()
 {
 	//
+	
 	SDL_Surface *temp;
+
 	SDL_Rect aux;
 	string mensaje;
 	

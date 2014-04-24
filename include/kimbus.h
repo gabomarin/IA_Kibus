@@ -30,6 +30,7 @@
 #include <ctime>
 
 #include "hero.hpp"
+#include "bee.hpp"
 #include "timer.hpp"
 #include "button.hpp"
 #include "slider.hpp"
@@ -85,6 +86,7 @@ private:
 	int startx,starty;
     SDL_Rect posH;
 	hero gold;
+	bee beedrill;
     SDL_Surface* water3;
     SDL_Surface* water2;
     SDL_Surface* water1;

@@ -57,6 +57,8 @@ public:
     hero(int map_width, int map_height);
 	hero();
     ~hero();
+	void create(int map_width, int map_height, int posx, int posy);
+	
     SDL_Surface * getSurface();
 	int getDirection();
 	void setDirection(int dir);
@@ -72,11 +74,11 @@ public:
 	int getAnimationFrame();
 	
 	void move();
-	   int handle_events(vector< string >& map);
+	int handle_events(vector< string >& map);
     void show();
 	bool checkColision(vector <string > map);
 	bool animate_stack();
-	void create(int map_width, int map_height, int posx, int posy);
+
 	void pushLine(int x, int y);
 	SDL_Rect popLine();
 	int getLineX();//regresan el primer elemento de la lista
@@ -91,7 +93,7 @@ public:
 	void setLastPosition(int x, int y);
     void setBanderin(vector< string >& map, int posicion);
 	
-private:
+protected:
 	
 	string file;
 	SDL_Surface *sprite;

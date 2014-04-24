@@ -62,7 +62,7 @@ CMAKE_BINARY_DIR = /home/gabriel/projects/sdl_engine/build
 CMakeFiles/sdl_engine.dir/all:
 	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/depend
 	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles  1 2 3 4 5 6
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/gabriel/projects/sdl_engine/build/CMakeFiles  1 2 3 4 5 6 7
 	@echo "Built target sdl_engine"
 .PHONY : CMakeFiles/sdl_engine.dir/all
 
@@ -72,7 +72,7 @@ all: CMakeFiles/sdl_engine.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/sdl_engine.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/gabriel/projects/sdl_engine/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/gabriel/projects/sdl_engine/build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/sdl_engine.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gabriel/projects/sdl_engine/build/CMakeFiles 0
 .PHONY : CMakeFiles/sdl_engine.dir/rule
