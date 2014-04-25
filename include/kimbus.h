@@ -41,8 +41,8 @@
 #define MAP_HEIGHT 17
 #define MAP_WIDTH 22
 
-#define WIDTH MAP_WIDTH*TILE_SIZE
-#define HEIGHT (MAP_HEIGHT*TILE_SIZE)+(TILE_SIZE*3)
+#define WIDTH (MAP_WIDTH*TILE_SIZE)
+#define HEIGHT ((MAP_HEIGHT*TILE_SIZE)+(TILE_SIZE*3))
 #define BPP 24
 
 #define HOME 1
@@ -80,6 +80,7 @@ private:
 	int done;
 	Uint8 *keys;
 	vector <string> map;
+	int heatMap[MAP_HEIGHT][MAP_WIDTH];
 	ifstream map_file;
 	posicion pos;
     SDL_Surface* rock;
@@ -119,6 +120,8 @@ public:
 	void savemap();
 	void bresenham(int x1,int y1,int x2,int y2);
     void clearmap();
+	void drawMessage(int tipo);
+	void initialiceHeat();
 
 	
 	
