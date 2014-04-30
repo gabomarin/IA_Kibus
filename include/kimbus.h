@@ -57,6 +57,8 @@
 #define ROCK 5
 #define HERO 6
 
+#define MAX_HEAT 230
+
 
 
 
@@ -87,6 +89,7 @@ private:
 	int startx,starty;
     SDL_Rect posH;
 	hero gold;
+	//bee beedrill[5];
 	bee beedrill;
     SDL_Surface* water3;
     SDL_Surface* water2;

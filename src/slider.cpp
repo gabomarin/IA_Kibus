@@ -51,7 +51,7 @@ slider::slider( int width, int x, int y)
 	
 }
 
-slider::slider( int width, int value, int x, int y)
+slider::slider( int width, int value, int x, int y,int min, int max)
 {
 	sliderImg=IMG_Load("resources/sprites/slider.png");
 	bar=IMG_Load("resources/sprites/slider_bar.png");
@@ -91,6 +91,8 @@ slider::slider( int width, int value, int x, int y)
 		
 	}
 	currentFrame=MOUSEOUT;
+	this->min=min;
+	this->max=max;
 }
 
 slider::~slider()
@@ -362,13 +364,13 @@ void slider::calculateValue()
  	}
 	
 	value=(((sliderPos.x)*100/width));
-	cout <<sliderPos.x<<endl;
+	//cout <<sliderPos.x<<endl;
 	//cout << value<< endl;
- 	if(value>80)
-		value=80;
+ 	if(value>max)
+		value=max;
 // 	
- 	if(value<20)
- 		value=20;
+ 	if(value<min)
+ 		value=min;
 	//value*=-1;
 /*	
 	
@@ -379,13 +381,13 @@ void slider::calculateValue()
 	
 	
 	//value=(sliderPos.x*100)/(width);
- 	if(value>100)
+ 	if(value>max)
  	{
- 		value=100;
+ 		value=max;
  	}
- 	if(value<0)
+ 	if(value<min)
  	{
- 		value=0;
+ 		value=min;
  	}
 	//cout <<value<< "= -("<<sliderPos.x<<"*108) /(-"<<width<<")"<<endl;
 

@@ -92,6 +92,9 @@ public:
     void setHouse(int posx, int posy);
 	void setLastPosition(int x, int y);
     void setBanderin(vector< string >& map, int posicion);
+	void set_returning(bool returning_);
+	bool is_returning();
+	int get_movement_stack_size();
 	
 protected:
 	
@@ -107,12 +110,11 @@ protected:
 	SDL_Event gEvent;
 	int status;
 	int map_height,map_width;
-	vector <int> movement_stack;
+	vector <int> movement_stack, temp_stack;
 	vector <SDL_Rect> line_stack;
 	int obstaculo;
+	bool returning;
 	//int frame_index[MAX_STATE][MAX_FRAMES];
-
-	
 
 };
 

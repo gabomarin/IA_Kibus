@@ -69,7 +69,10 @@ kimbus::kimbus()
     gold.setDirection(HERO_DOWN);
     bool valido=false;
 
-    beedrill.create();
+// 	for(int i=0;i<5;i++)
+// 		beedrill[i].create(MAP_WIDTH,MAP_HEIGHT);
+	beedrill.create(MAP_WIDTH,MAP_HEIGHT);
+	
 
     do
     {
@@ -78,12 +81,6 @@ kimbus::kimbus()
         //cout <<posH.x<<endl;
         //cout <<posH.y<<endl;
     } while(map.at(posH.y).at(posH.x)=='R'|| map.at(posH.y).at(posH.x)=='A');
-
-
-
-
-
-
 }
 
 
@@ -339,18 +336,24 @@ void kimbus::mainloop()
 
     gold.setX((posH.x*TILE_SIZE));
     gold.setY((posH.y*TILE_SIZE));
-    beedrill.setX((posH.x)*TILE_SIZE);
-    beedrill.setY( (posH.y)*TILE_SIZE);
+	gold.setHouse( pos.x, pos.y);
+	gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
+	gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
 
-    gold.setHouse( pos.x, pos.y);
-    beedrill.setHouse(pos.x, pos.y);
-    gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
-
-    beedrill.bresenham(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT,pos.x,pos.y);
-
-    gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
-
-    beedrill.setLastPosition(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT);
+// 	for(int i=0;i<5;i++)
+// 	{
+//     	beedrill[i].setX((posH.x)*TILE_SIZE);
+//     	beedrill[i].setY( (posH.y)*TILE_SIZE);
+// 		beedrill[i].setHouse(pos.x, pos.y);
+//     	beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
+// 		beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
+// 	}
+    
+	beedrill.setX((posH.x)*TILE_SIZE);
+		beedrill.setY( (posH.y)*TILE_SIZE);
+		beedrill.setHouse(pos.x, pos.y);
+		beedrill.bresenham(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT,pos.x,pos.y);
+		beedrill.setLastPosition(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT);
     //cout << pos.x<<endl;
     //cout << pos.y<<endl;
 
@@ -362,11 +365,12 @@ void kimbus::mainloop()
     int fast=false;
     bool pop_movement=false;
     int resultado;
+	
+	slider velocidad(120,20,20,600,1,40);
 
     while(!quit)
     {
         fps.start();
-
 
         if(pop_movement==true)
         {
@@ -410,26 +414,7 @@ void kimbus::mainloop()
                             pop_movement=gold.animate_stack();
 
                         break;
-// 															case SDLK_UP:
-//
-//
-// 																break;
-//
-// 															case SDLK_DOWN:
-//
-//
-// 																break;
-//
-// 															case SDLK_LEFT:
-//
-//
-// 																break;
-//
-//
-// 															case SDLK_RIGHT:
-//
-//
-// 																break;
+
                     }
 
                     break;
@@ -440,18 +425,36 @@ void kimbus::mainloop()
                     break;
                 }
 
-
-
-
-
-
-
-
             }
             resultado=gold.handle_events(map);
-
-            beedrill.handle_events(map);
-
+			//for(int i=0;i<5;i++)
+            //	beedrill[i].handle_events(map);
+			//frames per animation * 5 rounds
+			if(nLoop<40 && beedrill.is_returning()==false)
+			{
+				cout << "nloop " << nLoop<<endl;
+				beedrill.handle_events(map);
+			}
+			else
+			{
+				
+				beedrill.set_returning(true);
+				if(beedrill.get_movement_stack_size()>0)
+				{
+					beedrill.animate_stack();
+					nLoop=0;
+					
+				}
+				else
+				{
+					beedrill.set_returning(false);
+				}
+				
+				cout << beedrill.get_movement_stack_size()<<endl;
+				
+				
+				
+			}
             /*if(resultado==1) //se calcula de nuevo la linea
             {
 
@@ -486,6 +489,19 @@ void kimbus::mainloop()
                 if(pop_movement==false)
                     pop_movement=gold.animate_stack();
             }
+            
+            int left_click=velocidad.handleEvents(event);
+			switch(left_click)
+			{
+				case 0:
+					break;
+					
+				case CLICK:  case 2:
+					//cout << "click en slider"<< endl;
+					velocidad.calculateValue();
+					break;
+
+			}
 
         }
 
@@ -493,9 +509,12 @@ void kimbus::mainloop()
         addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
         addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
         addToScreen(backbtn.getImage() , backbtn.getX(),backbtn.getY(),backbtn.getFrame());
+		
+		
         addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
-
-        addToScreen(beedrill.getSurface(), beedrill.getX(),beedrill.getY(),beedrill.getFrame());
+		//for(int i=0;i<5;i++)
+        //	addToScreen(beedrill[i].getSurface(), beedrill[i].getX(),beedrill[i].getY(),beedrill[i].getFrame());
+		addToScreen(beedrill.getSurface(), beedrill.getX(),beedrill.getY(),beedrill.getFrame());
 
         //cout <<gold.getX()<<endl;
         //cout <<pos.x*TILE_SIZE<<endl;
@@ -511,7 +530,7 @@ void kimbus::mainloop()
             drawMessage(2);
             //quit=true;
         }
-
+        addToScreen(velocidad.updateSlider(), velocidad.getX(),velocidad.getY(),NULL);
         //addToScreen(mapsurface,0,0,NULL);
         updateScreen();
         //cout <<fps.get_ticks()<<endl;
@@ -520,22 +539,23 @@ void kimbus::mainloop()
 // 		{
 // 			if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
 // 			{
-//
-//
+// 
+// 
 // 				//SDL_WM_SetCaption(caption.c_str(),NULL);
 // 				SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
 // 			}
 // 		}
-//
+// 
 // 		else
 // 		{
-// 			if( fps.get_ticks() < 1000 / (FRAMES_PER_SECOND*4) )
-// 			{
-//
-// 				SDL_Delay( ( 1000 / (FRAMES_PER_SECOND *4)) - fps.get_ticks() );
-// 			}
-// 		}
-        //nLoop++;
+		int vel_multiplicacion= velocidad.getValue()/10+1;
+			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
+			{
+
+				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
+			}
+		//}
+        nLoop++;
         //cout <<nLoop <<endl;
 
 
@@ -581,7 +601,7 @@ void kimbus::initializeMap()
     button herobtn("resources/sprites/herobtn.png",rockbtn.getX()+rockbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
 
     //slider de porcentaje, ancho,valor inicial, posicion X, posicion Y
-    slider porcentaje(251,20,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10);
+    slider porcentaje(251,20,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10,40,80);
     button randombtn("resources/sprites/randombtn.png", porcentaje.getX()+porcentaje.getRealWidth()+10,HEIGHT-(TILE_SIZE*3)+20);
     button clearbtn("resources/sprites/clearbtn.png",randombtn.getX()+randombtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
     button startbtn("resources/sprites/comenzar.png",randombtn.getX()+randombtn.getWidth(),HEIGHT-(TILE_SIZE*3)+20);
@@ -886,21 +906,21 @@ void kimbus::savemap()
 
         }
         
-        for(int i=0; i<MAP_HEIGHT; i++)
-		{
-			for(int j=0; j<MAP_WIDTH; j++)
-			{
-				//heatMap[i][j]=alpha;
-				cout <<"i["<<i<<"]"<<" j["<<j<<"]"<<heatMap[i][j] << endl;
-				//cout <<"j " << j;
-				
-			}
-			//alpha-=12;
-			
-			
-			
-			//cout << endl;
-		}
+//         for(int i=0; i<MAP_HEIGHT; i++)
+// 		{
+// 			for(int j=0; j<MAP_WIDTH; j++)
+// 			{
+// 				//heatMap[i][j]=alpha;
+// 				cout <<"i["<<i<<"]"<<" j["<<j<<"]"<<heatMap[i][j] << endl;
+// 				//cout <<"j " << j;
+// 				
+// 			}
+// 			//alpha-=12;
+// 			
+// 			
+// 			
+// 			//cout << endl;
+// 		}
 		//SDL_Delay(2000);
 		//cout << endl;
         myfile.close();
@@ -1154,23 +1174,26 @@ void kimbus::drawMessage(int tipo)
 
 void kimbus::initialiceHeat()
 {
-    int i,j;
-    int alpha=245;
-    for(i=0; i<MAP_HEIGHT; i++)
+    int x,y;
+    int alpha;
+    for(y=0; y<MAP_HEIGHT; y++)
     {
-        for(j=0; j<MAP_WIDTH; j++)
+        for(x=0; x<MAP_WIDTH; x++)
         {
-            heatMap[i][j]=alpha;
+			alpha = MAX_HEAT - ( sqrt( pow( x - pos.x , 2 ) + pow( y - pos.y , 2 ) ) * 10 );
+			if(alpha<0)
+				alpha=0;
+            heatMap[y][x]=alpha;
 		 	//cout <<heatMap[i][j] << " ,";
             //cout <<"j " << j;
 
         }
-        alpha-=12;
+       
 
 
 
 		//cout << endl;
     }
-    
+   
     
 }

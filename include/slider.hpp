@@ -36,7 +36,7 @@ class slider
 {
 public:
     slider(int width, int x, int y);
-	slider(int width, int value, int x, int y);
+	slider(int width, int value, int x, int y, int min, int max);
     ~slider();
 	int getValue();
 	void setValue(int value);
@@ -67,6 +67,7 @@ private:
 	int startClick,endClick; //posicion iniciarl y final para arrastre de slider
 	bool clicked;
     int currentFrame;
+	int min,max;
 	SDL_Rect frame[2];
 	
 	
