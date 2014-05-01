@@ -397,11 +397,11 @@ void kimbus::mainloop()
 				
 			}
 			resultado=gold.handle_events(map);
-			if(resultado==-2)
-			{
-				SDL_Delay(1000);
-				quit=true;
-			}
+// 			if(resultado==-2)
+// 			{
+// 				SDL_Delay(1000);
+// 				quit=true;
+// 			}
 			/*if(resultado==1) //se calcula de nuevo la linea
 			{
 				
