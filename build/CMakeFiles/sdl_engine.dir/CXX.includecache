@@ -88,16 +88,6 @@ boost/lexical_cast.hpp
 SDL/SDL.h
 -
 
-/home/gabriel/projects/sdl_engine/main.cpp
-iostream
--
-SDL/SDL.h
--
-cstdlib
--
-include/kimbus.h
-/home/gabriel/projects/sdl_engine/include/kimbus.h
-
 /home/gabriel/projects/sdl_engine/src/kimbus.cpp
 ../include/kimbus.h
 /home/gabriel/projects/sdl_engine/include/kimbus.h

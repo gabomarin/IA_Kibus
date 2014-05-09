@@ -40,7 +40,7 @@ kimbus::kimbus()
 		
 	}
 	
-	else if(loadmap()==false)
+	else if(loadmap(4)==false)
 	{
 		exit(1);
 	}
@@ -117,15 +117,34 @@ SDL_Surface* kimbus::getScreen()
 
 
 
-
-
-bool kimbus::loadmap()
+bool kimbus::loadmap(int opc)
 {
 	int i=0;
 	string temp;
 	pos.x=0;
 	pos.y=0;
-	map_file.open("resources/map.txt");
+	map.clear();
+	switch(opc)
+	{
+		case 1:
+			map_file.open("resources/intestino.txt");
+			break;
+			
+		case 2:
+			map_file.open("resources/muros.txt");
+			
+			break;
+			
+		case 3:
+			
+			map_file.open("resources/encierro.txt");
+			break;
+			
+		case 4: default:
+			map_file.open("resources/map.txt");
+			break;
+	}
+	//map_file.open("resources/map.txt");
 	if (map_file)  // same as: if (map.good())
 	{
 		while (getline( map_file, temp ))  // same as: while (getline( map, line ).good())
@@ -157,8 +176,7 @@ bool kimbus::loadmap()
 	else
 	{
 		cout << "Fallo al abrir archivo de mapa" <<endl;
-		return false;
-		
+		return false;		
 	}
 	
 	return true;
@@ -397,11 +415,11 @@ void kimbus::mainloop()
 				
 			}
 			resultado=gold.handle_events(map);
-			if(resultado==-2)
-			{
-				SDL_Delay(1000);
-				quit=true;
-			}
+// 			if(resultado==-2)
+// 			{
+// 				SDL_Delay(1000);
+// 				quit=true;
+// 			}
 			/*if(resultado==1) //se calcula de nuevo la linea
 			{
 				
@@ -517,6 +535,12 @@ void kimbus::initializeMap()
 	button randombtn("resources/sprites/randombtn.png", porcentaje.getX()+porcentaje.getRealWidth()+10,HEIGHT-(TILE_SIZE*3)+20);
 	button clearbtn("resources/sprites/clearbtn.png",randombtn.getX()+randombtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
 	button startbtn("resources/sprites/comenzar.png",randombtn.getX()+randombtn.getWidth(),HEIGHT-(TILE_SIZE*3)+20);
+	
+	
+	button map_1("resources/sprites/1.png",tGrassbtn.getX()+tGrassbtn.getWidth()/2+20,tGrassbtn.getY()+35);
+	button map_2("resources/sprites/2.png",map_1.getX()+map_1.getWidth()/2+10,tGrassbtn.getY()+35);
+	button map_3("resources/sprites/3.png",map_2.getX()+map_2.getWidth()/2+10,tGrassbtn.getY()+35);
+	button map_default("resources/sprites/4.png",map_3.getX()+map_3.getWidth()/2+10,tGrassbtn.getY()+35);
 	
 	
 	
@@ -644,6 +668,30 @@ void kimbus::initializeMap()
 		
 		}
 		
+		if(map_1.handleEvents(event)==CLICK)
+		{
+			loadmap(1);
+			drawmap();
+		}
+		
+		if(map_2.handleEvents(event)==CLICK)
+		{
+			loadmap(2);
+			drawmap();
+		}
+		
+		if(map_3.handleEvents(event)==CLICK)
+		{
+			loadmap(3);
+			drawmap();
+		}
+		
+		if(map_default.handleEvents(event)==CLICK)
+		{
+			loadmap(4);
+			drawmap();
+		}
+		
 		left_click=porcentaje.handleEvents(event);
 		switch(left_click)
 		{
@@ -678,6 +726,10 @@ void kimbus::initializeMap()
 		addToScreen(gold.getSurface(),posH.x*TILE_SIZE,posH.y*TILE_SIZE,gold.getFrame());
 		
 		addToScreen(porcentaje.updateSlider(),porcentaje.getX(),porcentaje.getY(),NULL);
+		addToScreen(map_1.getImage(),map_1.getX(),map_1.getY(),map_1.getFrame() );
+		addToScreen(map_2.getImage(),map_2.getX(),map_2.getY(),map_2.getFrame() );
+		addToScreen(map_3.getImage(),map_3.getX(),map_3.getY(),map_3.getFrame() );
+		addToScreen(map_default.getImage(),map_default.getX(),map_default.getY(),map_default.getFrame() );
 		//porcentaje.setValue(porcentaje.getValue()+1);
 		//porcentaje.calculateValue();
 		
