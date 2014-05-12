@@ -104,7 +104,7 @@ public:
 	SDL_Surface * getScreen();
 	void addToScreen(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
 	void updateScreen();
-	void mainloop();
+	bool mainloop();
 	bool loadmap(int opc);
 	void drawmap();
 	

@@ -8,8 +8,13 @@
 int main(int argc, char **argv){
 	
 	kimbus game;
-	game.initializeMap();
-	game.mainloop();
+    bool ciclo=false;
+    do
+    {    
+	    game.initializeMap();
+        ciclo= game.mainloop();
+    }while(ciclo==true);
+    
 	
 	return EXIT_SUCCESS;
 }

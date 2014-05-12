@@ -115,21 +115,21 @@ void slider::setValue(int value)
 SDL_Surface * slider::updateSlider()
 {
 	//
-	SDL_Surface *temp;
+	//SDL_Surface *temp;
 	SDL_Rect aux;
 	string mensaje;
 	
 	//	int x;
-	temp=SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth,20,24,0,0,0,0);
-	if(!temp)
+	result_surface=SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth,20,24,0,0,0,0);
+    if(!result_surface)
 	{
 		cout << "Error al crear slider "<< SDL_GetError()<<endl;
 		exit(1);
 	}
-	SDL_FillRect(temp, 0, SDL_MapRGB(temp->format, 255, 255,0));
+	SDL_FillRect(result_surface, 0, SDL_MapRGB(result_surface->format, 255, 255,0));
 	
-	Uint32 colorkey = SDL_MapRGB( temp->format, 255, 255, 0 );
-	SDL_SetColorKey( temp, SDL_SRCCOLORKEY|SDL_RLEACCEL, colorkey ); 
+    Uint32 colorkey = SDL_MapRGB( result_surface->format, 255, 255, 0 );
+    SDL_SetColorKey( result_surface, SDL_SRCCOLORKEY|SDL_RLEACCEL, colorkey ); 
 	//temp=bar;
 	
 	//100 = 240px
@@ -142,7 +142,7 @@ SDL_Surface * slider::updateSlider()
 	for(int i=0;i<width/16;++i)
 	{
 		aux.x=i*16+12;
-		SDL_BlitSurface(bar,NULL,temp,&aux);
+        SDL_BlitSurface(bar,NULL,result_surface,&aux);
 	}
 	//cout <<"Ancho= "<< width<< endl;
 	sliderPos.x=(width*value/100)+4;
@@ -152,7 +152,7 @@ SDL_Surface * slider::updateSlider()
 	//cout << "value= "<<value <<" posicion del slider="<< sliderPos.x <<endl;
 	//SDL_Delay(1000);
 	sliderPos.y=0;
-	SDL_BlitSurface(sliderImg,getFrame(),temp,&sliderPos);
+    SDL_BlitSurface(sliderImg,getFrame(),result_surface,&sliderPos);
 	
 	
 	//Poner el valor del slider
@@ -160,8 +160,9 @@ SDL_Surface * slider::updateSlider()
 	aux.y=sliderPos.y;
 	mensaje= lexical_cast<string>(value);
 	texto = TTF_RenderText_Solid( font, mensaje.c_str(), textColor );
-	SDL_BlitSurface(texto,NULL,temp,&aux);
-	return temp;
+    SDL_BlitSurface(texto,NULL,result_surface,&aux);
+    
+	return result_surface;
 	
 	
 	

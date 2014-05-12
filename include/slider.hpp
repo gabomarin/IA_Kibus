@@ -59,7 +59,7 @@ private:
     int value;
 	SDL_Surface *bar;
 	SDL_Surface *sliderImg;
-	SDL_Surface *texto;
+	SDL_Surface *texto, *result_surface;
 	SDL_Rect sliderPos;
 	int width,x,y,realWidth;
 	TTF_Font *font;
