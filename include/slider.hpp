@@ -69,6 +69,7 @@ private:
     int currentFrame;
 	int min,max;
 	SDL_Rect frame[2];
+	SDL_Surface *temp;
 	
 	
 };

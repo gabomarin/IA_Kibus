@@ -94,6 +94,19 @@ private:
     SDL_Surface* water3;
     SDL_Surface* water2;
     SDL_Surface* water1;
+	SDL_Surface* redAlpha;
+	SDL_Surface *messagebox;
+	SDL_Surface *texto;
+	TTF_Font *font;
+	SDL_Rect position;
+	
+
+	
+	SDL_Rect selectedTile;
+	SDL_Surface * selected;
+	
+    int mouse_x,mouse_y;
+    SDL_Rect mouseTile;
 	
 
 	
@@ -110,7 +123,7 @@ public:
 	SDL_Surface * getScreen();
 	void addToScreen(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
 	void updateScreen();
-	void mainloop();
+	bool mainloop();
 	bool loadmap(int opc);
 	void drawmap();
 	
@@ -125,7 +138,8 @@ public:
     void clearmap();
 	void drawMessage(int tipo);
 	void initialiceHeat();
-
+	void addToMap(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
+	
 	
 	
 	

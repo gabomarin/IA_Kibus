@@ -49,6 +49,13 @@ slider::slider( int width, int x, int y)
 	currentFrame=MOUSEOUT;
 	clicked=true;
 	
+	temp=SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth,20,24,0,0,0,0);
+	if(!temp)
+	{
+		cout << "Error al crear slider "<< SDL_GetError()<<endl;
+		exit(1);
+	}
+	
 }
 
 slider::slider( int width, int value, int x, int y,int min, int max)
@@ -93,6 +100,13 @@ slider::slider( int width, int value, int x, int y,int min, int max)
 	currentFrame=MOUSEOUT;
 	this->min=min;
 	this->max=max;
+	
+	temp=SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth,20,24,0,0,0,0);
+	if(!temp)
+	{
+		cout << "Error al crear slider "<< SDL_GetError()<<endl;
+		exit(1);
+	}
 }
 
 slider::~slider()
@@ -118,18 +132,13 @@ SDL_Surface * slider::updateSlider()
 {
 	//
 	
-	SDL_Surface *temp;
+	
 
 	SDL_Rect aux;
 	string mensaje;
 	
 	//	int x;
-	temp=SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth,20,24,0,0,0,0);
-	if(!temp)
-	{
-		cout << "Error al crear slider "<< SDL_GetError()<<endl;
-		exit(1);
-	}
+	
 	SDL_FillRect(temp, 0, SDL_MapRGB(temp->format, 255, 255,0));
 	
 	Uint32 colorkey = SDL_MapRGB( temp->format, 255, 255, 0 );
@@ -164,7 +173,10 @@ SDL_Surface * slider::updateSlider()
 	aux.y=sliderPos.y;
 	mensaje= lexical_cast<string>(value);
 	texto = TTF_RenderText_Solid( font, mensaje.c_str(), textColor );
+	
 	SDL_BlitSurface(texto,NULL,temp,&aux);
+	SDL_FreeSurface(texto);
+	mensaje.clear();
 	return temp;
 	
 	

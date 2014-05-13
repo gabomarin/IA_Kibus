@@ -123,7 +123,7 @@ int bee:: handle_events(vector <string> &map) // si regresa true se calcula la l
             case HERO_UP:
                 //cout << "arriba"<<endl;
 
-                if(y_/HERO_HEIGHT>0)
+                //if(y_/HERO_HEIGHT>0)
                 {
                     //cout << map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))<<endl;
                     if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH))=='A')
@@ -226,7 +226,7 @@ int bee:: handle_events(vector <string> &map) // si regresa true se calcula la l
 
             case HERO_LEFT:
                 //cout << "izquierda"<<endl;
-                if(x_/HERO_WIDTH>0)
+                //if(x_/HERO_WIDTH>0)
                     if((map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='A')
                             ||(map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='R')||
                             (map.at(y_/HERO_HEIGHT).at((x_/HERO_WIDTH)-1)=='3'))
@@ -420,7 +420,7 @@ int bee:: handle_events(vector <string> &map) // si regresa true se calcula la l
 
             case UP_LEFT:
                 //cout << "arriba izquierda"<<endl;
-                if(x_/HERO_WIDTH>0 && y_/HERO_HEIGHT>0)
+                //if(x_/HERO_WIDTH>0 && y_/HERO_HEIGHT>0)
                     if((map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)-1)=='A')
                             ||(map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)-1)=='R')||
                             (map.at((y_/HERO_HEIGHT)-1).at((x_/HERO_WIDTH)-1)=='3'))

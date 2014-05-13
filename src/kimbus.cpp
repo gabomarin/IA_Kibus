@@ -33,12 +33,24 @@ kimbus::kimbus()
     putenv(var);
     //Set up screen
     screen = SDL_SetVideoMode(WIDTH, HEIGHT, BPP, SDL_HWSURFACE );
+	mapsurface=SDL_CreateRGBSurface(SDL_SWSURFACE, WIDTH,HEIGHT,BPP ,
+						 0,0,0,0  );
+	redAlpha = SDL_CreateRGBSurface(SDL_SWSURFACE, TILE_SIZE,TILE_SIZE,24 ,
+												 0,0,0,0  );
+	if(!redAlpha)
+	{
+		cout << "no se pudo crear RedAlpha"<<endl;	
+	}
+	
+	
     if(!screen)
     {
         cout << "Error al iniciar SDL. " << SDL_GetError()<< endl;
         exit(1);
 
     }
+    
+    
 
     else if(loadmap(4)==false)
     {
@@ -106,6 +118,17 @@ void kimbus::addToScreen(SDL_Surface* surface, int x, int y, SDL_Rect *clip)
     SDL_BlitSurface(surface,clip,screen,&dest);
 
 
+
+}
+
+void kimbus::addToMap(SDL_Surface* surface, int x, int y, SDL_Rect *clip)
+{
+	
+	dest.x=x;
+	dest.y=y;
+	SDL_BlitSurface(surface,clip,mapsurface,&dest);
+	
+	
 }
 
 
@@ -188,8 +211,7 @@ void kimbus::drawmap()
 {
     int i,j;
 
-    SDL_Surface *redAlpha = SDL_CreateRGBSurface(SDL_SWSURFACE, TILE_SIZE,TILE_SIZE,24 ,
-                            0,0,0,0  );
+   
     SDL_Rect alphaPos;
     alphaPos.h= TILE_SIZE;
     alphaPos.w=TILE_SIZE;
@@ -214,67 +236,67 @@ void kimbus::drawmap()
             {
 
             case 'C':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
                 break;
 
 
             case 'A':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-                addToScreen(tree,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(tree,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'T':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-                addToScreen(tallgrass,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(tallgrass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'H':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToScreen(home,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(home,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'R':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-                addToScreen(rock,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(rock,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case '1':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-                addToScreen(water1,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(water1,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case '2':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-                addToScreen(water2,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(water2,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
                 break;
 
             case '3':
-                addToScreen(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-                addToScreen(water3,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToScreen(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(water3,j*TILE_SIZE,i*TILE_SIZE,NULL);
+				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
 
@@ -290,7 +312,7 @@ void kimbus::drawmap()
 
 
     //mapsurface=screen;
-    SDL_FreeSurface(redAlpha);
+    //SDL_FreeSurface(redAlpha);
 
 }
 
@@ -350,7 +372,7 @@ void kimbus::setHome()
 
 
 
-void kimbus::mainloop()
+bool kimbus::mainloop()
 {
 
 
@@ -384,9 +406,11 @@ void kimbus::mainloop()
     int nLoop=0;
     int fast=false;
     bool pop_movement=false;
-    int resultado;
+    int kibus_resultado;
+	int bee_resultado;
 	
 	slider velocidad(120,20,20,600,1,40);
+	drawmap();
 
     while(!quit)
     {
@@ -406,6 +430,7 @@ void kimbus::mainloop()
                 {
                 case SDL_QUIT:
                     quit = true;
+                    return 0;
                     break;
 
                 case SDL_KEYDOWN:
@@ -446,35 +471,37 @@ void kimbus::mainloop()
                 }
 
             }
-            resultado=gold.handle_events(map);
+            //kibus_resultado=gold.handle_events(map);
+            
 			//for(int i=0;i<5;i++)
             //	beedrill[i].handle_events(map);
 			//frames per animation * 5 rounds
-			if(nLoop<40 && beedrill.is_returning()==false)
-			{
-				cout << "nloop " << nLoop<<endl;
-				beedrill.handle_events(map);
-			}
-			else
-			{
-				
-				beedrill.set_returning(true);
-				if(beedrill.get_movement_stack_size()>0)
-				{
-					beedrill.animate_stack();
-					nLoop=0;
-					
-				}
-				else
-				{
-					beedrill.set_returning(false);
-				}
-				
-				cout << beedrill.get_movement_stack_size()<<endl;
-				
-				
-				
-			}
+			bee_resultado=beedrill.handle_events(map);
+// 			if(nLoop<40 && beedrill.is_returning()==false)
+// 			{
+// 				cout << "nloop " << nLoop<<endl;
+// 				beedrill.handle_events(map);
+// 			}
+// 			else
+// 			{
+// 				
+// 				beedrill.set_returning(true);
+// 				if(beedrill.get_movement_stack_size()>0)
+// 				{
+// 					beedrill.animate_stack();
+// 					nLoop=0;
+// 					
+// 				}
+// 				else
+// 				{
+// 					beedrill.set_returning(false);
+// 				}
+// 				
+// 				cout << beedrill.get_movement_stack_size()<<endl;
+// 				
+// 				
+// 				
+// 			}
             /*if(resultado==1) //se calcula de nuevo la linea
             {
 
@@ -506,8 +533,8 @@ void kimbus::mainloop()
 
             if(backbtn.handleEvents(event)==CLICK)
             {
-                if(pop_movement==false)
-                    pop_movement=gold.animate_stack();
+                quit=true;
+                return 1;
             }
             
             int left_click=velocidad.handleEvents(event);
@@ -524,8 +551,18 @@ void kimbus::mainloop()
 			}
 
         }
-
-        drawmap();
+		if(gold.getFlag()==true )
+		{
+			drawmap();
+			gold.setFlag(false);
+		}
+		if(beedrill.getFlag()==true )
+		{
+			drawmap();
+			beedrill.setFlag(false);
+		}
+        //drawmap();
+        addToScreen(mapsurface,0,0,NULL);
         addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
         addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
         addToScreen(backbtn.getImage() , backbtn.getX(),backbtn.getY(),backbtn.getFrame());
@@ -534,6 +571,7 @@ void kimbus::mainloop()
         addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
 		//for(int i=0;i<5;i++)
         //	addToScreen(beedrill[i].getSurface(), beedrill[i].getX(),beedrill[i].getY(),beedrill[i].getFrame());
+		
 		addToScreen(beedrill.getSurface(), beedrill.getX(),beedrill.getY(),beedrill.getFrame());
 
         //cout <<gold.getX()<<endl;
@@ -542,12 +580,15 @@ void kimbus::mainloop()
         if(gold.getX()== pos.x*TILE_SIZE && gold.getY()==pos.y*TILE_SIZE )
         {
             drawMessage(1);
+			
         }
 
-        if(resultado==-2)
+        switch(kibus_resultado)
         {
             //SDL_Delay(1000);
-            drawMessage(2);
+			case -2:
+            	drawMessage(2);
+			break;
             //quit=true;
         }
         addToScreen(velocidad.updateSlider(), velocidad.getX(),velocidad.getY(),NULL);
@@ -568,13 +609,13 @@ void kimbus::mainloop()
 // 
 // 		else
 // 		{
-		int vel_multiplicacion= velocidad.getValue()/10+1;
-			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
-			{
-
-				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
-			}
-		//}
+// 		int vel_multiplicacion= velocidad.getValue()/10+1;
+// 			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
+// 			{
+// 
+// 				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
+// 			}
+// 		//}
         nLoop++;
         //cout <<nLoop <<endl;
 
@@ -586,6 +627,7 @@ void kimbus::mainloop()
     }
 
     //savemap();
+    return 0;
     SDL_Quit();
 
 }
@@ -593,13 +635,9 @@ void kimbus::mainloop()
 
 void kimbus::initializeMap()
 {
-    int done=false;
-    SDL_Rect selectedTile;
-    SDL_Surface * selected;
+    
     selected=IMG_Load("resources/sprites/outline.png");
-    int click=false,tile=false,left_click=false;
-    int mouse_x,mouse_y;
-    SDL_Rect mouseTile;
+    
     mouseTile.x=0;
     mouseTile.y=0;
     if(!selected)
@@ -609,8 +647,9 @@ void kimbus::initializeMap()
         exit(1);
     }
 
-
-
+    int click=false,tile=false,left_click=false;
+	int done=false;
+	
 
     button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20);
     button treebtn("resources/sprites/treebtn.png",homebtn.getX()+homebtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
@@ -621,7 +660,7 @@ void kimbus::initializeMap()
     button herobtn("resources/sprites/herobtn.png",rockbtn.getX()+rockbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
 
     //slider de porcentaje, ancho,valor inicial, posicion X, posicion Y
-    slider porcentaje(251,20,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10,40,80);
+    slider porcentaje(251,20,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10,20,80);
     button randombtn("resources/sprites/randombtn.png", porcentaje.getX()+porcentaje.getRealWidth()+10,HEIGHT-(TILE_SIZE*3)+20);
     button clearbtn("resources/sprites/clearbtn.png",randombtn.getX()+randombtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
     button startbtn("resources/sprites/comenzar.png",randombtn.getX()+randombtn.getWidth(),HEIGHT-(TILE_SIZE*3)+20);
@@ -633,10 +672,13 @@ void kimbus::initializeMap()
 
 
     bresenham(posH.x,posH.y,pos.x,pos.y);
+	initialiceHeat();
+	
+	
     while(!done)
     {
-        initialiceHeat();
-        drawmap();
+        
+		drawmap();
 
         while( SDL_PollEvent( &event ) )
         {
@@ -679,6 +721,7 @@ void kimbus::initializeMap()
                             mouseTile.y=mouse_y/TILE_SIZE;
                             mouseTile.y*=TILE_SIZE;
                             setTile(click,tile,&mouseTile);
+							initialiceHeat();
                         }
                     }
                 }
@@ -694,6 +737,7 @@ void kimbus::initializeMap()
             tile= HOME;
             click=true;
             bresenham(posH.x,posH.y,pos.x,pos.y);
+			initialiceHeat();
 
         }
 
@@ -735,11 +779,13 @@ void kimbus::initializeMap()
         if(randombtn.handleEvents(event)==CLICK)
         {
             randomMap(porcentaje.getValue());
+			initialiceHeat();
             SDL_Delay(250);
         }
         if(clearbtn.handleEvents(event)==CLICK)
         {
             clearmap();
+			initialiceHeat();
             SDL_Delay(250);
         }
 
@@ -761,24 +807,28 @@ void kimbus::initializeMap()
         if(map_1.handleEvents(event)==CLICK)
 		{
 			loadmap(1);
+			initialiceHeat();
 			drawmap();
 		}
 		
 		if(map_2.handleEvents(event)==CLICK)
 		{
 			loadmap(2);
+			initialiceHeat();
 			drawmap();
 		}
 		
 		if(map_3.handleEvents(event)==CLICK)
 		{
 			loadmap(3);
+			initialiceHeat();
 			drawmap();
 		}
 		
 		if(map_default.handleEvents(event)==CLICK)
 		{
 			loadmap(4);
+			initialiceHeat();
 			drawmap();
 		}
 		
@@ -803,7 +853,7 @@ void kimbus::initializeMap()
             break;
         }
 
-
+		addToScreen(mapsurface,0,0,NULL);
         addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
         addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
         addToScreen(treebtn.getImage(),treebtn.getX(),treebtn.getY(),treebtn.getFrame());
@@ -821,8 +871,9 @@ void kimbus::initializeMap()
 		addToScreen(map_2.getImage(),map_2.getX(),map_2.getY(),map_2.getFrame() );
 		addToScreen(map_3.getImage(),map_3.getX(),map_3.getY(),map_3.getFrame() );
 		addToScreen(map_default.getImage(),map_default.getX(),map_default.getY(),map_default.getFrame() );
-
-        addToScreen(porcentaje.updateSlider(),porcentaje.getX(),porcentaje.getY(),NULL);
+		
+		addToScreen(porcentaje.updateSlider(),porcentaje.getX(),porcentaje.getY(),NULL);
+		//SDL_FreeSurface(porcentaje_slider);
         //porcentaje.setValue(porcentaje.getValue()+1);
         //porcentaje.calculateValue();
 
@@ -842,6 +893,7 @@ void kimbus::initializeMap()
         //quit=true;
 
     }
+    SDL_FreeSurface(selected);
 }
 
 void kimbus::setTile(int click, int tile,SDL_Rect * tilePos)
@@ -1172,20 +1224,25 @@ void kimbus:: clearmap()
 
 void kimbus::drawMessage(int tipo)
 {
-    SDL_Surface *texto;
-    TTF_Font *font;
-    SDL_Rect posicion;
-    string  mensaje;
-    SDL_Color textColor;
-    Uint32 boxcolor;
+	
+	string  mensaje;
+	SDL_Color textColor;
+	Uint32 boxcolor;
+	
+	messagebox = SDL_CreateRGBSurface(SDL_SWSURFACE, 400,80,24 ,
+									  screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,
+								   screen->format->Amask  );
+	
+	font=TTF_OpenFont("resources/visitor1.ttf",18);    
+    
+    
     textColor.b=255;
     textColor.g=255;
     textColor.r=255;
-    SDL_Surface *messagebox = SDL_CreateRGBSurface(SDL_SWSURFACE, 400,80,24 ,
-                              screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,
-                              screen->format->Amask  );
+    
 
-    font=TTF_OpenFont("resources/visitor1.ttf",18);
+
+    
 
     if( tipo==1 )
     {
@@ -1207,22 +1264,27 @@ void kimbus::drawMessage(int tipo)
         texto = TTF_RenderText_Solid( font, mensaje.c_str(), textColor );
         boxcolor= 0x854D23;
     }
-    posicion.x= 0;
-    posicion.y= 0;
-    posicion.w=400;
-    posicion.h=80;
+    position.x= 0;
+    position.y= 0;
+    position.w=400;
+    position.h=80;
 
-    SDL_FillRect(messagebox,&posicion, boxcolor);
-    posicion.x= WIDTH/4;
-    posicion.y= HEIGHT/3;
+    SDL_FillRect(messagebox,&position, boxcolor);
+    position.x= WIDTH/4;
+    position.y= HEIGHT/3;
 
-    addToScreen(messagebox,posicion.x,posicion.y,NULL);
+    addToScreen(messagebox,position.x,position.y,NULL);
 
-    posicion.x=WIDTH/4+70;
-    posicion.y=HEIGHT/3+30;
-    addToScreen(texto,posicion.x,posicion.y,NULL);
+    position.x=WIDTH/4+70;
+    position.y=HEIGHT/3+30;
+    addToScreen(texto,position.x,position.y,NULL);
+	SDL_FreeSurface(texto);
+	SDL_FreeSurface(messagebox);
+	TTF_CloseFont(font);
 
-
+	//SDL_FreeSurface(messagebox);
+	//SDL_FreeSurface(texto);
+	
 
 
 }
@@ -1245,9 +1307,6 @@ void kimbus::initialiceHeat()
 
         }
        
-
-
-
 		//cout << endl;
     }
    

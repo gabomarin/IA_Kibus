@@ -202,6 +202,7 @@ int hero:: handle_events(vector <string> &map) // si regresa true se calcula la 
     bool ciclo=false;
     int cont=0;
     int movement;
+	
     //SDL_Rect
     if(line_stack.size()>0) {
 
@@ -1467,8 +1468,19 @@ void hero::setBanderin(vector <string> &map, int posicion)
     {
         map.at(lastPosition.y+y).at(lastPosition.x+x)='3';
     }
+    banderin=true;
 
 
+}
+void hero::setFlag(bool flag)
+{
+	banderin=flag;
+}
+
+
+bool hero::getFlag()
+{
+	return banderin;
 }
 
 

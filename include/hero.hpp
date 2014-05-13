@@ -95,6 +95,8 @@ public:
 	void set_returning(bool returning_);
 	bool is_returning();
 	int get_movement_stack_size();
+	void setFlag(bool flag);
+	bool getFlag();
 	
 protected:
 	
@@ -114,6 +116,7 @@ protected:
 	vector <SDL_Rect> line_stack;
 	int obstaculo;
 	bool returning;
+	bool banderin;
 	//int frame_index[MAX_STATE][MAX_FRAMES];
 
 };

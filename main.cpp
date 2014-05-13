@@ -8,8 +8,10 @@
 int main(int argc, char **argv){
 	
 	kimbus game;
-	game.initializeMap();
-	game.mainloop();
+    do
+    {
+        game.initializeMap();
+    }while(game.mainloop()==true);
 	
 	return EXIT_SUCCESS;
 }
