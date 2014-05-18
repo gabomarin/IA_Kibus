@@ -90,6 +90,8 @@ public:
     void setHouse(int posx, int posy);
 	void setLastPosition(int x, int y);
     void setBanderin(vector< string >& map, int posicion);
+	void setFlag(bool flag);
+	bool getFlag();
 	
 private:
 	
@@ -108,6 +110,7 @@ private:
 	vector <int> movement_stack;
 	vector <SDL_Rect> line_stack;
 	int obstaculo;
+	bool banderin;
 	//int frame_index[MAX_STATE][MAX_FRAMES];
 
 	

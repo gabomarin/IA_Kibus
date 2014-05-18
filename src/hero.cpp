@@ -194,6 +194,17 @@ void hero::move()
     }
 }
 
+void hero::setFlag(bool flag)
+{
+	banderin=flag;
+}
+
+
+bool hero::getFlag()
+{
+	return banderin;
+}
+
 int hero:: handle_events(vector <string> &map) // si regresa true se calcula la linea de nuevo
 {
 
@@ -885,7 +896,7 @@ int hero:: handle_events(vector <string> &map) // si regresa true se calcula la 
 								obstaculo=0;
 								
 								
-								printList();
+								//printList();
 								
 							}
 							else
@@ -984,6 +995,7 @@ int hero:: handle_events(vector <string> &map) // si regresa true se calcula la 
 
         }
     }
+    cout << "resultado " <<resultado <<endl;
     return resultado;
 }
 
@@ -1403,6 +1415,7 @@ void hero::setBanderin(vector <string> &map, int posicion)
 	{
 		map.at(lastPosition.y+y).at(lastPosition.x+x)='3';
 	}
+	banderin=true;
 	
 	
 }

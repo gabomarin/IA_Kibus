@@ -89,6 +89,18 @@ private:
     SDL_Surface* water2;
     SDL_Surface* water1;
 	
+	SDL_Surface* redAlpha;
+	SDL_Surface *messagebox;
+	SDL_Surface *texto;
+	TTF_Font *font;
+	SDL_Rect position;
+	
+	SDL_Rect selectedTile;
+	SDL_Surface * selected;
+	
+	
+	int mouse_x,mouse_y;
+	SDL_Rect mouseTile;
 
 	
 	
@@ -117,6 +129,8 @@ public:
 	void savemap();
 	void bresenham(int x1,int y1,int x2,int y2);
     void clearmap();
+	void addToMap(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
+	
 
 	
 	

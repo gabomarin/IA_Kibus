@@ -33,6 +33,8 @@ kimbus::kimbus()
     putenv ( var );
     //Set up screen
     screen = SDL_SetVideoMode ( WIDTH, HEIGHT, BPP, SDL_HWSURFACE );
+    mapsurface=SDL_CreateRGBSurface(SDL_SWSURFACE, WIDTH,HEIGHT,BPP ,
+                                    0,0,0,0  );
     if ( !screen ) {
         cout << "Error al iniciar SDL. " << SDL_GetError() << endl;
         exit ( 1 );
@@ -100,6 +102,17 @@ void kimbus::addToScreen ( SDL_Surface* surface, int x, int y, SDL_Rect *clip )
     SDL_BlitSurface ( surface,clip,screen,&dest );
 
 
+}
+
+
+void kimbus::addToMap(SDL_Surface* surface, int x, int y, SDL_Rect *clip)
+{
+    
+    dest.x=x;
+    dest.y=y;
+    SDL_BlitSurface(surface,clip,mapsurface,&dest);
+    
+    
 }
 
 
@@ -185,43 +198,43 @@ void kimbus::drawmap()
 
             switch ( c ) {
             case 'C':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
                 break;
 
 
             case 'A':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
-                addToScreen ( tree,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( tree,i*TILE_SIZE,j*TILE_SIZE,NULL );
                 break;
 
             case 'T':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
-                addToScreen ( tallgrass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( tallgrass,i*TILE_SIZE,j*TILE_SIZE,NULL );
                 break;
 
             case 'H':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
-                addToScreen ( home,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( home,i*TILE_SIZE,j*TILE_SIZE,NULL );
                 break;
 
             case 'R':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
-                addToScreen ( rock,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( rock,i*TILE_SIZE,j*TILE_SIZE,NULL );
                 break;
 
             case '1':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
-                addToScreen ( water1,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( water1,i*TILE_SIZE,j*TILE_SIZE,NULL );
                 break;
 
             case '2':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
-                addToScreen ( water2,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( water2,i*TILE_SIZE,j*TILE_SIZE,NULL );
                 break;
 
             case '3':
-                addToScreen ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
-                addToScreen ( water3,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( grass,i*TILE_SIZE,j*TILE_SIZE,NULL );
+                addToMap ( water3,i*TILE_SIZE,j*TILE_SIZE,NULL );
 
                 break;
             }
@@ -306,6 +319,8 @@ bool kimbus::mainloop()
     int fast=false;
     bool pop_movement=false;
     int resultado;
+    
+    drawmap();
 
     while ( !quit ) {
         fps.start();
@@ -389,6 +404,12 @@ bool kimbus::mainloop()
 
             }
             resultado=gold.handle_events ( map );
+            
+            if(gold.getFlag()==true )
+            {
+                drawmap();
+                gold.setFlag(false);
+            }
 // 			if(resultado==-2)
 // 			{
 // 				SDL_Delay(1000);
@@ -431,7 +452,8 @@ bool kimbus::mainloop()
 
         }
 
-        drawmap();
+        //drawmap();
+        addToScreen(mapsurface,0,0,NULL);
         addToScreen ( textbox,0,HEIGHT- ( TILE_SIZE*3 ),NULL );
         addToScreen ( homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame() );
         addToScreen ( backbtn.getImage() , backbtn.getX(),backbtn.getY(),backbtn.getFrame() );
@@ -478,9 +500,7 @@ bool kimbus::mainloop()
 void kimbus::initializeMap()
 {
     int done=false;
-    SDL_Rect selectedTile;
-    SDL_Rect mouseTile;
-    SDL_Surface * selected;
+
     
     selected=IMG_Load ( "resources/sprites/outline.png" );
     int click=false,tile=false,left_click=false;
@@ -664,7 +684,7 @@ void kimbus::initializeMap()
             break;
         }
 
-
+        addToScreen(mapsurface,0,0,NULL);
         addToScreen ( textbox,0,HEIGHT- ( TILE_SIZE*3 ),NULL );
         addToScreen ( homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame() );
         addToScreen ( treebtn.getImage(),treebtn.getX(),treebtn.getY(),treebtn.getFrame() );
