@@ -4,11 +4,11 @@
 
 #include <SDL/SDL.h>
 
-#define FRAMES_PER_SECOND 12
+#define FRAMES_PER_SECOND 25
 
 class Timer
 {
-    private:
+private:
     //The clock time when the timer started
     int startTicks;
 
@@ -19,7 +19,7 @@ class Timer
     bool paused;
     bool started;
 
-    public:
+public:
     //Initializes variables
     Timer();
 

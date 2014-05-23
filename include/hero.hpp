@@ -55,69 +55,83 @@ class hero
 {
 public:
     hero(int map_width, int map_height);
-	hero();
+    hero();
     ~hero();
-	void create(int map_width, int map_height, int posx, int posy);
-	
+    void create(int map_width, int map_height, int posx, int posy);
+
     SDL_Surface * getSurface();
-	int getDirection();
-	void setDirection(int dir);
-	int getX();
-	void setX(int x);
-	int getY();
-	void setY(int y);
-	SDL_Rect *getFrame();
-	
-	void  setAnimationFrame(int nFrame);
+    int getDirection();
+    void setDirection(int dir);
+    int getX();
+    void setX(int x);
+    int getY();
+    void setY(int y);
+    SDL_Rect *getFrame();
+
+    void  setAnimationFrame(int nFrame);
     bool getAnimation();
     void setAnimation(bool animate);
-	int getAnimationFrame();
-	
-	void move();
-	int handle_events(vector< string >& map);
-    void show();
-	bool checkColision(vector <string > map);
-	bool animate_stack();
+    int getAnimationFrame();
 
-	void pushLine(int x, int y);
-	SDL_Rect popLine();
-	int getLineX();//regresan el primer elemento de la lista
-	int getLineY();
+    void move();
+    int handle_events(vector< string >& map);
+    void show();
+    bool checkColision(vector <string > map);
+    bool animate_stack();
+	int movementBack();
+	void movementPopBack();
+	void movementPushBack(int movimiento);
+    void pushLine(int x, int y);
+    SDL_Rect popLine();
+    int getLineX();//regresan el primer elemento de la lista
+    int getLineY();
     void printList();
-	void dropList();
+	void printMovementStack();
+    void dropList();
     int calculateDirection();
-	void bresenham(int x1, int y1, int x2, int y2);
-	void insertFirst(int x, int y);
-	void printMap(vector <string> map);
+    void bresenham(int x1, int y1, int x2, int y2);
+    void insertFirst(int x, int y);
+    void printMap(vector <string> map);
     void setHouse(int posx, int posy);
-	void setLastPosition(int x, int y);
+    void setLastPosition(int x, int y);
     void setBanderin(vector< string >& map, int posicion);
-	void set_returning(bool returning_);
-	bool is_returning();
-	int get_movement_stack_size();
-	void setFlag(bool flag);
-	bool getFlag();
-	
+    void set_returning(bool returning_);
+    bool is_returning();
+    int get_movement_stack_size();
+    void setFlag(bool flag);
+    bool getFlag();
+    void setMovement(int dir);
+    void setStack(vector <int> path);
+    void clearStack();
+    void eraseBack();
+    vector< SDL_Rect > getStack();
+    vector <int> coordToDir(vector <SDL_Rect> coord);
+    void setCoordStack(vector <SDL_Rect> movimientos);
+    void printBack();
+	vector <int> getMovementStack();
+	int getLastP();
+	void setLastP(int ps);
+
 protected:
-	
-	string file;
-	SDL_Surface *sprite;
-	SDL_Rect frame[MAX_FRAMES][NUM_DIRECTIONS],lastPosition;
-	int lastp;
-	int direction,animation_frame,current_frame;
-	int x_,y_;
-	int destx,desty;
-	bool animation;
-	
-	SDL_Event gEvent;
-	int status;
-	int map_height,map_width;
-	vector <int> movement_stack, temp_stack;
-	vector <SDL_Rect> line_stack;
-	int obstaculo;
-	bool returning;
-	bool banderin;
-	//int frame_index[MAX_STATE][MAX_FRAMES];
+
+    string file;
+    SDL_Surface *sprite;
+    SDL_Rect frame[MAX_FRAMES][NUM_DIRECTIONS],lastPosition;
+    int lastp;
+    int direction,animation_frame,current_frame;
+    int x_,y_;
+    int destx,desty;
+    bool animation;
+
+    SDL_Event gEvent;
+    int status;
+    int map_height,map_width;
+    vector <int> movement_stack, temp_stack;
+    vector <SDL_Rect> line_stack;
+    int obstaculo;
+    bool returning;
+    bool banderin;
+    //int frame_index[MAX_STATE][MAX_FRAMES];
 
 };
 

@@ -57,9 +57,11 @@
 #define ROCK 5
 #define HERO 6
 
-#define MAX_HEAT 230
+#define MAX_HEAT 254
 
 
+#define PROPAGACION 0
+#define RETRO_PROPAGACION 1
 
 
 
@@ -68,86 +70,98 @@ using namespace std;
 
 typedef struct  coor
 {
-	int x,y;
-}posicion;
+    int x,y;
+} posicion;
+
+
+typedef struct heat_movement
+{
+    int x, y;
+    int calor;
+	int dir;
+} heat_table;
 class kimbus
 {
 private:
-	
-	SDL_Surface *screen;
-	SDL_Surface *tree,*grass,*mapsurface,*tallgrass,*textbox, *home;
 
-	SDL_Rect dest;
-	//SDL_Event event;
-	int done;
-	Uint8 *keys;
-	vector <string> map;
-	int heatMap[MAP_HEIGHT][MAP_WIDTH];
-	ifstream map_file;
-	posicion pos;
+    SDL_Surface *screen;
+    SDL_Surface *tree,*grass,*mapsurface,*tallgrass,*textbox, *home;
+
+    SDL_Rect dest;
+    //SDL_Event event;
+    int done;
+    Uint8 *keys;
+    vector <string> map;
+    vector <int> path;
+    int heatMap[MAP_HEIGHT][MAP_WIDTH];
+    ifstream map_file;
+    posicion pos;
     SDL_Surface* rock;
-	int startx,starty;
+    int startx,starty;
+    int nPropagacion;
     SDL_Rect posH;
-	hero gold;
-	//bee beedrill[5];
-	bee beedrill;
+    hero gold;
+    bee beedrill[5];
+    //bee beedrill;
     SDL_Surface* water3;
     SDL_Surface* water2;
     SDL_Surface* water1;
-	SDL_Surface* redAlpha;
-	SDL_Surface *messagebox;
-	SDL_Surface *texto;
-	TTF_Font *font;
-	SDL_Rect position;
-	
+    SDL_Surface* redAlpha;
+    SDL_Surface *messagebox;
+    SDL_Surface *texto;
+    TTF_Font *font;
+    SDL_Rect position;
+    heat_table tabla[5],maximo;
 
-	
-	SDL_Rect selectedTile;
-	SDL_Surface * selected;
-	
+
+
+    SDL_Rect selectedTile;
+    SDL_Surface * selected;
+
     int mouse_x,mouse_y;
     SDL_Rect mouseTile;
-	
 
-	
-	
-	
-	
-	
+
+
+
+
+
+
 public:
-	
-	kimbus();
-	~kimbus();	
-	//bool init_graphics();
-	
-	SDL_Surface * getScreen();
-	void addToScreen(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
-	void updateScreen();
-	bool mainloop();
-	bool loadmap(int opc);
-	void drawmap();
-	
-	bool loadTiles();
-	void setHome();
-	void initializeMap();
-	void randomMap(int value);
-	void setTile(int click, int tile, SDL_Rect* tilePos);
-	posicion getHome();
-	void savemap();
-	void bresenham(int x1,int y1,int x2,int y2);
+
+    kimbus();
+    ~kimbus();
+    //bool init_graphics();
+
+    SDL_Surface * getScreen();
+    void addToScreen(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
+    void updateScreen();
+    bool mainloop();
+    bool loadmap(int opc);
+    void drawmap();
+
+    bool loadTiles();
+    void setHome();
+    void initializeMap();
+    void randomMap(int value);
+    void setTile(int click, int tile, SDL_Rect* tilePos);
+    posicion getHome();
+    void savemap();
+    void bresenham(int x1,int y1,int x2,int y2);
     void clearmap();
-	void drawMessage(int tipo);
-	void initialiceHeat();
-	void addToMap(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    void drawMessage(int tipo);
+    void initialiceHeat();
+    void addToMap(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
+    void bee_dance(int &nLoop);
+
+
+
+
+
+
+
+
+
 };
 
 

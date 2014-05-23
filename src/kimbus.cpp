@@ -33,24 +33,24 @@ kimbus::kimbus()
     putenv(var);
     //Set up screen
     screen = SDL_SetVideoMode(WIDTH, HEIGHT, BPP, SDL_HWSURFACE );
-	mapsurface=SDL_CreateRGBSurface(SDL_SWSURFACE, WIDTH,HEIGHT,BPP ,
-						 0,0,0,0  );
-	redAlpha = SDL_CreateRGBSurface(SDL_SWSURFACE, TILE_SIZE,TILE_SIZE,24 ,
-												 0,0,0,0  );
-	if(!redAlpha)
-	{
-		cout << "no se pudo crear RedAlpha"<<endl;	
-	}
-	
-	
+    mapsurface=SDL_CreateRGBSurface(SDL_SWSURFACE, WIDTH,HEIGHT,BPP ,
+                                    0,0,0,0  );
+    redAlpha = SDL_CreateRGBSurface(SDL_SWSURFACE, TILE_SIZE,TILE_SIZE,24 ,
+                                    0,0,0,0  );
+    if(!redAlpha)
+    {
+        cout << "no se pudo crear RedAlpha"<<endl;
+    }
+
+
     if(!screen)
     {
         cout << "Error al iniciar SDL. " << SDL_GetError()<< endl;
         exit(1);
 
     }
-    
-    
+
+
 
     else if(loadmap(4)==false)
     {
@@ -81,10 +81,10 @@ kimbus::kimbus()
     gold.setDirection(HERO_DOWN);
     bool valido=false;
 
-// 	for(int i=0;i<5;i++)
-// 		beedrill[i].create(MAP_WIDTH,MAP_HEIGHT);
-	beedrill.create(MAP_WIDTH,MAP_HEIGHT);
-	
+    for(int i=0; i<5; i++)
+        beedrill[i].create(MAP_WIDTH,MAP_HEIGHT);
+//	beedrill.create(MAP_WIDTH,MAP_HEIGHT);
+
 
     do
     {
@@ -123,12 +123,12 @@ void kimbus::addToScreen(SDL_Surface* surface, int x, int y, SDL_Rect *clip)
 
 void kimbus::addToMap(SDL_Surface* surface, int x, int y, SDL_Rect *clip)
 {
-	
-	dest.x=x;
-	dest.y=y;
-	SDL_BlitSurface(surface,clip,mapsurface,&dest);
-	
-	
+
+    dest.x=x;
+    dest.y=y;
+    SDL_BlitSurface(surface,clip,mapsurface,&dest);
+
+
 }
 
 
@@ -143,75 +143,76 @@ SDL_Surface* kimbus::getScreen()
 
 bool kimbus::loadmap(int opc)
 {
-	int i=0;
-	string temp;
-	pos.x=0;
-	pos.y=0;
-	map.clear();
-	switch(opc)
-	{
-		case 1:
-			map_file.open("resources/intestino.txt");
-			break;
-			
-		case 2:
-			map_file.open("resources/muros.txt");
-			
-			break;
-			
-		case 3:
-			
-			map_file.open("resources/encierro.txt");
-			break;
-			
-		case 4: default:
-			map_file.open("resources/map.txt");
-			break;
-	}
-	//map_file.open("resources/map.txt");
-	if (map_file) // same as: if (map.good())
-	{
-		while (getline( map_file, temp )) // same as: while (getline( map, line ).good())
-		{
-			map.push_back(temp);
-		}
-		map_file.close();
-		for(i=0;i<map.size();i++)
-		{
-			cout << map.at(i) <<endl;
-			
-		}
-		for(i=0;i<MAP_WIDTH;++i)
-		{
-			
-			for(int j=0;j<MAP_HEIGHT;++j)
-			{
-				
-				if(map.at(j).at(i)=='H')
-				{
-					pos.x=i;
-					pos.y=j;
-				}
-			}
-		}
-		return true;
-		
-	}
-	else
-	{
-		cout << "Fallo al abrir archivo de mapa" <<endl;
-		return false;	
-	}
-	
-	return true;
-	
+    int i=0;
+    string temp;
+    pos.x=0;
+    pos.y=0;
+    map.clear();
+    switch(opc)
+    {
+    case 1:
+        map_file.open("resources/intestino.txt");
+        break;
+
+    case 2:
+        map_file.open("resources/muros.txt");
+
+        break;
+
+    case 3:
+
+        map_file.open("resources/encierro.txt");
+        break;
+
+    case 4:
+    default:
+        map_file.open("resources/map.txt");
+        break;
+    }
+    //map_file.open("resources/map.txt");
+    if (map_file) // same as: if (map.good())
+    {
+        while (getline( map_file, temp )) // same as: while (getline( map, line ).good())
+        {
+            map.push_back(temp);
+        }
+        map_file.close();
+        for(i=0; i<map.size(); i++)
+        {
+            cout << map.at(i) <<endl;
+
+        }
+        for(i=0; i<MAP_WIDTH; ++i)
+        {
+
+            for(int j=0; j<MAP_HEIGHT; ++j)
+            {
+
+                if(map.at(j).at(i)=='H')
+                {
+                    pos.x=i;
+                    pos.y=j;
+                }
+            }
+        }
+        return true;
+
+    }
+    else
+    {
+        cout << "Fallo al abrir archivo de mapa" <<endl;
+        return false;
+    }
+
+    return true;
+
 }
 
 void kimbus::drawmap()
 {
     int i,j;
 
-   
+
     SDL_Rect alphaPos;
     alphaPos.h= TILE_SIZE;
     alphaPos.w=TILE_SIZE;
@@ -244,59 +245,59 @@ void kimbus::drawmap()
 
 
             case 'A':
-				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-				addToMap(tree,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(tree,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'T':
-				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-				addToMap(tallgrass,j*TILE_SIZE,i*TILE_SIZE,NULL);
-				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(tallgrass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'H':
-				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
-				addToMap(home,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(home,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'R':
-				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-				addToMap(rock,j*TILE_SIZE,i*TILE_SIZE,NULL);
-				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(rock,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case '1':
-				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-				addToMap(water1,j*TILE_SIZE,i*TILE_SIZE,NULL);
-				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(water1,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case '2':
-				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-				addToMap(water2,j*TILE_SIZE,i*TILE_SIZE,NULL);
-				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(water2,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
                 break;
 
             case '3':
-				addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-				addToMap(water3,j*TILE_SIZE,i*TILE_SIZE,NULL);
-				addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(water3,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
 
@@ -378,24 +379,27 @@ bool kimbus::mainloop()
 
     gold.setX((posH.x*TILE_SIZE));
     gold.setY((posH.y*TILE_SIZE));
-	gold.setHouse( pos.x, pos.y);
-	gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
-	gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
+    gold.setHouse( pos.x, pos.y);
+    //gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
+    gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
 
-// 	for(int i=0;i<5;i++)
-// 	{
-//     	beedrill[i].setX((posH.x)*TILE_SIZE);
-//     	beedrill[i].setY( (posH.y)*TILE_SIZE);
-// 		beedrill[i].setHouse(pos.x, pos.y);
-//     	beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
-// 		beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
-// 	}
-    
-	beedrill.setX((posH.x)*TILE_SIZE);
-		beedrill.setY( (posH.y)*TILE_SIZE);
-		beedrill.setHouse(pos.x, pos.y);
-		beedrill.bresenham(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT,pos.x,pos.y);
-		beedrill.setLastPosition(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT);
+    for(int i=0; i<5; i++)
+    {
+        beedrill[i].setX(gold.getX());
+        beedrill[i].setY( gold.getY());
+        beedrill[i].clearStack();
+        //beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
+        beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
+		
+	}
+    //beedrill[0].printBack();
+	//SDL_Delay(2000);
+
+// 	beedrill.setX((posH.x)*TILE_SIZE);
+// 		beedrill.setY( (posH.y)*TILE_SIZE);
+// 		beedrill.setHouse(pos.x, pos.y);
+// 		beedrill.bresenham(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT,pos.x,pos.y);
+// 		beedrill.setLastPosition(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT);
     //cout << pos.x<<endl;
     //cout << pos.y<<endl;
 
@@ -403,22 +407,23 @@ bool kimbus::mainloop()
     bool quit;
     Timer fps;
     string caption;
-    int nLoop=0;
+    int nLoop=1;
     int fast=false;
     bool pop_movement=false;
     int kibus_resultado;
-	int bee_resultado;
-	
-	slider velocidad(120,20,20,600,1,40);
-	drawmap();
+    int bee_resultado;
 
+    slider velocidad(120,20,20,600,1,40);
+    drawmap();
+    int i;
+    nPropagacion=0;
     while(!quit)
     {
         fps.start();
 
         if(pop_movement==true)
         {
-            pop_movement=gold.animate_stack();
+            //pop_movement=gold.animate_stack();
         }
         else
         {
@@ -454,11 +459,11 @@ bool kimbus::mainloop()
 
 
 
-                    case SDLK_k:
-                        if(pop_movement==false)
-                            pop_movement=gold.animate_stack();
-
-                        break;
+//                     case SDLK_k:
+//                         if(pop_movement==false)
+//                             pop_movement=gold.animate_stack();
+//
+//                         break;
 
                     }
 
@@ -472,59 +477,107 @@ bool kimbus::mainloop()
 
             }
             //kibus_resultado=gold.handle_events(map);
-            
-			//for(int i=0;i<5;i++)
+
+            //for(int i=0;i<5;i++)
             //	beedrill[i].handle_events(map);
-			//frames per animation * 5 rounds
-			bee_resultado=beedrill.handle_events(map);
-// 			if(nLoop<40 && beedrill.is_returning()==false)
-// 			{
-// 				cout << "nloop " << nLoop<<endl;
-// 				beedrill.handle_events(map);
-// 			}
-// 			else
-// 			{
-// 				
-// 				beedrill.set_returning(true);
-// 				if(beedrill.get_movement_stack_size()>0)
-// 				{
-// 					beedrill.animate_stack();
-// 					nLoop=0;
-// 					
-// 				}
-// 				else
-// 				{
-// 					beedrill.set_returning(false);
-// 				}
-// 				
-// 				cout << beedrill.get_movement_stack_size()<<endl;
-// 				
-// 				
-// 				
-// 			}
-            /*if(resultado==1) //se calcula de nuevo la linea
-            {
+            //frames per animation * 5 rounds
+            //bee_resultado=beedrill.handle_events(map);
+            int path_size=path.size();
+            //cout << "path size: "<<path_size<<endl;
+            //bool returning= gold.is_returning();
+            //cout << "Regresando= " << returning<<endl;
+            //beedrill.move(map, heatMap);
 
-            	while(resultado!=2)
-            	{
-            		resultado=gold.handle_events(map);
-            		addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
-            		updateScreen();
-            	}
-            	bresenham(posH.x,posH.y,pos.x,pos.y);
+			
+// 			while(true)
+// 			{
+// 				beedrill[0].clearStack();
+// 				beedrill[0].movementPushBack(1);
+// 				beedrill[0].movementPushBack(2);
+// 				beedrill[0].printMovementStack();
+// 				SDL_Delay(1000);
+// 				beedrill[0].movementPopBack();
+// 				beedrill[0].printMovementStack();
+// 				SDL_Delay(1000);
+// 			}
+            if(nPropagacion==5 )
+            {
+// 				cout << "Entre"<< endl;
+                
+                 int calor_maximo=0;
+                for(i=0; i<5; i++)
+                {
+                    if(tabla[i].calor>calor_maximo)
+                    {
+                        calor_maximo=i;
+                    }
+                    else if(tabla[i].calor==calor_maximo)
+                    {
+                        int random=rand()%2;
+                        if(random==1)
+                            calor_maximo=i;
+                    }
+                }
+
+				//gold.setStack(beedrill[calor_maximo].getMovementStack());
+				gold.setX(beedrill[calor_maximo].getX());
+				gold.setY(beedrill[calor_maximo].getY());
+				heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]-=15;
+				
+				if(heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]<0)
+				{
+					heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]=0;
+					
+				}
+				drawmap();
+				nPropagacion=0;
+				for(int i=0; i<5; i++)
+				{
+					beedrill[i].clearStack();
+					// 						beedrill[i].setX(gold.getX());
+					// 						beedrill[i].setY( gold.getY());
+					// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
+					beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
+				}
+// 				for(int i=0;i<5;i++)
+// 				{
+// 					cout <<"direction: "<<path.at(i)<<endl;
+// 				}
+
+
             }
-            if(resultado==2)
+            else if(gold.is_returning())
             {
-            	while(resultado!=2)
-            	{
-            		resultado=gold.handle_events(map);
-            		addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
-            		updateScreen();
-            	}
-            	bresenham(posH.x,posH.y,pos.x,pos.y);
+                //cout << "entre"<<endl;
 
+//                 if(gold.animate_stack())
+//                 {
+//                     //no hacer nada
+//                     nPropagacion--;
+//                 }
+//                 else
+                {
+                    nPropagacion=0;
+					
+                    gold.set_returning(false);
+					for(int i=0; i<5; i++)
+					{
+ 						beedrill[i].clearStack();
+// 						beedrill[i].setX(gold.getX());
+// 						beedrill[i].setY( gold.getY());
+// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
+ 						beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
+ 					}
+                }
+            }
+            if(nPropagacion<5)
+            {
 
-            }*/
+                bee_dance(nLoop);
+                //path.push_back(rand()%8);
+                nLoop++;
+            }
+
 
             if(homebtn.handleEvents(event)==CLICK)
             {
@@ -536,43 +589,48 @@ bool kimbus::mainloop()
                 quit=true;
                 return 1;
             }
-            
-            int left_click=velocidad.handleEvents(event);
-			switch(left_click)
-			{
-				case 0:
-					break;
-					
-				case CLICK:  case 2:
-					//cout << "click en slider"<< endl;
-					velocidad.calculateValue();
-					break;
 
-			}
+            int left_click=velocidad.handleEvents(event);
+            switch(left_click)
+            {
+            case 0:
+                break;
+
+            case CLICK:
+            case 2:
+                //cout << "click en slider"<< endl;
+                velocidad.calculateValue();
+                break;
+
+            }
 
         }
-		if(gold.getFlag()==true )
-		{
-			drawmap();
-			gold.setFlag(false);
-		}
-		if(beedrill.getFlag()==true )
-		{
-			drawmap();
-			beedrill.setFlag(false);
-		}
+        if(gold.getFlag()==true )
+        {
+            drawmap();
+            gold.setFlag(false);
+        }
+        for(i=0; i<5; i++)
+        {
+            if(beedrill[i].getFlag()==true )
+            {
+                drawmap();
+                beedrill[i].setFlag(false);
+            }
+        }
         //drawmap();
         addToScreen(mapsurface,0,0,NULL);
         addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
         addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
         addToScreen(backbtn.getImage() , backbtn.getX(),backbtn.getY(),backbtn.getFrame());
-		
-		
+
+
         addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
-		//for(int i=0;i<5;i++)
-        //	addToScreen(beedrill[i].getSurface(), beedrill[i].getX(),beedrill[i].getY(),beedrill[i].getFrame());
-		
-		addToScreen(beedrill.getSurface(), beedrill.getX(),beedrill.getY(),beedrill.getFrame());
+        for(int i=0; i<5; i++)
+        {
+            addToScreen(beedrill[i].getSurface(), beedrill[i].getX(),beedrill[i].getY(),beedrill[i].getFrame());
+        }
+        //addToScreen(beedrill.getSurface(), beedrill.getX(),beedrill.getY(),beedrill.getFrame());
 
         //cout <<gold.getX()<<endl;
         //cout <<pos.x*TILE_SIZE<<endl;
@@ -580,15 +638,15 @@ bool kimbus::mainloop()
         if(gold.getX()== pos.x*TILE_SIZE && gold.getY()==pos.y*TILE_SIZE )
         {
             drawMessage(1);
-			
+
         }
 
         switch(kibus_resultado)
         {
             //SDL_Delay(1000);
-			case -2:
-            	drawMessage(2);
-			break;
+       		 case -2:
+            drawMessage(2);
+            break;
             //quit=true;
         }
         addToScreen(velocidad.updateSlider(), velocidad.getX(),velocidad.getY(),NULL);
@@ -598,26 +656,26 @@ bool kimbus::mainloop()
 
 // 		if(fast==false)
 // 		{
-// 			if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
-// 			{
-// 
-// 
-// 				//SDL_WM_SetCaption(caption.c_str(),NULL);
-// 				SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
-// 			}
+        if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
+        {
+
+
+            //SDL_WM_SetCaption(caption.c_str(),NULL);
+            SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
+        }
 // 		}
-// 
+//
 // 		else
 // 		{
 // 		int vel_multiplicacion= velocidad.getValue()/10+1;
 // 			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
 // 			{
-// 
+//
 // 				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
 // 			}
 // 		//}
-        nLoop++;
-        //cout <<nLoop <<endl;
+
+        // cout <<nLoop <<endl;
 
 
         //SDL_Delay(100);
@@ -635,9 +693,9 @@ bool kimbus::mainloop()
 
 void kimbus::initializeMap()
 {
-    
+
     selected=IMG_Load("resources/sprites/outline.png");
-    
+
     mouseTile.x=0;
     mouseTile.y=0;
     if(!selected)
@@ -648,8 +706,8 @@ void kimbus::initializeMap()
     }
 
     int click=false,tile=false,left_click=false;
-	int done=false;
-	
+    int done=false;
+
 
     button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20);
     button treebtn("resources/sprites/treebtn.png",homebtn.getX()+homebtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
@@ -660,25 +718,25 @@ void kimbus::initializeMap()
     button herobtn("resources/sprites/herobtn.png",rockbtn.getX()+rockbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
 
     //slider de porcentaje, ancho,valor inicial, posicion X, posicion Y
-    slider porcentaje(251,20,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10,20,80);
+    slider porcentaje(251,30,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10,30,80);
     button randombtn("resources/sprites/randombtn.png", porcentaje.getX()+porcentaje.getRealWidth()+10,HEIGHT-(TILE_SIZE*3)+20);
     button clearbtn("resources/sprites/clearbtn.png",randombtn.getX()+randombtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
     button startbtn("resources/sprites/comenzar.png",randombtn.getX()+randombtn.getWidth(),HEIGHT-(TILE_SIZE*3)+20);
 
-	button map_1("resources/sprites/1.png",tGrassbtn.getX()+tGrassbtn.getWidth()/2+20,tGrassbtn.getY()+35);
-	button map_2("resources/sprites/2.png",map_1.getX()+map_1.getWidth()/2+10,tGrassbtn.getY()+35);
-	button map_3("resources/sprites/3.png",map_2.getX()+map_2.getWidth()/2+10,tGrassbtn.getY()+35);
-	button map_default("resources/sprites/4.png",map_3.getX()+map_3.getWidth()/2+10,tGrassbtn.getY()+35);
+    button map_1("resources/sprites/1.png",tGrassbtn.getX()+tGrassbtn.getWidth()/2+20,tGrassbtn.getY()+35);
+    button map_2("resources/sprites/2.png",map_1.getX()+map_1.getWidth()/2+10,tGrassbtn.getY()+35);
+    button map_3("resources/sprites/3.png",map_2.getX()+map_2.getWidth()/2+10,tGrassbtn.getY()+35);
+    button map_default("resources/sprites/4.png",map_3.getX()+map_3.getWidth()/2+10,tGrassbtn.getY()+35);
 
 
-    bresenham(posH.x,posH.y,pos.x,pos.y);
-	initialiceHeat();
-	
-	
+    //bresenham(posH.x,posH.y,pos.x,pos.y);
+    initialiceHeat();
+
+
     while(!done)
     {
-        
-		drawmap();
+
+        drawmap();
 
         while( SDL_PollEvent( &event ) )
         {
@@ -721,7 +779,7 @@ void kimbus::initializeMap()
                             mouseTile.y=mouse_y/TILE_SIZE;
                             mouseTile.y*=TILE_SIZE;
                             setTile(click,tile,&mouseTile);
-							initialiceHeat();
+                            initialiceHeat();
                         }
                     }
                 }
@@ -736,8 +794,8 @@ void kimbus::initializeMap()
             selectedTile.y=homebtn.getY();
             tile= HOME;
             click=true;
-            bresenham(posH.x,posH.y,pos.x,pos.y);
-			initialiceHeat();
+            //bresenham(posH.x,posH.y,pos.x,pos.y);
+            initialiceHeat();
 
         }
 
@@ -751,7 +809,7 @@ void kimbus::initializeMap()
         if(startbtn.handleEvents(event)==CLICK)
         {
             done=true;
-            bresenham(posH.x,posH.y,pos.x,pos.y);
+            //bresenham(posH.x,posH.y,pos.x,pos.y);
             savemap();
         }
         if(grassbtn.handleEvents(event)==CLICK)
@@ -779,13 +837,13 @@ void kimbus::initializeMap()
         if(randombtn.handleEvents(event)==CLICK)
         {
             randomMap(porcentaje.getValue());
-			initialiceHeat();
+            initialiceHeat();
             SDL_Delay(250);
         }
         if(clearbtn.handleEvents(event)==CLICK)
         {
             clearmap();
-			initialiceHeat();
+            initialiceHeat();
             SDL_Delay(250);
         }
 
@@ -797,42 +855,42 @@ void kimbus::initializeMap()
             selectedTile.y=herobtn.getY();
             tile=HERO;
             click=true;
-            bresenham(posH.x,posH.y,pos.x,pos.y);
+            //bresenham(posH.x,posH.y,pos.x,pos.y);
 
 
 
         }
-        
-        
+
+
         if(map_1.handleEvents(event)==CLICK)
-		{
-			loadmap(1);
-			initialiceHeat();
-			drawmap();
-		}
-		
-		if(map_2.handleEvents(event)==CLICK)
-		{
-			loadmap(2);
-			initialiceHeat();
-			drawmap();
-		}
-		
-		if(map_3.handleEvents(event)==CLICK)
-		{
-			loadmap(3);
-			initialiceHeat();
-			drawmap();
-		}
-		
-		if(map_default.handleEvents(event)==CLICK)
-		{
-			loadmap(4);
-			initialiceHeat();
-			drawmap();
-		}
-		
-		
+        {
+            loadmap(1);
+            initialiceHeat();
+            drawmap();
+        }
+
+        if(map_2.handleEvents(event)==CLICK)
+        {
+            loadmap(2);
+            initialiceHeat();
+            drawmap();
+        }
+
+        if(map_3.handleEvents(event)==CLICK)
+        {
+            loadmap(3);
+            initialiceHeat();
+            drawmap();
+        }
+
+        if(map_default.handleEvents(event)==CLICK)
+        {
+            loadmap(4);
+            initialiceHeat();
+            drawmap();
+        }
+
+
 
         left_click=porcentaje.handleEvents(event);
         switch(left_click)
@@ -853,7 +911,7 @@ void kimbus::initializeMap()
             break;
         }
 
-		addToScreen(mapsurface,0,0,NULL);
+        addToScreen(mapsurface,0,0,NULL);
         addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
         addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
         addToScreen(treebtn.getImage(),treebtn.getX(),treebtn.getY(),treebtn.getFrame());
@@ -866,14 +924,14 @@ void kimbus::initializeMap()
         addToScreen(clearbtn.getImage(),clearbtn.getX(),clearbtn.getY(),clearbtn.getFrame());
 
         addToScreen(gold.getSurface(),posH.x*TILE_SIZE,posH.y*TILE_SIZE,gold.getFrame());
-		
-		addToScreen(map_1.getImage(),map_1.getX(),map_1.getY(),map_1.getFrame() );
-		addToScreen(map_2.getImage(),map_2.getX(),map_2.getY(),map_2.getFrame() );
-		addToScreen(map_3.getImage(),map_3.getX(),map_3.getY(),map_3.getFrame() );
-		addToScreen(map_default.getImage(),map_default.getX(),map_default.getY(),map_default.getFrame() );
-		
-		addToScreen(porcentaje.updateSlider(),porcentaje.getX(),porcentaje.getY(),NULL);
-		//SDL_FreeSurface(porcentaje_slider);
+
+        addToScreen(map_1.getImage(),map_1.getX(),map_1.getY(),map_1.getFrame() );
+        addToScreen(map_2.getImage(),map_2.getX(),map_2.getY(),map_2.getFrame() );
+        addToScreen(map_3.getImage(),map_3.getX(),map_3.getY(),map_3.getFrame() );
+        addToScreen(map_default.getImage(),map_default.getX(),map_default.getY(),map_default.getFrame() );
+
+        addToScreen(porcentaje.updateSlider(),porcentaje.getX(),porcentaje.getY(),NULL);
+        //SDL_FreeSurface(porcentaje_slider);
         //porcentaje.setValue(porcentaje.getValue()+1);
         //porcentaje.calculateValue();
 
@@ -1013,7 +1071,7 @@ void kimbus::savemap()
 
 
         }
-        
+
 //         for(int i=0; i<MAP_HEIGHT; i++)
 // 		{
 // 			for(int j=0; j<MAP_WIDTH; j++)
@@ -1021,18 +1079,18 @@ void kimbus::savemap()
 // 				//heatMap[i][j]=alpha;
 // 				cout <<"i["<<i<<"]"<<" j["<<j<<"]"<<heatMap[i][j] << endl;
 // 				//cout <<"j " << j;
-// 				
+//
 // 			}
 // 			//alpha-=12;
-// 			
-// 			
-// 			
+//
+//
+//
 // 			//cout << endl;
 // 		}
-		//SDL_Delay(2000);
-		//cout << endl;
+        //SDL_Delay(2000);
+        //cout << endl;
         myfile.close();
-        cout <<" mapa guardado";
+        cout <<" mapa guardado"<<endl;
 
     }
 
@@ -1047,7 +1105,7 @@ void kimbus::randomMap(int value)
     total=MAP_WIDTH*MAP_HEIGHT;
     int random;
     int x1,y1;
-	//cout << total;
+    //cout << total;
     cantidad= (total*value)/100;
     cantidad-= (MAP_HEIGHT*2-MAP_WIDTH*2);
     for(i=0; i<MAP_WIDTH; ++i)
@@ -1224,25 +1282,25 @@ void kimbus:: clearmap()
 
 void kimbus::drawMessage(int tipo)
 {
-	
-	string  mensaje;
-	SDL_Color textColor;
-	Uint32 boxcolor;
-	
-	messagebox = SDL_CreateRGBSurface(SDL_SWSURFACE, 400,80,24 ,
-									  screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,
-								   screen->format->Amask  );
-	
-	font=TTF_OpenFont("resources/visitor1.ttf",18);    
-    
-    
+
+    string  mensaje;
+    SDL_Color textColor;
+    Uint32 boxcolor;
+
+    messagebox = SDL_CreateRGBSurface(SDL_SWSURFACE, 400,80,24 ,
+                                      screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,
+                                      screen->format->Amask  );
+
+    font=TTF_OpenFont("resources/visitor1.ttf",18);
+
+
     textColor.b=255;
     textColor.g=255;
     textColor.r=255;
-    
 
 
-    
+
+
 
     if( tipo==1 )
     {
@@ -1278,13 +1336,13 @@ void kimbus::drawMessage(int tipo)
     position.x=WIDTH/4+70;
     position.y=HEIGHT/3+30;
     addToScreen(texto,position.x,position.y,NULL);
-	SDL_FreeSurface(texto);
-	SDL_FreeSurface(messagebox);
-	TTF_CloseFont(font);
+    SDL_FreeSurface(texto);
+    SDL_FreeSurface(messagebox);
+    TTF_CloseFont(font);
 
-	//SDL_FreeSurface(messagebox);
-	//SDL_FreeSurface(texto);
-	
+    //SDL_FreeSurface(messagebox);
+    //SDL_FreeSurface(texto);
+
 
 
 }
@@ -1298,17 +1356,122 @@ void kimbus::initialiceHeat()
     {
         for(x=0; x<MAP_WIDTH; x++)
         {
-			alpha = MAX_HEAT - ( sqrt( pow( x - pos.x , 2 ) + pow( y - pos.y , 2 ) ) * 10 );
-			if(alpha<0)
-				alpha=0;
+            alpha = MAX_HEAT - ( sqrt( pow( x - pos.x , 2 ) + pow( y - pos.y , 2 ) ) * 10 );
+            if(alpha<0)
+                alpha=0;
             heatMap[y][x]=alpha;
-		 	//cout <<heatMap[i][j] << " ,";
+            //cout <<heatMap[i][j] << " ,";
             //cout <<"j " << j;
+        }
+        //cout << endl;
+    }
+
+
+}
+
+void kimbus::bee_dance(int &nLoop)
+{
+    //cout <<"hola";
+    int i;
+	int mejor_abeja=0;
+    switch(nLoop)
+    {
+    case 0:
+    case 1: //propagacion
+        for(i=0; i<5; i++)
+        {
+			//beedrill[i].clearStack();
+            beedrill[i].move(map,heatMap);
+            tabla[i].x=beedrill[i].getX();
+            tabla[i].y=beedrill[i].getY();
+            tabla[i].calor=heatMap[beedrill[i].getY()/TILE_SIZE][beedrill[i].getX()/TILE_SIZE];
+			tabla[i].dir=beedrill[i].getLastP();
+			//cout << "Abeja No: "<< i <<endl;
+			//beedrill[i].printMovementStack();
+            //beedrill[i].pushLine(beedrill[i].getX()/TILE_SIZE,beedrill[i].getY()/TILE_SIZE);
+        }
+        break;
+
+    case 2: //retropropagacion
+        for(i=0; i<5; i++)
+        {
+            beedrill[i].move_lastp();
+        }
+        break;
+
+    case 3: //seleccion de movimiento
+        maximo.calor=0;
+
+        for(i=0; i<5; i++)
+        {
+            //beedrill[i].printBack();
+            //SDL_Delay(2000);
+
+            if(tabla[i].calor>=maximo.calor)
+            {
+                maximo=tabla[i];
+				
+				mejor_abeja=i;
+				beedrill[i].setY(maximo.y);
+				beedrill[i].setX(maximo.x);
+				
+				
+            }
+            else if(tabla[i].calor==maximo.calor)
+            {
+                int random= rand()%2;
+                if(random==1)
+                {
+                    maximo=tabla[i];
+					mejor_abeja=i;
+//                     beedrill[i].movementPopBack();
+//                     beedrill[i].movementPushBack(maximo.dir);
+// 					beedrill[i].setY(maximo.y*TILE_SIZE);
+// 					beedrill[i].setX(maximo.x*TILE_SIZE);
+
+
+                }
+            }
+//             else if(tabla[i].calor<maximo.calor)
+//             {
+// 
+// 				beedrill[i].movementPopBack();
+// 				beedrill[i].movementPushBack(maximo.dir);
+// 				beedrill[i].setX(maximo.x*TILE_SIZE);
+// 				beedrill[i].setY(maximo.y*TILE_SIZE);
+// 
+//             }
+
+            
+            //beedrill[i].setX(maximo.x*TILE_SIZE);
+			//beedrill[i].setY(maximo.y*TILE_SIZE);
+//			beedrill[i].printMovementStack();
 
         }
-       
-		//cout << endl;
+        for(i=0;i<5;i++)
+		{
+// 			cout <<"abeja: "<<i<<endl;
+			//beedrill[i].printMovementStack();
+			//SDL_Delay(400);
+			if(i!=mejor_abeja){
+				beedrill[i]=beedrill[mejor_abeja];	
+				
+			}
+		}
+		
+        nLoop=0;
+        nPropagacion++;
+
+        //comparar calor visitado y mover abeja a la mayor posicion
+        break;
+
+    case 4:
+        //mover abeja a nueva posicion
+
+        break;
+
     }
-   
-    
+
+
 }
+

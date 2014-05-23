@@ -36,42 +36,42 @@ class slider
 {
 public:
     slider(int width, int x, int y);
-	slider(int width, int value, int x, int y, int min, int max);
+    slider(int width, int value, int x, int y, int min, int max);
     ~slider();
-	int getValue();
-	void setValue(int value);
-	SDL_Surface * updateSlider();
-	int getX();
-	int getY();
+    int getValue();
+    void setValue(int value);
+    SDL_Surface * updateSlider();
+    int getX();
+    int getY();
     int getWidth();
-	int getRealWidth();
-	int handleEvents(SDL_Event event);
+    int getRealWidth();
+    int handleEvents(SDL_Event event);
     void calculateValue();
-	SDL_Rect * getFrame();
-	
-	
-	
-	
-	
-	
-	
+    SDL_Rect * getFrame();
+
+
+
+
+
+
+
 private:
     int value;
-	SDL_Surface *bar;
-	SDL_Surface *sliderImg;
-	SDL_Surface *texto;
-	SDL_Rect sliderPos;
-	int width,x,y,realWidth;
-	TTF_Font *font;
-	SDL_Color textColor;
-	int startClick,endClick; //posicion iniciarl y final para arrastre de slider
-	bool clicked;
+    SDL_Surface *bar;
+    SDL_Surface *sliderImg;
+    SDL_Surface *texto;
+    SDL_Rect sliderPos;
+    int width,x,y,realWidth;
+    TTF_Font *font;
+    SDL_Color textColor;
+    int startClick,endClick; //posicion iniciarl y final para arrastre de slider
+    bool clicked;
     int currentFrame;
-	int min,max;
-	SDL_Rect frame[2];
-	SDL_Surface *temp;
-	
-	
+    int min,max;
+    SDL_Rect frame[2];
+    SDL_Surface *temp;
+
+
 };
 
 #endif // SLIDER_H

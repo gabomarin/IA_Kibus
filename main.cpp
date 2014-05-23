@@ -5,13 +5,13 @@
 #include "include/kimbus.h"
 //#include "include/hero.hpp"
 
-int main(int argc, char **argv){
-	
-	kimbus game;
+int main(int argc, char **argv) {
+
+    kimbus game;
     do
     {
         game.initializeMap();
-    }while(game.mainloop()==true);
-	
-	return EXIT_SUCCESS;
+    } while(game.mainloop()==true);
+
+    return EXIT_SUCCESS;
 }

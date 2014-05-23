@@ -202,7 +202,7 @@ int hero:: handle_events(vector <string> &map) // si regresa true se calcula la 
     bool ciclo=false;
     int cont=0;
     int movement;
-	
+
     //SDL_Rect
     if(line_stack.size()>0) {
 
@@ -783,8 +783,8 @@ int hero:: handle_events(vector <string> &map) // si regresa true se calcula la 
                     //cout <<"Algo paso"<<endl;
                     //popLine();
 
-                    bresenham(x_/HERO_WIDTH,y_/HERO_HEIGHT,destx,desty);
-                    movement=calculateDirection();
+                    //bresenham(x_/HERO_WIDTH,y_/HERO_HEIGHT,destx,desty);
+                    //movement=calculateDirection();
                     //movement=calculateDirection();
                     break;
                 }
@@ -1020,29 +1020,29 @@ bool hero::animate_stack()
         case HERO_RIGHT:
 
             //cout <<x_/HERO_WIDTH+1<<endl;
-            direction=HERO_LEFT;
+            direction=HERO_RIGHT;
             status=MOVEMENT;
             current_frame=0;
-            animation_frame=0;
+            animation_frame=1;
 
             break;
         case HERO_LEFT:
 
 
-            direction=HERO_RIGHT;
+            direction=HERO_LEFT;
             status=MOVEMENT;
             current_frame=0;
-            animation_frame=0;
+            animation_frame=1;
 
             break;
 
         case HERO_UP:
 
 
-            direction=HERO_DOWN;
+            direction=HERO_UP;
             status=MOVEMENT;
             current_frame=0;
-            animation_frame=0;
+            animation_frame=1;
 
 
             break;
@@ -1051,57 +1051,57 @@ bool hero::animate_stack()
 
 
             //cout <<x_/HERO_WIDTH+1<<endl;
-            direction=HERO_UP;
+            direction=HERO_DOWN;
             status=MOVEMENT;
             current_frame=0;
-            animation_frame=0;
+            animation_frame=1;
 
 
             break;
-			
-			
-			
-		case UP_RIGHT:
-			
-			//cout <<x_/HERO_WIDTH+1<<endl;
-			direction=DOWN_LEFT;
-			status=MOVEMENT;
-			current_frame=0;
-			animation_frame=0;
-			
-			break;
-		case UP_LEFT:
-			
-			
-			direction=DOWN_RIGHT;
-			status=MOVEMENT;
-			current_frame=0;
-			animation_frame=0;
-			
-			break;
-			
-		case DOWN_RIGHT:
-			
-			
-			direction=UP_LEFT;
-			status=MOVEMENT;
-			current_frame=0;
-			animation_frame=0;
-			
-			
-			break;
-			
-		case DOWN_LEFT:
-			
-			
-			//cout <<x_/HERO_WIDTH+1<<endl;
-			direction=UP_RIGHT;
-			status=MOVEMENT;
-			current_frame=0;
-			animation_frame=0;
-			
-			
-			break;
+
+
+
+        case UP_RIGHT:
+
+            //cout <<x_/HERO_WIDTH+1<<endl;
+            direction=UP_RIGHT;
+            status=MOVEMENT;
+            current_frame=0;
+            animation_frame=1;
+
+            break;
+        case UP_LEFT:
+
+
+            direction=UP_LEFT;
+            status=MOVEMENT;
+            current_frame=0;
+            animation_frame=1;
+
+            break;
+
+        case DOWN_RIGHT:
+
+
+            direction=DOWN_RIGHT;
+            status=MOVEMENT;
+            current_frame=0;
+            animation_frame=1;
+
+
+            break;
+
+        case DOWN_LEFT:
+
+
+            //cout <<x_/HERO_WIDTH+1<<endl;
+            direction=DOWN_LEFT;
+            status=MOVEMENT;
+            current_frame=0;
+            animation_frame=1;
+
+
+            break;
 
         }
 
@@ -1117,24 +1117,24 @@ bool hero::animate_stack()
             {
             case 0:
             case 4:
-                animation_frame=2;
-                break;
+                //animation_frame=2;
+                //break;
 
             case 1 :
             case 5:
-                animation_frame=1;
-                break;
+                //animation_frame=1;
+                //break;
 
             case 2:
             case 6:
-                animation_frame=0;
-                break;
+                //animation_frame=0;
+                //break;
 
             case 3:
-                animation_frame=1;
-                break;
+                //animation_frame=1;
+                //break;
             case 7:
-                animation_frame=1;
+                //animation_frame=1;
                 //movement=16;
                 status=STAND;
                 movement_stack.pop_back();
@@ -1143,49 +1143,54 @@ bool hero::animate_stack()
             switch(direction)
             {
             case HERO_DOWN:
-                y_ += HERO_HEIGHT/8 -movement;
+                y_ += HERO_HEIGHT;
                 break;
 
             case HERO_UP:
-                y_ -= HERO_HEIGHT/8 -movement;
+                y_ -= HERO_HEIGHT;
                 break;
 
             case HERO_LEFT:
-                x_ -= HERO_WIDTH/8 -movement;
+                x_ -= HERO_WIDTH;
                 break;
 
             case HERO_RIGHT:
-                x_ += HERO_WIDTH/8 -movement;
+                x_ += HERO_WIDTH;
                 break;
-				
-			case UP_RIGHT:
-				x_ += HERO_WIDTH/8 ;
-				y_ -= HERO_HEIGHT/8 ;
-				break;
-				
-			case DOWN_RIGHT:
-				x_ += HERO_WIDTH/8 ;
-				y_ += HERO_HEIGHT/8 ;
-				break;
-				
-			case UP_LEFT:
-				x_ -= HERO_WIDTH/8 ;
-				y_ -= HERO_HEIGHT/8 ;
-				break;
-				
-			case DOWN_LEFT:
-				x_ -= HERO_WIDTH/8 ;
-				y_ += HERO_HEIGHT/8 ;
-				break;
+
+            case UP_RIGHT:
+                x_ += HERO_WIDTH ;
+                y_ -= HERO_HEIGHT ;
+                break;
+
+            case DOWN_RIGHT:
+                x_ += HERO_WIDTH ;
+                y_ += HERO_HEIGHT;
+                break;
+
+            case UP_LEFT:
+                x_ -= HERO_WIDTH;
+                y_ -= HERO_HEIGHT;
+                break;
+
+            case DOWN_LEFT:
+                x_ -= HERO_WIDTH ;
+                y_ += HERO_HEIGHT;
+                break;
             }
-            current_frame++;
+            //current_frame++;
         }
 
     }
     return true;
 
 }
-
+void hero::printBack()
+{
+    cout << "No. Elementos: "<<line_stack.size()<<endl;
+    cout << "x: "<<line_stack.back().x<<endl;
+    cout << "y: "<<line_stack.back().y<<endl;
+}
 
 void hero::pushLine(int x, int y)
 {
@@ -1201,6 +1206,12 @@ void hero:: insertFirst(int x, int y)
     temp.x=x;
     temp.y=y;
     line_stack.insert(line_stack.begin(),temp);
+}
+
+void hero:: clearStack()
+{
+    line_stack.clear();
+	movement_stack.clear();
 }
 
 
@@ -1229,7 +1240,10 @@ SDL_Rect hero::popLine()
 {
     line_stack.erase(line_stack.begin());
 }
-
+void hero::eraseBack()
+{
+    line_stack.pop_back();
+}
 void hero::show()
 {
 
@@ -1244,9 +1258,21 @@ void hero::printList()
         cout << "X = "<<line_stack.at(i).x<< "      Y = "<< line_stack.at(i).y<<endl;
 
     }
-    cout <<endl<<endl;
+    //cout <<endl<<endl;
 
 }
+
+void hero::printMovementStack()
+{
+	for(int i=0; i<movement_stack.size(); i++)
+	{
+		cout <<movement_stack.at(i)<<endl;
+		
+	}
+	cout <<endl;
+	//cout << endl<< endl;
+}
+
 
 
 void hero::dropList()
@@ -1413,6 +1439,16 @@ void hero::setLastPosition(int x, int y)
     lastPosition.y=y;
 }
 
+int hero::getLastP()
+{
+	return lastp;
+}
+
+void hero::setLastP(int ps)
+{
+	lastp=ps;
+}
+
 
 void hero::setBanderin(vector <string> &map, int posicion)
 {
@@ -1474,31 +1510,172 @@ void hero::setBanderin(vector <string> &map, int posicion)
 }
 void hero::setFlag(bool flag)
 {
-	banderin=flag;
+    banderin=flag;
 }
 
 
 bool hero::getFlag()
 {
-	return banderin;
+    return banderin;
 }
 
 
 
 bool hero::is_returning()
 {
-	return returning;
+    return returning;
 }
 
 void hero::set_returning(bool returning_)
 {
-	returning=returning_;
+    returning=returning_;
 }
 
 
 int hero::get_movement_stack_size()
 {
-	return movement_stack.size();
+    return movement_stack.size();
+}
+
+
+
+
+
+
+void hero::setMovement(int dir)
+{
+    direction=dir;
+}
+
+
+
+
+void hero::setStack(vector< int > path)
+{
+    movement_stack=path;
+}
+
+
+vector <SDL_Rect> hero::getStack()
+{
+    return line_stack;
+}
+
+
+vector <int> hero:: coordToDir(vector <SDL_Rect> coord)
+{
+    vector <int> direccion, aux;
+    int movement;
+    SDL_Rect hero;
+    SDL_Rect temp;
+    
+    int tempx, tempy;
+
+
+
+
+    //cout << "tempx "<<tempx<< endl;
+    //cout <<"temp.x "<<temp.x<<endl;
+    //cout << "tempy"<<tempy<<endl;
+
+
+    //verifica en que direccion debe de ir
+    do
+    {
+		temp= coord.front();
+        hero.x=x_/HERO_WIDTH;
+        hero.y=y_/HERO_HEIGHT;
+        //verifica que tipo de movimiento tendra que hacer
+        tempx=hero.x-temp.x;
+        tempy=hero.y-temp.y;
+
+        if(tempx==-1&&tempy==1)
+        {
+            //tomaria diagonal derecha hacia arriba
+            movement=UP_RIGHT;
+        }
+        else if(tempx==-1 &&tempy==0)
+        {
+            movement=HERO_RIGHT;
+
+
+        }
+        else if(tempx==-1 && tempy==-1)
+        {
+            movement=DOWN_RIGHT;
+        }
+
+        else if(tempx==0 && tempy==-1)
+        {
+            movement=HERO_DOWN;
+        }
+
+        else if(tempx==1 && tempy==-1)
+        {
+            movement=DOWN_LEFT;
+        }
+
+        else if(tempx==1 && tempy==0)
+        {
+            movement=HERO_LEFT;
+        }
+
+        else if(tempx==1 && tempy==1)
+        {
+            movement=UP_LEFT;
+        }
+
+        else if(tempx==0 && tempy==1)
+        {
+            movement=HERO_UP;
+        }
+        else
+        {
+			cout << "que jodidos!!!!"<<endl;
+            movement=8;
+        }
+        //coord.pop_back();
+        coord.erase (coord.begin());
+		direccion.push_back(movement);
+    } while(!coord.empty());
+	
+	do
+	{
+		aux.push_back( direccion.back());
+		direccion.pop_back();
+	}while(direccion.size()>0);
+   
+	
+    return aux;
+}
+
+
+void hero::setCoordStack(vector< SDL_Rect > movimientos)
+{
+    line_stack=movimientos;
+    //movement_stack=coordToDir();
+}
+
+
+vector< int > hero::getMovementStack()
+{
+	return movement_stack;
+}
+
+int hero::movementBack()
+{
+	return movement_stack.back();
+}
+
+
+void hero::movementPopBack()
+{
+	movement_stack.pop_back();
+}
+
+void hero::movementPushBack(int movimiento)
+{
+	movement_stack.push_back(movimiento);
 }
 
 

@@ -10,17 +10,17 @@ using namespace std;
 
 int krandom(int maximo)
 {
-	srand(time(NULL));
-	int resultado=0;
-	for(int i=0;i<maximo;i++)
-	{
-		int total=rand()%2;
-		
-		resultado+= total;
-	}
-	cout <<"resultado: " << resultado;
-	return resultado;
-	
+    srand(time(NULL));
+    int resultado=0;
+    for(int i=0; i<maximo; i++)
+    {
+        int total=rand()%2;
+
+        resultado+= total;
+    }
+    cout <<"resultado: " << resultado;
+    return resultado;
+
 }
 
 
