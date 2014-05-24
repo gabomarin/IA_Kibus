@@ -57,7 +57,7 @@
 #define ROCK 5
 #define HERO 6
 
-#define MAX_HEAT 254
+#define MAX_HEAT 255
 
 
 #define PROPAGACION 0
@@ -152,7 +152,7 @@ public:
     void drawMessage(int tipo);
     void initialiceHeat();
     void addToMap(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
-    void bee_dance(int &nLoop);
+    int bee_dance(int& nLoop);
 
 
 

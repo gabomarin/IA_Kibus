@@ -405,6 +405,7 @@ bool kimbus::mainloop()
 
     button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
     bool quit;
+	bool termino=false;
     Timer fps;
     string caption;
     int nLoop=1;
@@ -500,83 +501,107 @@ bool kimbus::mainloop()
 // 				beedrill[0].printMovementStack();
 // 				SDL_Delay(1000);
 // 			}
-            if(nPropagacion==5 )
-            {
-// 				cout << "Entre"<< endl;
-                
-                 int calor_maximo=0;
-                for(i=0; i<5; i++)
-                {
-                    if(tabla[i].calor>calor_maximo)
-                    {
-                        calor_maximo=i;
-                    }
-                    else if(tabla[i].calor==calor_maximo)
-                    {
-                        int random=rand()%2;
-                        if(random==1)
-                            calor_maximo=i;
-                    }
-                }
-
-				//gold.setStack(beedrill[calor_maximo].getMovementStack());
-				gold.setX(beedrill[calor_maximo].getX());
-				gold.setY(beedrill[calor_maximo].getY());
-				heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]-=15;
-				
-				if(heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]<0)
+			if(termino==false)
+			{
+				if(nPropagacion==5 )
 				{
-					heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]=0;
+					// 				cout << "Entre"<< endl;
 					
-				}
-				drawmap();
-				nPropagacion=0;
-				for(int i=0; i<5; i++)
-				{
-					beedrill[i].clearStack();
-					// 						beedrill[i].setX(gold.getX());
-					// 						beedrill[i].setY( gold.getY());
-					// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
-					beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
-				}
-// 				for(int i=0;i<5;i++)
-// 				{
-// 					cout <<"direction: "<<path.at(i)<<endl;
-// 				}
-
-
-            }
-            else if(gold.is_returning())
-            {
-                //cout << "entre"<<endl;
-
-//                 if(gold.animate_stack())
-//                 {
-//                     //no hacer nada
-//                     nPropagacion--;
-//                 }
-//                 else
-                {
-                    nPropagacion=0;
+					int calor_maximo=0;
+					for(i=0; i<5; i++)
+					{
+						if(tabla[i].calor>calor_maximo)
+						{
+							calor_maximo=i;
+						}
+						else if(tabla[i].calor==calor_maximo)
+						{
+							int random=rand()%2;
+							if(random==1)
+								calor_maximo=i;
+						}
+					}
 					
-                    gold.set_returning(false);
+					//gold.setStack(beedrill[calor_maximo].getMovementStack());
+					gold.setX(beedrill[calor_maximo].getX());
+					gold.setY(beedrill[calor_maximo].getY());
+					
+					if(heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]==MAX_HEAT)
+					{
+						//juego terminado	
+						termino=true;
+					}
+					else
+					{
+						heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]-=15;	
+					}
+					
+					if(heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]<0)
+					{
+						heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]=0;
+						
+					}
+					drawmap();
+					nPropagacion=0;
+					
+					
+					
+					
 					for(int i=0; i<5; i++)
 					{
- 						beedrill[i].clearStack();
-// 						beedrill[i].setX(gold.getX());
-// 						beedrill[i].setY( gold.getY());
-// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
- 						beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
- 					}
-                }
-            }
-            if(nPropagacion<5)
-            {
-
-                bee_dance(nLoop);
-                //path.push_back(rand()%8);
-                nLoop++;
-            }
+						beedrill[i].clearStack();
+						// 						beedrill[i].setX(gold.getX());
+						// 						beedrill[i].setY( gold.getY());
+						// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
+						beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
+					}
+					// 				for(int i=0;i<5;i++)
+					// 				{
+					// 					cout <<"direction: "<<path.at(i)<<endl;
+					// 				}
+					
+					
+				}
+				else if(gold.is_returning())
+				{
+					//cout << "entre"<<endl;
+					
+					//                 if(gold.animate_stack())
+					//                 {
+					//                     //no hacer nada
+					//                     nPropagacion--;
+					//                 }
+					//                 else
+					{
+						nPropagacion=0;
+						
+						gold.set_returning(false);
+						for(int i=0; i<5; i++)
+						{
+							beedrill[i].clearStack();
+							// 						beedrill[i].setX(gold.getX());
+							// 						beedrill[i].setY( gold.getY());
+							// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
+							beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
+						}
+					}
+				}
+				if(nPropagacion<5)
+				{
+					int abeja=bee_dance(nLoop);
+					if(abeja!=-1)
+					{
+					
+						termino=true;
+						gold.setX(beedrill[abeja].getX());
+						gold.setY(beedrill[abeja].getY());
+						SDL_Delay(200);
+					}
+					//path.push_back(rand()%8);
+					nLoop++;
+				}
+			}
+            
 
 
             if(homebtn.handleEvents(event)==CLICK)
@@ -1369,7 +1394,7 @@ void kimbus::initialiceHeat()
 
 }
 
-void kimbus::bee_dance(int &nLoop)
+int kimbus::bee_dance(int &nLoop)
 {
     //cout <<"hola";
     int i;
@@ -1385,6 +1410,10 @@ void kimbus::bee_dance(int &nLoop)
             tabla[i].x=beedrill[i].getX();
             tabla[i].y=beedrill[i].getY();
             tabla[i].calor=heatMap[beedrill[i].getY()/TILE_SIZE][beedrill[i].getX()/TILE_SIZE];
+			if(tabla[i].calor==MAX_HEAT)
+			{
+				return i;
+			}
 			tabla[i].dir=beedrill[i].getLastP();
 			//cout << "Abeja No: "<< i <<endl;
 			//beedrill[i].printMovementStack();
@@ -1471,7 +1500,7 @@ void kimbus::bee_dance(int &nLoop)
         break;
 
     }
-
+	return -1;
 
 }
 

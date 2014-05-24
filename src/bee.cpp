@@ -1200,7 +1200,12 @@ void bee::reduceHeat(int heatMap[17][22], int posicion)
         y=-1;
         break;
     }
-    heatMap[lastPosition.y+y][lastPosition.x+x]-=20;
+    if(heatMap[lastPosition.y+y][lastPosition.x+x]==255)
+	{
+		
+	}
+    else
+		heatMap[lastPosition.y+y][lastPosition.x+x]-=20;
     if(heatMap[lastPosition.y+y][lastPosition.x+x]<=0)
         heatMap[lastPosition.y+y][lastPosition.x+x]=0;
     banderin=true;
