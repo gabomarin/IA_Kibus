@@ -35,12 +35,7 @@ kimbus::kimbus()
     screen = SDL_SetVideoMode(WIDTH, HEIGHT, BPP, SDL_HWSURFACE );
     mapsurface=SDL_CreateRGBSurface(SDL_SWSURFACE, WIDTH,HEIGHT,BPP ,
                                     0,0,0,0  );
-    redAlpha = SDL_CreateRGBSurface(SDL_SWSURFACE, TILE_SIZE,TILE_SIZE,24 ,
-                                    0,0,0,0  );
-    if(!redAlpha)
-    {
-        cout << "no se pudo crear RedAlpha"<<endl;
-    }
+    
 
 
     if(!screen)
@@ -81,8 +76,7 @@ kimbus::kimbus()
     gold.setDirection(HERO_DOWN);
     bool valido=false;
 
-    for(int i=0; i<5; i++)
-        beedrill[i].create(MAP_WIDTH,MAP_HEIGHT);
+
 //	beedrill.create(MAP_WIDTH,MAP_HEIGHT);
 
 
@@ -214,12 +208,12 @@ void kimbus::drawmap()
 
 
     SDL_Rect alphaPos;
-    alphaPos.h= TILE_SIZE;
-    alphaPos.w=TILE_SIZE;
-    alphaPos.x=0;
-    alphaPos.y=0;
-    SDL_FillRect( redAlpha, &alphaPos,0xDD1110);
-    int alpha;
+//     alphaPos.h= TILE_SIZE;
+//     alphaPos.w=TILE_SIZE;
+//     alphaPos.x=0;
+//     alphaPos.y=0;
+    //SDL_FillRect( redAlpha, &alphaPos,0xDD1110);
+    //int alpha;
     for(i=0; i<MAP_HEIGHT; i++)
     {
 
@@ -229,9 +223,9 @@ void kimbus::drawmap()
             char c=map.at(i).at(j);
 // 			cout<< c <<endl;
             //draw map tiles
-            alpha= heatMap[i][j];
+            //alpha= heatMap[i][j];
             //cout << heatMap[i][j]<< " ";
-            SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
+            //SDL_SetAlpha(redAlpha,SDL_SRCALPHA,alpha);
             //SDL_SetAlpha(tallgrass,SDL_SRCALPHA,70);
             switch(c)
             {
@@ -239,7 +233,7 @@ void kimbus::drawmap()
             case 'C':
                 addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                //addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
                 break;
 
@@ -250,7 +244,7 @@ void kimbus::drawmap()
                 addToMap(tree,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
 
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                //addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'T':
@@ -258,13 +252,13 @@ void kimbus::drawmap()
 
 
                 addToMap(tallgrass,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                //addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
             case 'H':
                 addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                //addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 addToMap(home,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
@@ -273,35 +267,10 @@ void kimbus::drawmap()
 
 
                 addToMap(rock,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                //addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
                 break;
 
-            case '1':
-                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
-
-                addToMap(water1,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                break;
-
-            case '2':
-                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
-
-                addToMap(water2,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
-
-
-                break;
-
-            case '3':
-                addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
-
-                addToMap(water3,j*TILE_SIZE,i*TILE_SIZE,NULL);
-                addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
-
-
-
-                break;
             }
             //cout <<" " << alpha ;
 
@@ -327,15 +296,7 @@ bool kimbus::loadTiles()
     textbox=IMG_Load("resources/sprites/textbox.png");
     home=IMG_Load("resources/sprites/home.png");
     rock=IMG_Load("resources/sprites/rock.png");
-    water1=IMG_Load("resources/sprites/water1.png");
-    water2=IMG_Load("resources/sprites/water2.png");
-    water3=IMG_Load("resources/sprites/water3.png");
-    if(!grass || !tree || !tallgrass || !textbox | !rock || !water1
-            || !water2 || !water3	)
-    {
-        cout << "No se pudieron cargar algunos tiles. " <<SDL_GetError()<<endl;
-        return false;
-    }
+   
 
     return true;
 }
@@ -383,25 +344,8 @@ bool kimbus::mainloop()
     //gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
     gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
 
-    for(int i=0; i<5; i++)
-    {
-        beedrill[i].setX(gold.getX());
-        beedrill[i].setY( gold.getY());
-        beedrill[i].clearStack();
-        //beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
-        beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
-		
-	}
-    //beedrill[0].printBack();
-	//SDL_Delay(2000);
 
-// 	beedrill.setX((posH.x)*TILE_SIZE);
-// 		beedrill.setY( (posH.y)*TILE_SIZE);
-// 		beedrill.setHouse(pos.x, pos.y);
-// 		beedrill.bresenham(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT,pos.x,pos.y);
-// 		beedrill.setLastPosition(beedrill.getX()/HERO_WIDTH,beedrill.getY()/HERO_HEIGHT);
-    //cout << pos.x<<endl;
-    //cout << pos.y<<endl;
+	bool complete=false;
 
     button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
     bool quit;
@@ -416,7 +360,7 @@ bool kimbus::mainloop()
     slider velocidad(120,20,20,600,1,40);
     drawmap();
     int i;
-    nPropagacion=0;
+    
     while(!quit)
     {
         fps.start();
@@ -458,13 +402,6 @@ bool kimbus::mainloop()
                         break;
 
 
-
-//                     case SDLK_k:
-//                         if(pop_movement==false)
-//                             pop_movement=gold.animate_stack();
-//
-//                         break;
-
                     }
 
                     break;
@@ -476,107 +413,12 @@ bool kimbus::mainloop()
                 }
 
             }
-            //kibus_resultado=gold.handle_events(map);
+			if(complete==false)
+            	kibus_resultado=gold.handle_events(map);
 
-            //for(int i=0;i<5;i++)
-            //	beedrill[i].handle_events(map);
-            //frames per animation * 5 rounds
-            //bee_resultado=beedrill.handle_events(map);
+
             int path_size=path.size();
-            //cout << "path size: "<<path_size<<endl;
-            //bool returning= gold.is_returning();
-            //cout << "Regresando= " << returning<<endl;
-            //beedrill.move(map, heatMap);
 
-			
-// 			while(true)
-// 			{
-// 				beedrill[0].clearStack();
-// 				beedrill[0].movementPushBack(1);
-// 				beedrill[0].movementPushBack(2);
-// 				beedrill[0].printMovementStack();
-// 				SDL_Delay(1000);
-// 				beedrill[0].movementPopBack();
-// 				beedrill[0].printMovementStack();
-// 				SDL_Delay(1000);
-// 			}
-            if(nPropagacion==5 )
-            {
-// 				cout << "Entre"<< endl;
-                
-                 int calor_maximo=0;
-                for(i=0; i<5; i++)
-                {
-                    if(tabla[i].calor>calor_maximo)
-                    {
-                        calor_maximo=i;
-                    }
-                    else if(tabla[i].calor==calor_maximo)
-                    {
-                        int random=rand()%2;
-                        if(random==1)
-                            calor_maximo=i;
-                    }
-                }
-
-				//gold.setStack(beedrill[calor_maximo].getMovementStack());
-				gold.setX(beedrill[calor_maximo].getX());
-				gold.setY(beedrill[calor_maximo].getY());
-				heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]-=15;
-				
-				if(heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]<0)
-				{
-					heatMap[gold.getY()/HERO_HEIGHT][gold.getX()/HERO_WIDTH]=0;
-					
-				}
-				drawmap();
-				nPropagacion=0;
-				for(int i=0; i<5; i++)
-				{
-					beedrill[i].clearStack();
-					// 						beedrill[i].setX(gold.getX());
-					// 						beedrill[i].setY( gold.getY());
-					// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
-					beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
-				}
-// 				for(int i=0;i<5;i++)
-// 				{
-// 					cout <<"direction: "<<path.at(i)<<endl;
-// 				}
-
-
-            }
-            else if(gold.is_returning())
-            {
-                //cout << "entre"<<endl;
-
-//                 if(gold.animate_stack())
-//                 {
-//                     //no hacer nada
-//                     nPropagacion--;
-//                 }
-//                 else
-                {
-                    nPropagacion=0;
-					
-                    gold.set_returning(false);
-					for(int i=0; i<5; i++)
-					{
- 						beedrill[i].clearStack();
-// 						beedrill[i].setX(gold.getX());
-// 						beedrill[i].setY( gold.getY());
-// 						//beedrill[i].bresenham(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT,pos.x,pos.y);
- 						beedrill[i].setLastPosition(beedrill[i].getX()/HERO_WIDTH,beedrill[i].getY()/HERO_HEIGHT);
- 					}
-                }
-            }
-            if(nPropagacion<5)
-            {
-
-                bee_dance(nLoop);
-                //path.push_back(rand()%8);
-                nLoop++;
-            }
 
 
             if(homebtn.handleEvents(event)==CLICK)
@@ -610,14 +452,7 @@ bool kimbus::mainloop()
             drawmap();
             gold.setFlag(false);
         }
-        for(i=0; i<5; i++)
-        {
-            if(beedrill[i].getFlag()==true )
-            {
-                drawmap();
-                beedrill[i].setFlag(false);
-            }
-        }
+
         //drawmap();
         addToScreen(mapsurface,0,0,NULL);
         addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
@@ -626,18 +461,12 @@ bool kimbus::mainloop()
 
 
         addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
-        for(int i=0; i<5; i++)
-        {
-            addToScreen(beedrill[i].getSurface(), beedrill[i].getX(),beedrill[i].getY(),beedrill[i].getFrame());
-        }
-        //addToScreen(beedrill.getSurface(), beedrill.getX(),beedrill.getY(),beedrill.getFrame());
 
-        //cout <<gold.getX()<<endl;
-        //cout <<pos.x*TILE_SIZE<<endl;
 
         if(gold.getX()== pos.x*TILE_SIZE && gold.getY()==pos.y*TILE_SIZE )
         {
             drawMessage(1);
+			complete=true;
 
         }
 
@@ -730,7 +559,7 @@ void kimbus::initializeMap()
 
 
     //bresenham(posH.x,posH.y,pos.x,pos.y);
-    initialiceHeat();
+    //initialiceHeat();
 
 
     while(!done)
@@ -779,7 +608,7 @@ void kimbus::initializeMap()
                             mouseTile.y=mouse_y/TILE_SIZE;
                             mouseTile.y*=TILE_SIZE;
                             setTile(click,tile,&mouseTile);
-                            initialiceHeat();
+//                            initialiceHeat();
                         }
                     }
                 }
@@ -795,7 +624,7 @@ void kimbus::initializeMap()
             tile= HOME;
             click=true;
             //bresenham(posH.x,posH.y,pos.x,pos.y);
-            initialiceHeat();
+//            initialiceHeat();
 
         }
 
@@ -837,13 +666,13 @@ void kimbus::initializeMap()
         if(randombtn.handleEvents(event)==CLICK)
         {
             randomMap(porcentaje.getValue());
-            initialiceHeat();
+//            initialiceHeat();
             SDL_Delay(250);
         }
         if(clearbtn.handleEvents(event)==CLICK)
         {
             clearmap();
-            initialiceHeat();
+//            initialiceHeat();
             SDL_Delay(250);
         }
 
@@ -865,28 +694,28 @@ void kimbus::initializeMap()
         if(map_1.handleEvents(event)==CLICK)
         {
             loadmap(1);
-            initialiceHeat();
+//            initialiceHeat();
             drawmap();
         }
 
         if(map_2.handleEvents(event)==CLICK)
         {
             loadmap(2);
-            initialiceHeat();
+  //          initialiceHeat();
             drawmap();
         }
 
         if(map_3.handleEvents(event)==CLICK)
         {
             loadmap(3);
-            initialiceHeat();
+    //        initialiceHeat();
             drawmap();
         }
 
         if(map_default.handleEvents(event)==CLICK)
         {
             loadmap(4);
-            initialiceHeat();
+            //initialiceHeat();
             drawmap();
         }
 
@@ -1048,55 +877,7 @@ void kimbus::savemap()
     else cout << "Unable to open file";
 
 
-
-    if (heat.is_open())
-    {   /*
-        myfile << "This is a line.\n";
-        myfile << "This is anothers line.\n";
-        */
-
-
-
-
-        for(int i=0; i<MAP_HEIGHT; i++)
-        {
-            for(int j=0; j<MAP_WIDTH; j++)
-            {
-
-                heat <<heatMap[i][j] << " ";
-                //cout <<"j " << j;
-
-            }
-            heat<<endl;
-
-
-        }
-
-//         for(int i=0; i<MAP_HEIGHT; i++)
-// 		{
-// 			for(int j=0; j<MAP_WIDTH; j++)
-// 			{
-// 				//heatMap[i][j]=alpha;
-// 				cout <<"i["<<i<<"]"<<" j["<<j<<"]"<<heatMap[i][j] << endl;
-// 				//cout <<"j " << j;
-//
-// 			}
-// 			//alpha-=12;
-//
-//
-//
-// 			//cout << endl;
-// 		}
-        //SDL_Delay(2000);
-        //cout << endl;
-        myfile.close();
-        cout <<" mapa guardado"<<endl;
-
-    }
-
 }
-
-
 
 
 void kimbus::randomMap(int value)
@@ -1347,131 +1128,4 @@ void kimbus::drawMessage(int tipo)
 
 }
 
-
-void kimbus::initialiceHeat()
-{
-    int x,y;
-    int alpha;
-    for(y=0; y<MAP_HEIGHT; y++)
-    {
-        for(x=0; x<MAP_WIDTH; x++)
-        {
-            alpha = MAX_HEAT - ( sqrt( pow( x - pos.x , 2 ) + pow( y - pos.y , 2 ) ) * 10 );
-            if(alpha<0)
-                alpha=0;
-            heatMap[y][x]=alpha;
-            //cout <<heatMap[i][j] << " ,";
-            //cout <<"j " << j;
-        }
-        //cout << endl;
-    }
-
-
-}
-
-void kimbus::bee_dance(int &nLoop)
-{
-    //cout <<"hola";
-    int i;
-	int mejor_abeja=0;
-    switch(nLoop)
-    {
-    case 0:
-    case 1: //propagacion
-        for(i=0; i<5; i++)
-        {
-			//beedrill[i].clearStack();
-            beedrill[i].move(map,heatMap);
-            tabla[i].x=beedrill[i].getX();
-            tabla[i].y=beedrill[i].getY();
-            tabla[i].calor=heatMap[beedrill[i].getY()/TILE_SIZE][beedrill[i].getX()/TILE_SIZE];
-			tabla[i].dir=beedrill[i].getLastP();
-			//cout << "Abeja No: "<< i <<endl;
-			//beedrill[i].printMovementStack();
-            //beedrill[i].pushLine(beedrill[i].getX()/TILE_SIZE,beedrill[i].getY()/TILE_SIZE);
-        }
-        break;
-
-    case 2: //retropropagacion
-        for(i=0; i<5; i++)
-        {
-            beedrill[i].move_lastp();
-        }
-        break;
-
-    case 3: //seleccion de movimiento
-        maximo.calor=0;
-
-        for(i=0; i<5; i++)
-        {
-            //beedrill[i].printBack();
-            //SDL_Delay(2000);
-
-            if(tabla[i].calor>=maximo.calor)
-            {
-                maximo=tabla[i];
-				
-				mejor_abeja=i;
-				beedrill[i].setY(maximo.y);
-				beedrill[i].setX(maximo.x);
-				
-				
-            }
-            else if(tabla[i].calor==maximo.calor)
-            {
-                int random= rand()%2;
-                if(random==1)
-                {
-                    maximo=tabla[i];
-					mejor_abeja=i;
-//                     beedrill[i].movementPopBack();
-//                     beedrill[i].movementPushBack(maximo.dir);
-// 					beedrill[i].setY(maximo.y*TILE_SIZE);
-// 					beedrill[i].setX(maximo.x*TILE_SIZE);
-
-
-                }
-            }
-//             else if(tabla[i].calor<maximo.calor)
-//             {
-// 
-// 				beedrill[i].movementPopBack();
-// 				beedrill[i].movementPushBack(maximo.dir);
-// 				beedrill[i].setX(maximo.x*TILE_SIZE);
-// 				beedrill[i].setY(maximo.y*TILE_SIZE);
-// 
-//             }
-
-            
-            //beedrill[i].setX(maximo.x*TILE_SIZE);
-			//beedrill[i].setY(maximo.y*TILE_SIZE);
-//			beedrill[i].printMovementStack();
-
-        }
-        for(i=0;i<5;i++)
-		{
-// 			cout <<"abeja: "<<i<<endl;
-			//beedrill[i].printMovementStack();
-			//SDL_Delay(400);
-			if(i!=mejor_abeja){
-				beedrill[i]=beedrill[mejor_abeja];	
-				
-			}
-		}
-		
-        nLoop=0;
-        nPropagacion++;
-
-        //comparar calor visitado y mover abeja a la mayor posicion
-        break;
-
-    case 4:
-        //mover abeja a nueva posicion
-
-        break;
-
-    }
-
-
-}
 

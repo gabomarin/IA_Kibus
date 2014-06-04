@@ -8,9 +8,10 @@
 
 using namespace std;
 
+
+
 int krandom(int maximo)
 {
-    srand(time(NULL));
     int resultado=0;
     for(int i=0; i<maximo; i++)
     {
@@ -18,7 +19,7 @@ int krandom(int maximo)
 
         resultado+= total;
     }
-    cout <<"resultado: " << resultado;
+    //cout <<"resultado: " << resultado;
     return resultado;
 
 }

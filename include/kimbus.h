@@ -30,7 +30,6 @@
 #include <ctime>
 
 #include "hero.hpp"
-#include "bee.hpp"
 #include "timer.hpp"
 #include "button.hpp"
 #include "slider.hpp"
@@ -93,20 +92,14 @@ private:
     Uint8 *keys;
     vector <string> map;
     vector <int> path;
-    int heatMap[MAP_HEIGHT][MAP_WIDTH];
     ifstream map_file;
     posicion pos;
     SDL_Surface* rock;
     int startx,starty;
-    int nPropagacion;
     SDL_Rect posH;
     hero gold;
-    bee beedrill[5];
     //bee beedrill;
-    SDL_Surface* water3;
-    SDL_Surface* water2;
-    SDL_Surface* water1;
-    SDL_Surface* redAlpha;
+
     SDL_Surface *messagebox;
     SDL_Surface *texto;
     TTF_Font *font;

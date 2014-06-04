@@ -4,7 +4,7 @@
 
 #include <SDL/SDL.h>
 
-#define FRAMES_PER_SECOND 25
+#define FRAMES_PER_SECOND 60
 
 class Timer
 {
