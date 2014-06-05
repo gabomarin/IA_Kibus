@@ -108,9 +108,11 @@ include/kimbus.h
 ../include/bee.hpp
 /home/gabriel/projects/sdl_engine/include/bee.hpp
 
+
 /home/gabriel/projects/sdl_engine/src/button.cpp
 ../include/button.hpp
 /home/gabriel/projects/sdl_engine/include/button.hpp
+
 
 /home/gabriel/projects/sdl_engine/src/hero.cpp
 ../include/hero.hpp
@@ -126,9 +128,11 @@ cstdlib
 cstring
 -
 
+
 /home/gabriel/projects/sdl_engine/src/slider.cpp
 ../include/slider.hpp
 /home/gabriel/projects/sdl_engine/include/slider.hpp
+
 
 /home/gabriel/projects/sdl_engine/src/timer.cpp
 ../include/timer.hpp
