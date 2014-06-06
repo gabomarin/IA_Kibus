@@ -26,6 +26,7 @@
 #include <boost/concept_check.hpp>
 
 #include "functions.hpp"
+#include "mapa.h"
 
 #define MAX_FRAMES 3	/*Numero maximo de frames que tendra la animacion de
 							algun estado del personaje*/
@@ -74,7 +75,7 @@ public:
     int getAnimationFrame();
 
     void move();
-    int handle_events(vector< string >& map);
+	int handle_events(vector< string >& map,Mapa conexion[17][22]);
     void show();
     bool checkColision(vector <string > map);
     bool animate_stack();
@@ -111,6 +112,8 @@ public:
 	vector <int> getMovementStack();
 	int getLastP();
 	void setLastP(int ps);
+	
+	SDL_Rect obtiene_celda_libre(vector< string >& map, Mapa conexion[17][22]);
 
 protected:
 
@@ -119,7 +122,7 @@ protected:
     SDL_Rect frame[MAX_FRAMES][NUM_DIRECTIONS],lastPosition;
     int lastp;
     int direction,animation_frame,current_frame;
-    int x_,y_;
+    int x_,y_, anteriorx,anteriory;
     int destx,desty;
     bool animation;
 
@@ -128,6 +131,7 @@ protected:
     int map_height,map_width;
     vector <int> movement_stack, temp_stack;
     vector <SDL_Rect> line_stack;
+
     int obstaculo;
     bool returning;
     bool banderin;

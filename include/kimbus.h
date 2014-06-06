@@ -34,6 +34,7 @@
 #include "button.hpp"
 #include "slider.hpp"
 #include "functions.hpp"
+#include "mapa.h"
 
 
 #define TILE_SIZE 32 	//tamaño de cada cuadro de la cuadricula
@@ -73,12 +74,7 @@ typedef struct  coor
 } posicion;
 
 
-typedef struct heat_movement
-{
-    int x, y;
-    int calor;
-	int dir;
-} heat_table;
+
 class kimbus
 {
 private:
@@ -98,19 +94,15 @@ private:
     int startx,starty;
     SDL_Rect posH;
     hero gold;
+	Mapa conexion[MAP_HEIGHT][MAP_WIDTH];
     //bee beedrill;
 
     SDL_Surface *messagebox;
     SDL_Surface *texto;
     TTF_Font *font;
     SDL_Rect position;
-    heat_table tabla[5],maximo;
-
-
-
     SDL_Rect selectedTile;
     SDL_Surface * selected;
-
     int mouse_x,mouse_y;
     SDL_Rect mouseTile;
 
@@ -132,7 +124,6 @@ public:
     bool mainloop();
     bool loadmap(int opc);
     void drawmap();
-
     bool loadTiles();
     void setHome();
     void initializeMap();

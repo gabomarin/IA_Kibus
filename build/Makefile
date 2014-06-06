@@ -231,6 +231,21 @@ src/kimbus.s:
 .PHONY : src/kimbus.s
 
 # target to build an object file
+src/mapa.o:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/mapa.o
+.PHONY : src/mapa.o
+
+# target to preprocess a source file
+src/mapa.i:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/mapa.i
+.PHONY : src/mapa.i
+
+# target to generate assembly for a file
+src/mapa.s:
+	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/mapa.s
+.PHONY : src/mapa.s
+
+# target to build an object file
 src/slider.o:
 	$(MAKE) -f CMakeFiles/sdl_engine.dir/build.make CMakeFiles/sdl_engine.dir/src/slider.o
 .PHONY : src/slider.o
@@ -288,6 +303,9 @@ help:
 	@echo "... src/kimbus.o"
 	@echo "... src/kimbus.i"
 	@echo "... src/kimbus.s"
+	@echo "... src/mapa.o"
+	@echo "... src/mapa.i"
+	@echo "... src/mapa.s"
 	@echo "... src/slider.o"
 	@echo "... src/slider.i"
 	@echo "... src/slider.s"

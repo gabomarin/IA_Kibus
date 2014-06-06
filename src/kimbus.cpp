@@ -77,6 +77,7 @@ kimbus::kimbus()
     bool valido=false;
 
 
+
 //	beedrill.create(MAP_WIDTH,MAP_HEIGHT);
 
 
@@ -338,8 +339,8 @@ bool kimbus::mainloop()
 {
 
 
-    gold.setX((posH.x*TILE_SIZE));
-    gold.setY((posH.y*TILE_SIZE));
+    gold.setX((posH.x*HERO_WIDTH));
+    gold.setY((posH.y*HERO_HEIGHT));
     gold.setHouse( pos.x, pos.y);
     //gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
     gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
@@ -413,11 +414,15 @@ bool kimbus::mainloop()
                 }
 
             }
+            
+            //SDL_Rect temporal = gold.obtiene_celda_libre(map, conexion);
 			if(complete==false)
-            	kibus_resultado=gold.handle_events(map);
-
-
-            int path_size=path.size();
+			{
+            
+				kibus_resultado=gold.handle_events(map,conexion);
+			}
+			
+			
 
 
 
