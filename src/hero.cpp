@@ -94,13 +94,13 @@ void hero::create(int map_width, int map_height,int posx, int posy)
     animation=false;
     this->map_height= map_height;
     this->map_width=map_width;
-	
+
     status=STAND;
     obstaculo=0;
     destx=posx;
     desty=posy;
-	anteriorx=0;
-	anteriory=0;
+    anteriorx=0;
+    anteriory=0;
 
 
 }
@@ -196,188 +196,273 @@ void hero::move()
     }
 }
 
-SDL_Rect hero::obtiene_celda_libre(vector< string >& map, Mapa conexion[17][22])
+SDL_Rect hero::obtiene_celda_libre(vector< string >& map, Mapa conexion[17][22], bool &regreso)
 {
-	SDL_Rect celda,aux;
-	vector <SDL_Rect> posibilidades, visitados;
-	char tile;
-	if( map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH-1)!='A' && map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH-1)!='R' )
-	{
-		if(anteriorx/HERO_WIDTH!=x_/HERO_WIDTH-1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT-1)
-		{
-			aux.y=y_/HERO_HEIGHT-1;
-			aux.x=x_/HERO_WIDTH-1;
-			if(!conexion[y_/HERO_HEIGHT-1][x_/HERO_WIDTH-1].isVisitado()){
-				
-				
-				posibilidades.push_back(aux);	
-			}
-			else
-			{
-				visitados.push_back(aux);
-			}
-		}
-		
-	}
-	tile= map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH);
-	if( map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH)!='A' && map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH)!='R' )
-		
-	{
-		if((anteriorx/HERO_WIDTH!=x_/HERO_WIDTH && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT-1))
-		{
-			aux.y=y_/HERO_HEIGHT-1;
-			aux.x=x_/HERO_WIDTH;
-			if(!conexion[y_/HERO_HEIGHT-1][x_/HERO_WIDTH].isVisitado())
-			{
-				
-				posibilidades.push_back(aux);			
-				
-			}
-			else
-			{
-				visitados.push_back(aux);	
-			}
-		}
-		
-	}
-	
-	if( map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH+1)!='A' && map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH+1)!='R' 
-		&& (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH+1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT-1))
-	{
-		aux.y=y_/HERO_HEIGHT-1;
-		aux.x=x_/HERO_WIDTH+1;
-		if(!conexion[y_/HERO_HEIGHT-1][x_/HERO_WIDTH+1].isVisitado())
-		
-		{
-			posibilidades.push_back(aux);	
-	
-		}
-		else
-		{
-			visitados.push_back(aux);	
-		}
-	}
-	
-	if( map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH-1)!='A' && map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH-1)!='R' 
-		&& (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH-1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT))
-	{
-		aux.y=y_/HERO_HEIGHT;
-		aux.x=x_/HERO_WIDTH-1;
-		if(!conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH-1].isVisitado())
-		{
-			posibilidades.push_back(aux);	
-		}
-		else
-		{
-			visitados.push_back(aux);	
-		}
-	}
-	
+    SDL_Rect celda,aux;
+    vector <SDL_Rect> posibilidades, visitados;
+    char tile;
+    if( map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH-1)!='A' && map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH-1)!='R' )
+    {
+        if(anteriorx/HERO_WIDTH!=x_/HERO_WIDTH-1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT-1)
+        {
+            aux.y=y_/HERO_HEIGHT-1;
+            aux.x=x_/HERO_WIDTH-1;
+            if(!conexion[y_/HERO_HEIGHT-1][x_/HERO_WIDTH-1].isVisitado()) {
 
-	
-	if( map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH+1)!='A' && map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH+1)!='R' 
-		&& (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH+1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT))
-	{
-		aux.y=y_/HERO_HEIGHT;
-		aux.x=x_/HERO_WIDTH+1;
-		if(!conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH+1].isVisitado())
-		{
-			posibilidades.push_back(aux);		
-		}
-		else
-		{
-			visitados.push_back(aux);	
-		}
-		
-	}
-	
-	if( map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH-1)!='A' && map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH-1)!='R' 
-		&& (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH-1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT+1))
-	{
-		aux.y=y_/HERO_HEIGHT+1;
-		aux.x=x_/HERO_WIDTH-1;
-		if(!conexion[y_/HERO_HEIGHT+1][x_/HERO_WIDTH-1].isVisitado())
-		{
-			posibilidades.push_back(aux);	
-		}
-		else
-		{
-			visitados.push_back(aux);	
-		}
-	}
-	
-	
-	if( map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH)!='A' && map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH)!='R' 
-		&& (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT+1))
-	{
-		aux.y=y_/HERO_HEIGHT+1;
-		aux.x=x_/HERO_WIDTH;
-		if(!conexion[y_/HERO_HEIGHT+1][x_/HERO_WIDTH].isVisitado())
-		{
-			posibilidades.push_back(aux);	
-		}
-		else
-		{
-			visitados.push_back(aux);
-		}	
-	}
-	
-	if( map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH+1)!='A' && map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH+1)!='R' 
-		&& (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH+1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT+1))
-	{
-		
-		aux.y=y_/HERO_HEIGHT+1;
-		aux.x=x_/HERO_WIDTH+1;
-		if(!conexion[y_/HERO_HEIGHT+1][x_/HERO_WIDTH+1].isVisitado())
-		{
-			posibilidades.push_back(aux);	
-	
-		}
-		else
-		{
-			visitados.push_back(aux);	
-		}
-	}
-	
-	if(posibilidades.size()>0)
-	{
-		int resultado=rand()%posibilidades.size();	
-		celda= posibilidades.at(resultado);
-	}
-	else
-	{
-		
-		if(x_/HERO_WIDTH!=anteriorx && y_/HERO_HEIGHT!=anteriory && visitados.size()==0)
-		{
-			celda.x=anteriorx;
-			celda.y=anteriory;
-		}
-		else
-		{
-			int resultado=rand()%visitados.size();	
-			celda= visitados.at(resultado);
-		}
-		
-	}
-	
-	celda.x*=HERO_WIDTH;
-	celda.y*=HERO_HEIGHT;
-	return celda;
+
+                posibilidades.push_back(aux);
+            }
+            else
+            {
+                visitados.push_back(aux);
+            }
+        }
+
+    }
+    tile= map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH);
+    if( map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH)!='A' && map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH)!='R' )
+
+    {
+        if((anteriorx/HERO_WIDTH!=x_/HERO_WIDTH && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT-1))
+        {
+            aux.y=y_/HERO_HEIGHT-1;
+            aux.x=x_/HERO_WIDTH;
+            if(!conexion[y_/HERO_HEIGHT-1][x_/HERO_WIDTH].isVisitado())
+            {
+
+                posibilidades.push_back(aux);
+
+            }
+            else
+            {
+                visitados.push_back(aux);
+            }
+        }
+
+    }
+
+    if( map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH+1)!='A' && map.at(y_/HERO_HEIGHT-1).at(x_/HERO_WIDTH+1)!='R'
+            && (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH+1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT-1))
+    {
+        aux.y=y_/HERO_HEIGHT-1;
+        aux.x=x_/HERO_WIDTH+1;
+        if(!conexion[y_/HERO_HEIGHT-1][x_/HERO_WIDTH+1].isVisitado())
+
+        {
+            posibilidades.push_back(aux);
+
+        }
+        else
+        {
+            visitados.push_back(aux);
+        }
+    }
+
+    if( map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH-1)!='A' && map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH-1)!='R'
+            && (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH-1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT))
+    {
+        aux.y=y_/HERO_HEIGHT;
+        aux.x=x_/HERO_WIDTH-1;
+        if(!conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH-1].isVisitado())
+        {
+            posibilidades.push_back(aux);
+        }
+        else
+        {
+            visitados.push_back(aux);
+        }
+    }
+
+
+
+    if( map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH+1)!='A' && map.at(y_/HERO_HEIGHT).at(x_/HERO_WIDTH+1)!='R'
+            && (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH+1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT))
+    {
+        aux.y=y_/HERO_HEIGHT;
+        aux.x=x_/HERO_WIDTH+1;
+        if(!conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH+1].isVisitado())
+        {
+            posibilidades.push_back(aux);
+        }
+        else
+        {
+            visitados.push_back(aux);
+        }
+
+    }
+
+    if( map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH-1)!='A' && map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH-1)!='R'
+            && (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH-1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT+1))
+    {
+        aux.y=y_/HERO_HEIGHT+1;
+        aux.x=x_/HERO_WIDTH-1;
+        if(!conexion[y_/HERO_HEIGHT+1][x_/HERO_WIDTH-1].isVisitado())
+        {
+            posibilidades.push_back(aux);
+        }
+        else
+        {
+            visitados.push_back(aux);
+        }
+    }
+
+
+    if( map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH)!='A' && map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH)!='R'
+            && (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT+1))
+    {
+        aux.y=y_/HERO_HEIGHT+1;
+        aux.x=x_/HERO_WIDTH;
+        if(!conexion[y_/HERO_HEIGHT+1][x_/HERO_WIDTH].isVisitado())
+        {
+            posibilidades.push_back(aux);
+        }
+        else
+        {
+            visitados.push_back(aux);
+        }
+    }
+
+    if( map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH+1)!='A' && map.at(y_/HERO_HEIGHT+1).at(x_/HERO_WIDTH+1)!='R'
+            && (anteriorx/HERO_WIDTH!=x_/HERO_WIDTH+1 && anteriory/HERO_HEIGHT!=y_/HERO_HEIGHT+1))
+    {
+
+        aux.y=y_/HERO_HEIGHT+1;
+        aux.x=x_/HERO_WIDTH+1;
+        if(!conexion[y_/HERO_HEIGHT+1][x_/HERO_WIDTH+1].isVisitado())
+        {
+            posibilidades.push_back(aux);
+
+        }
+        else
+        {
+            visitados.push_back(aux);
+        }
+    }
+
+    if(posibilidades.size()>0)
+    {
+        struct conexion temporal;
+        temporal.x=x_/HERO_WIDTH;
+        temporal.y=y_/HERO_HEIGHT;
+        temporal.peso= MAX_VALUE/2;
+        int resultado=rand()%posibilidades.size();
+        celda= posibilidades.at(resultado);
+        //conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista.push_back(temporal);
+    }
+    else
+    {
+
+        if(x_/HERO_WIDTH!=anteriorx && y_/HERO_HEIGHT!=anteriory && visitados.size()==0)
+        {
+            celda.x=anteriorx;
+            celda.y=anteriory;
+        }
+        else
+        {   /*
+            celda=line_stack.back();
+            line_stack.pop_back();*/
+            regreso=true;
+
+            int resultado=rand()%visitados.size();
+            celda= visitados.at(resultado);
+
+
+        }
+
+    }
+
+
+    return celda;
 }
 
+void hero::clearRecorrido()
+{
+    int i,j,posicion;
+    for(i=0; i<17; i++)
+    {
+        for(j=0; j<22; j++)
+        {
+            for(posicion=0; posicion<8; posicion++)
+            {
+                recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].x=-1;
+                recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].y=-1;
+                recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectax=-1;
+                recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectay= -1;
+				recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectay= -1;
+				recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].utilizado=false;
+            }
+        }
+    }
+}
 
-int hero:: handle_events(vector <string> &map, Mapa conexion[17][22] ) // si regresa true se calcula la linea de nuevo
+int hero:: handle_events(vector <string> &map, Mapa conexion[17][22] )
 {
 
-	int resultado=false;
-	bool ciclo=false;
-	int cont=0;
-	int movement;
-	SDL_Rect direccion= obtiene_celda_libre(map, conexion);
-	x_=direccion.x;
-	y_=direccion.y;
-	conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].setVisitado(true);	
+    int resultado=false;
+    bool ciclo=false;
+    bool regreso=false;
+    int cont=0;
+    int movement;
+    SDL_Rect direccion= obtiene_celda_libre(map, conexion,regreso);
+    SDL_Rect temp;
+    arista aux;
+    anteriorx=x_/HERO_WIDTH;
+    anteriory=y_/HERO_HEIGHT;
+    if(!regreso)
+    {
+        temp.x=anteriorx;
+        temp.y=anteriory;
 
+
+
+        line_stack.push_back(temp);
+        //conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista.push_back({x_/HERO_WIDTH, y_/HERO_HEIGHT});
+        temp.x=x_/HERO_WIDTH;
+        temp.y=y_/HERO_HEIGHT;
+
+
+
+    }
+    int posicion= calculateDirection(direccion.x, direccion.y);
+
+    //cout << "posicion: "<< posicion<<endl;
+    conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].x=x_/HERO_WIDTH;
+    conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].y=y_/HERO_WIDTH;
+    conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectax=direccion.x;
+    conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectay= direccion.y;
+    conexion[y_/HERO_HEIGHT][x_/HERO_WIDTH].setVisitado(true);
+
+
+    recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].x=x_/HERO_WIDTH;
+    recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].y=y_/HERO_WIDTH;
+    recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectax=direccion.x;
+    recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectay= direccion.y;
+	recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].utilizado=true;
+	
+
+    direccion.x *= HERO_WIDTH;
+    direccion.y *= HERO_HEIGHT;
+    x_=direccion.x;
+    y_=direccion.y;
+    return true;
+
+
+}
+int hero::cuentaConexiones()
+{
+	int conexiones=0;
+	for(int i=0;i<17;i++)
+	{
+		for(int j=0;j<22;j++)
+		{
+			for(int posicion=0;posicion<8;posicion++)
+			{
+				if(recorrido[i][j].arista[posicion].utilizado==true)
+					conexiones++;
+			}
+		}
+	}
+	return conexiones;
 }
 
 
@@ -599,7 +684,7 @@ void hero:: insertFirst(int x, int y)
 void hero:: clearStack()
 {
     line_stack.clear();
-	movement_stack.clear();
+    movement_stack.clear();
 }
 
 
@@ -652,13 +737,13 @@ void hero::printList()
 
 void hero::printMovementStack()
 {
-	for(int i=0; i<movement_stack.size(); i++)
-	{
-		cout <<movement_stack.at(i)<<endl;
-		
-	}
-	cout <<endl;
-	//cout << endl<< endl;
+    for(int i=0; i<movement_stack.size(); i++)
+    {
+        cout <<movement_stack.at(i)<<endl;
+
+    }
+    cout <<endl;
+    //cout << endl<< endl;
 }
 
 
@@ -669,12 +754,13 @@ void hero::dropList()
 }
 
 
-int hero::calculateDirection()
+int hero::calculateDirection(int destx, int desty)
 {
     int movement;
     SDL_Rect hero;
     SDL_Rect temp;
-    temp= line_stack.front();
+    temp.x=destx;
+    temp.y=desty;
     int tempx, tempy;
 
 
@@ -829,12 +915,12 @@ void hero::setLastPosition(int x, int y)
 
 int hero::getLastP()
 {
-	return lastp;
+    return lastp;
 }
 
 void hero::setLastP(int ps)
 {
-	lastp=ps;
+    lastp=ps;
 }
 
 
@@ -956,14 +1042,14 @@ vector <int> hero:: coordToDir(vector <SDL_Rect> coord)
     int movement;
     SDL_Rect hero;
     SDL_Rect temp;
-    
+
     int tempx, tempy;
 
 
     //verifica en que direccion debe de ir
     do
     {
-		temp= coord.front();
+        temp= coord.front();
         hero.x=x_/HERO_WIDTH;
         hero.y=y_/HERO_HEIGHT;
         //verifica que tipo de movimiento tendra que hacer
@@ -1012,21 +1098,21 @@ vector <int> hero:: coordToDir(vector <SDL_Rect> coord)
         }
         else
         {
-			cout << "que jodidos!!!!"<<endl;
+            cout << "que jodidos!!!!"<<endl;
             movement=8;
         }
         //coord.pop_back();
         coord.erase (coord.begin());
-		direccion.push_back(movement);
+        direccion.push_back(movement);
     } while(!coord.empty());
-	
-	do
-	{
-		aux.push_back( direccion.back());
-		direccion.pop_back();
-	}while(direccion.size()>0);
-   
-	
+
+    do
+    {
+        aux.push_back( direccion.back());
+        direccion.pop_back();
+    } while(direccion.size()>0);
+
+
     return aux;
 }
 
@@ -1040,23 +1126,23 @@ void hero::setCoordStack(vector< SDL_Rect > movimientos)
 
 vector< int > hero::getMovementStack()
 {
-	return movement_stack;
+    return movement_stack;
 }
 
 int hero::movementBack()
 {
-	return movement_stack.back();
+    return movement_stack.back();
 }
 
 
 void hero::movementPopBack()
 {
-	movement_stack.pop_back();
+    movement_stack.pop_back();
 }
 
 void hero::movementPushBack(int movimiento)
 {
-	movement_stack.push_back(movimiento);
+    movement_stack.push_back(movimiento);
 }
 
 

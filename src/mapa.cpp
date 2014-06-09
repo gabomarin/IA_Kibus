@@ -19,8 +19,17 @@
 
 Mapa::Mapa()
 {
-	visitado=false;
-	
+    visitado=false;
+    for(int i=0; i<8; i++)
+    {
+        arista[i].peso=MAX_VALUE/2;
+		arista[i].utilizado=false;
+		arista[i].conectax=-1;
+		arista[i].conectay=-1;
+		arista[i].x=-1;
+		arista[i].y=-1;
+    }
+
 }
 
 Mapa::~Mapa()
@@ -30,35 +39,35 @@ Mapa::~Mapa()
 
 int Mapa::getX()
 {
-	return x;
+    return x;
 }
 
 
 int Mapa::getY()
 {
-	return y;
+    return y;
 }
 
 bool Mapa::isVisitado()
 {
-	return visitado;
+    return visitado;
 }
 
 
 void Mapa::setVisitado(bool visitado)
 {
-	this->visitado = visitado;
-	
+    this->visitado = visitado;
+
 }
 
 void Mapa::setX(int x)
 {
-	this->x= x;
+    this->x= x;
 }
 
 void Mapa::setY(int y)
 {
-	this->y = y;
+    this->y = y;
 }
 
 

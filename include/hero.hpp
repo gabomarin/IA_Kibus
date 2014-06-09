@@ -75,21 +75,21 @@ public:
     int getAnimationFrame();
 
     void move();
-	int handle_events(vector< string >& map,Mapa conexion[17][22]);
+    int handle_events(vector< string >& map, Mapa conexion[17][22]);
     void show();
     bool checkColision(vector <string > map);
     bool animate_stack();
-	int movementBack();
-	void movementPopBack();
-	void movementPushBack(int movimiento);
+    int movementBack();
+    void movementPopBack();
+    void movementPushBack(int movimiento);
     void pushLine(int x, int y);
     SDL_Rect popLine();
     int getLineX();//regresan el primer elemento de la lista
     int getLineY();
     void printList();
-	void printMovementStack();
+    void printMovementStack();
     void dropList();
-    int calculateDirection();
+    int calculateDirection(int destx, int desty);
     void bresenham(int x1, int y1, int x2, int y2);
     void insertFirst(int x, int y);
     void printMap(vector <string> map);
@@ -109,11 +109,16 @@ public:
     vector <int> coordToDir(vector <SDL_Rect> coord);
     void setCoordStack(vector <SDL_Rect> movimientos);
     void printBack();
-	vector <int> getMovementStack();
-	int getLastP();
-	void setLastP(int ps);
-	
-	SDL_Rect obtiene_celda_libre(vector< string >& map, Mapa conexion[17][22]);
+    vector <int> getMovementStack();
+    int getLastP();
+    void setLastP(int ps);
+
+    SDL_Rect obtiene_celda_libre(vector< string >& map, Mapa conexion[17][22], bool& regreso);
+    void clearRecorrido();
+    Mapa recorrido[17][22];
+	int cuentaConexiones();
+
+
 
 protected:
 
@@ -135,6 +140,8 @@ protected:
     int obstaculo;
     bool returning;
     bool banderin;
+    vector <arista> conexiones;
+
     //int frame_index[MAX_STATE][MAX_FRAMES];
 
 };

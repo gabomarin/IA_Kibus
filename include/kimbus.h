@@ -57,7 +57,11 @@
 #define ROCK 5
 #define HERO 6
 
+#define CASTIGO 0
+#define PREMIO 1
+
 #define MAX_HEAT 254
+#define MAX_ITERACIONES 1000
 
 
 #define PROPAGACION 0
@@ -79,7 +83,7 @@ class kimbus
 {
 private:
 
-    SDL_Surface *screen;
+    SDL_Surface *screen, *redAlpha;
     SDL_Surface *tree,*grass,*mapsurface,*tallgrass,*textbox, *home;
 
     SDL_Rect dest;
@@ -94,7 +98,7 @@ private:
     int startx,starty;
     SDL_Rect posH;
     hero gold;
-	Mapa conexion[MAP_HEIGHT][MAP_WIDTH];
+    Mapa conexion[MAP_HEIGHT][MAP_WIDTH];
     //bee beedrill;
 
     SDL_Surface *messagebox;
@@ -105,6 +109,8 @@ private:
     SDL_Surface * selected;
     int mouse_x,mouse_y;
     SDL_Rect mouseTile;
+    int maximo_historico, minimo_historico, media_historica;
+	vector <SDL_Rect> movimientos;
 
 
 
@@ -121,7 +127,8 @@ public:
     SDL_Surface * getScreen();
     void addToScreen(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
     void updateScreen();
-    bool mainloop();
+    void mainloop(); //entrenamiento
+    void recorrido_entrenado();
     bool loadmap(int opc);
     void drawmap();
     bool loadTiles();
@@ -136,9 +143,11 @@ public:
     void drawMessage(int tipo);
     void initialiceHeat();
     void addToMap(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
-    void bee_dance(int &nLoop);
-
-
+    
+    void resetMap();
+    void altera_pesos(int modificador_peso, int tipo);
+	void move_kibus();
+     SDL_Rect  primero_mejor();
 
 
 

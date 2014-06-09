@@ -19,32 +19,54 @@
 #define MAPA_H
 
 #define MAX_CONEXIONES 8
-#include <vector> 
 
+
+#include <vector>
+#include <limits>
+#include <SDL/SDL.h>
 using namespace std;
+
+ const int MAX_VALUE =  std::numeric_limits<int>::max()/100;
+//const long int MAX_VALUE = 30000;
 struct conexion
 {
-	int x, y;
-	int peso;
+    int x, y;
+    int conectax,conectay;
+    long int peso;
+	bool utilizado;
 };
+
+struct arista
+{
+    SDL_Rect nodo1;
+    SDL_Rect nodo2;
+};
+
+
 
 class Mapa
 {
 public:
     Mapa();
     ~Mapa();
-	bool isVisitado();
-	void setVisitado(bool visitado);
-	int getX();
-	int getY();
-	void setX(int x);
-	void setY(int y);
-	
+    bool isVisitado();
+    void setVisitado(bool visitado);
+    int getX();
+    int getY();
+    void setX(int x);
+
+
+    void setY(int y);
+
+
+    struct conexion arista[8];
+
+
 private:
-	vector <struct conexion> arista;
-	bool visitado;
-	int x,y;
-	
+
+    bool visitado;
+    int x,y;
+
 };
 
 #endif // MAPA_H

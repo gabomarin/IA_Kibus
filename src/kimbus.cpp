@@ -35,9 +35,10 @@ kimbus::kimbus()
     screen = SDL_SetVideoMode(WIDTH, HEIGHT, BPP, SDL_HWSURFACE );
     mapsurface=SDL_CreateRGBSurface(SDL_SWSURFACE, WIDTH,HEIGHT,BPP ,
                                     0,0,0,0  );
-    
 
 
+    redAlpha = SDL_CreateRGBSurface(SDL_SWSURFACE, TILE_SIZE,TILE_SIZE,24 ,
+                                    0,0,0,0  );
     if(!screen)
     {
         cout << "Error al iniciar SDL. " << SDL_GetError()<< endl;
@@ -188,6 +189,8 @@ bool kimbus::loadmap(int opc)
                     pos.x=i;
                     pos.y=j;
                 }
+                
+                
             }
         }
         return true;
@@ -209,6 +212,7 @@ void kimbus::drawmap()
 
 
     SDL_Rect alphaPos;
+
 //     alphaPos.h= TILE_SIZE;
 //     alphaPos.w=TILE_SIZE;
 //     alphaPos.x=0;
@@ -233,6 +237,8 @@ void kimbus::drawmap()
 
             case 'C':
                 addToMap(grass,j*TILE_SIZE,i*TILE_SIZE,NULL);
+                if(conexion[i][j].isVisitado())
+                    addToMap(tallgrass,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
                 //addToMap(redAlpha,j*TILE_SIZE,i*TILE_SIZE,NULL);
 
@@ -297,7 +303,7 @@ bool kimbus::loadTiles()
     textbox=IMG_Load("resources/sprites/textbox.png");
     home=IMG_Load("resources/sprites/home.png");
     rock=IMG_Load("resources/sprites/rock.png");
-   
+
 
     return true;
 }
@@ -333,35 +339,47 @@ void kimbus::setHome()
 
 }
 
-
-
-bool kimbus::mainloop()
+void kimbus::recorrido_entrenado()
 {
+	
+	
+	
+	
+	
+	
+	int num_iteraciones=0;
+    button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
+    slider velocidad(120,20,20,600,1,40);
+    bool quit=false;
+    Timer fps;
+    string caption;
+    int kibus_resultado;
+    int bee_resultado;
 
 
-    gold.setX((posH.x*HERO_WIDTH));
-    gold.setY((posH.y*HERO_HEIGHT));
+	
+
+    
     gold.setHouse( pos.x, pos.y);
     //gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
     gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
 
 
-	bool complete=false;
+    bool complete=false;
 
-    button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
-    bool quit;
-    Timer fps;
-    string caption;
+
+
     int nLoop=1;
     int fast=false;
     bool pop_movement=false;
-    int kibus_resultado;
-    int bee_resultado;
 
-    slider velocidad(120,20,20,600,1,40);
-    drawmap();
+
+    resetMap();
+    //drawmap();
     int i;
-    
+	move_kibus();
+	gold.setX((posH.x*HERO_WIDTH));
+	gold.setY((posH.y*HERO_HEIGHT));
     while(!quit)
     {
         fps.start();
@@ -379,8 +397,9 @@ bool kimbus::mainloop()
                 switch(event.type)
                 {
                 case SDL_QUIT:
+                    exit(-11);
                     quit = true;
-                    return 0;
+                    //return 0;
                     break;
 
                 case SDL_KEYDOWN:
@@ -390,6 +409,7 @@ bool kimbus::mainloop()
                     {
                     case SDLK_ESCAPE:
                         quit=true;
+                        exit(1);
                         break;
 
 
@@ -414,27 +434,25 @@ bool kimbus::mainloop()
                 }
 
             }
-            
+
             //SDL_Rect temporal = gold.obtiene_celda_libre(map, conexion);
-			if(complete==false)
-			{
-            
-				kibus_resultado=gold.handle_events(map,conexion);
-			}
+            //if(complete==false)
+            //{
+			primero_mejor(); 
 			
-			
+			//cout <<camino.size()<<endl;
+            //kibus_resultado=gold.handle_events(map,conexion);
+            //}
 
 
 
-            if(homebtn.handleEvents(event)==CLICK)
-            {
 
-            }
 
+           
             if(backbtn.handleEvents(event)==CLICK)
             {
                 quit=true;
-                return 1;
+                //return 1;
             }
 
             int left_click=velocidad.handleEvents(event);
@@ -458,7 +476,7 @@ bool kimbus::mainloop()
             gold.setFlag(false);
         }
 
-        //drawmap();
+        drawmap();
         addToScreen(mapsurface,0,0,NULL);
         addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
         addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
@@ -471,43 +489,44 @@ bool kimbus::mainloop()
         if(gold.getX()== pos.x*TILE_SIZE && gold.getY()==pos.y*TILE_SIZE )
         {
             drawMessage(1);
-			complete=true;
+            complete=true;
+			quit=true;
+            num_iteraciones++;
+            //continue;
 
         }
 
         switch(kibus_resultado)
         {
             //SDL_Delay(1000);
-       		 case -2:
+        case -2:
             drawMessage(2);
             break;
             //quit=true;
         }
-        addToScreen(velocidad.updateSlider(), velocidad.getX(),velocidad.getY(),NULL);
+        //addToScreen(velocidad.updateSlider(), velocidad.getX(),velocidad.getY(),NULL);
         //addToScreen(mapsurface,0,0,NULL);
         updateScreen();
         //cout <<fps.get_ticks()<<endl;
 
-// 		if(fast==false)
-// 		{
+        // 		if(fast==false)
+        // 		{
         if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
         {
-
-
             //SDL_WM_SetCaption(caption.c_str(),NULL);
             SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
         }
-// 		}
-//
-// 		else
-// 		{
-// 		int vel_multiplicacion= velocidad.getValue()/10+1;
-// 			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
-// 			{
-//
-// 				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
-// 			}
-// 		//}
+        // 		}
+        //
+        // 		else
+        // 		{
+        // 		int vel_multiplicacion= velocidad.getValue()/10+1;
+        // 			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
+        // 			{
+        //
+        // 				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
+        // 			}
+        // 		//}
 
         // cout <<nLoop <<endl;
 
@@ -517,13 +536,592 @@ bool kimbus::mainloop()
 
 
     }
+}
 
+
+SDL_Rect kimbus::primero_mejor()
+{
+	vector <SDL_Rect> camino;
+	SDL_Rect temp;
+	bool complete=false;
+	int x,y;
+	x= gold.getX()/HERO_WIDTH;
+	y=gold.getY()/HERO_HEIGHT;
+	int peso_actual;
+	int mejor,i;
+	mejor=0;
+	
+	for(i=0;i<8;i++)
+	{
+		//cout << "peso  x"<<x<<" y"<<y<< " i"<<i<<" "<<conexion[y][x].arista[i].peso<<endl;
+		if(conexion[y][x].arista[i].peso<conexion[y][x].arista[mejor].peso)
+		{
+			int tempx,tempy;
+			tempx=conexion[y][x].arista[i].conectax;
+			tempy=conexion[y][x].arista[i].conectay;
+			if(tempx!=-1 && tempy!=-1)
+			
+			{
+				if(conexion[y][x].arista[i].utilizado==false)
+				{
+					if(map.at(tempy).at(tempx)!='A' && map.at(tempy).at(tempx)!='R')
+					{
+						mejor=i;
+					}
+					
+				}
+				
+					
+			}
+			
+				
+			
+		}
+		
+		
+		
+	}
+	
+	if(conexion[y][x].arista[mejor].conectax==-1 && conexion[y][x].arista[mejor].conectay==-1)
+	{
+		
+		int tempx=conexion[y][x].arista[mejor].conectax;
+		int tempy=conexion[y][x].arista[mejor].conectay;
+		conexion[y][x].arista[mejor].utilizado=true;
+		
+		gold.setX(movimientos.back().x*TILE_SIZE);
+		gold.setY(movimientos.back().y*TILE_SIZE);
+		movimientos.pop_back();
+		
+		//cout<< "entre"<<endl;
+	}
+	else
+	{
+		
+			
+		conexion[y][x].arista[mejor].utilizado=true;
+		
+		temp.x=conexion[y][x].arista[mejor].conectax;
+		temp.y=conexion[y][x].arista[mejor].conectay;
+		movimientos.push_back(temp);
+		gold.setX(temp.x*TILE_SIZE);
+		gold.setY(temp.y*TILE_SIZE);
+	}
+		
+
+	
+}
+
+
+
+void kimbus::mainloop()
+{
+
+    int num_iteraciones=0;
+    button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
+    slider velocidad(120,20,20,600,1,40);
+    bool quit;
+    Timer fps;
+    string caption;
+    int kibus_resultado;
+    int bee_resultado;
+    gold.setX((posH.x*HERO_WIDTH));
+    gold.setY((posH.y*HERO_HEIGHT));
+    gold.setHouse( pos.x, pos.y);
+    gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
+    conexion[posH.y][posH.x].setVisitado(true);
+    maximo_historico=0;
+    minimo_historico=0;
+    int npasos;
+    while(num_iteraciones<MAX_ITERACIONES)
+    {
+        cout <<"Iteracion #"<< num_iteraciones<<"/"<<MAX_ITERACIONES<<endl;
+        npasos=0;
+        gold.setX((posH.x*HERO_WIDTH));
+        gold.setY((posH.y*HERO_HEIGHT));
+        //gold.bresenham(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT,pos.x,pos.y);
+        gold.setLastPosition(gold.getX()/HERO_WIDTH,gold.getY()/HERO_HEIGHT);
+        bool complete=false;
+        int nLoop=1;
+        int fast=false;
+        bool pop_movement=false;
+        gold.clearRecorrido();
+		conexion[gold.getY()/TILE_SIZE][gold.getX()/TILE_SIZE].setVisitado(true);
+
+
+        resetMap();
+        //drawmap();
+        int i;
+
+        while(!complete)
+        {
+            fps.start();
+
+            if(pop_movement==true)
+            {
+                //pop_movement=gold.animate_stack();
+            }
+            else
+            {
+                while( SDL_PollEvent( &event ) )
+                {
+
+
+                    switch(event.type)
+                    {
+                    case SDL_QUIT:
+                        exit(-11);
+                        //quit = true;
+                        //return 0;
+                        break;
+
+                    case SDL_KEYDOWN:
+
+
+                        switch (event.key.keysym.sym)
+                        {
+                        case SDLK_ESCAPE:
+                            //quit=true;
+                            exit(1);
+                            break;
+
+
+                        case SDLK_RETURN:
+                            fps.pause();
+                            break;
+
+
+                        case SDLK_SPACE:
+                            fast=true;
+                            break;
+
+
+                        }
+
+                        break;
+                        //
+                    case SDL_KEYUP:
+                        if(event.key.keysym.sym==SDLK_SPACE)
+                            fast=false;
+                        break;
+                    }
+
+                }
+
+                //SDL_Rect temporal = gold.obtiene_celda_libre(map, conexion);
+                //if(complete==false)
+                //{
+
+                kibus_resultado=gold.handle_events(map,conexion);
+                //}
+
+
+
+
+
+                if(homebtn.handleEvents(event)==CLICK)
+                {
+
+                }
+
+                if(backbtn.handleEvents(event)==CLICK)
+                {
+                    quit=true;
+                    //return 1;
+                }
+
+                int left_click=velocidad.handleEvents(event);
+                switch(left_click)
+                {
+                case 0:
+                    break;
+
+                case CLICK:
+                case 2:
+                    //cout << "click en slider"<< endl;
+                    velocidad.calculateValue();
+                    break;
+
+                }
+
+            }
+            if(gold.getFlag()==true )
+            {
+                //drawmap();
+                gold.setFlag(false);
+            }
+
+            //drawmap();
+ 			//addToScreen(mapsurface,0,0,NULL);
+// 			addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
+// 			addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
+// 			addToScreen(backbtn.getImage() , backbtn.getX(),backbtn.getY(),backbtn.getFrame());
+
+
+ 			//addToScreen(gold.getSurface(), gold.getX(),gold.getY(),gold.getFrame());
+
+
+            if(gold.getX()== pos.x*TILE_SIZE && gold.getY()==pos.y*TILE_SIZE )
+            {
+                //drawMessage(1);
+                complete=true;
+                num_iteraciones++;
+                //continue;
+
+            }
+
+            switch(kibus_resultado)
+            {
+                //SDL_Delay(1000);
+            case -2:
+                //drawMessage(2);
+                break;
+                //quit=true;
+            }
+            //addToScreen(velocidad.updateSlider(), velocidad.getX(),velocidad.getY(),NULL);
+            //addToScreen(mapsurface,0,0,NULL);
+            //updateScreen();
+            //cout <<fps.get_ticks()<<endl;
+
+            // 		if(fast==false)
+            // 		{
+            if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
+            {
+
+
+                //SDL_WM_SetCaption(caption.c_str(),NULL);
+                //SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
+            }
+            // 		}
+            //
+            // 		else
+            // 		{
+            // 		int vel_multiplicacion= velocidad.getValue()/10+1;
+            // 			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
+            // 			{
+            //
+            // 				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
+            // 			}
+            // 		//}
+
+            // cout <<nLoop <<endl;
+
+
+            //SDL_Delay(100);
+            npasos++;
+
+
+        }
+        int conexiones=gold.cuentaConexiones();
+        
+        
+        if(num_iteraciones==1)
+        {
+            maximo_historico=minimo_historico=conexiones;
+        }
+        else
+        {
+            if(conexiones>maximo_historico)
+                maximo_historico=conexiones;
+
+            if(conexiones<minimo_historico)
+                minimo_historico=conexiones;
+        }
+        media_historica= (maximo_historico+minimo_historico)/2;
+
+
+        //aplica bonus y castigos
+        int modificador_peso= abs(media_historica-conexiones);
+        int tipo;
+        if(conexiones<=media_historica)
+            tipo=PREMIO;
+        else
+            tipo=CASTIGO;
+        altera_pesos(modificador_peso,tipo);
+    }
     //savemap();
-    return 0;
-    SDL_Quit();
+
 
 }
 
+void kimbus::altera_pesos(int modificador_peso, int tipo)
+{
+    int i,j, posicion;
+    for(i=0; i<17; i++)
+    {
+        for(j=0; j<22; j++)
+        {
+            for (posicion=0; posicion<8; posicion++)
+            {
+
+                if(gold.recorrido[i][j].arista[posicion].conectax!=-1 && gold.recorrido[i][j].arista[posicion].conectay!=-1)
+                {
+                    if(tipo==CASTIGO)
+                    {
+                        conexion[i][j].arista[posicion].peso+=modificador_peso;
+						int x,y;
+						
+						x=conexion[i][j].arista[posicion].conectax;
+						y=conexion[i][j].arista[posicion].conectay;
+// 						switch(posicion)
+// 						{
+// 							
+// 							case HERO_UP:
+// 								conexion[y][x].arista[HERO_DOWN].peso+=modificador_peso;
+// 								break;
+// 								
+// 							case HERO_DOWN:
+// 								conexion[y][x].arista[HERO_UP].peso+=modificador_peso;
+// 								break;
+// 								
+// 							case HERO_LEFT:
+// 								conexion[y][x].arista[HERO_RIGHT].peso+=modificador_peso;
+// 								break;
+// 								
+// 							case HERO_RIGHT:
+// 								conexion[y][x].arista[HERO_LEFT].peso+=modificador_peso;
+// 								break;
+// 								
+// 								
+// 							case UP_LEFT:
+// 								conexion[y][x].arista[DOWN_RIGHT].peso+=modificador_peso;
+// 								break;
+// 								
+// 							case DOWN_RIGHT:
+// 								conexion[y][x].arista[UP_LEFT].peso+=modificador_peso;
+// 								break;
+// 								
+// 							case UP_RIGHT:
+// 								conexion[y][x].arista[DOWN_LEFT].peso+=modificador_peso;
+// 								break;
+// 								
+// 							case DOWN_LEFT:
+// 								conexion[y][x].arista[UP_RIGHT].peso+=modificador_peso;
+// 								break;
+// 						}
+                    }
+                    else
+                    {   
+						conexion[i][j].arista[posicion].peso-=modificador_peso;
+						
+						int x,y;
+						x=conexion[i][j].arista[posicion].conectax;
+						y=conexion[i][j].arista[posicion].conectay;
+// 						switch(posicion)
+// 						{
+// 							case HERO_UP:
+// 								conexion[y][x].arista[HERO_DOWN].peso-=modificador_peso;
+// 								break;
+// 								
+// 							case HERO_DOWN:
+// 								conexion[y][x].arista[HERO_UP].peso-=modificador_peso;
+// 								break;
+// 								
+// 							case HERO_LEFT:
+// 								conexion[y][x].arista[HERO_RIGHT].peso-=modificador_peso;
+// 								break;
+// 								
+// 							case HERO_RIGHT:
+// 								conexion[y][x].arista[HERO_LEFT].peso-=modificador_peso;
+// 								break;
+// 								
+// 								
+// 							case UP_LEFT:
+// 								conexion[y][x].arista[DOWN_RIGHT].peso-=modificador_peso;
+// 								break;
+// 								
+// 							case DOWN_RIGHT:
+// 								conexion[y][x].arista[UP_LEFT].peso-=modificador_peso;
+// 								break;
+// 								
+// 							case UP_RIGHT:
+// 								conexion[y][x].arista[DOWN_LEFT].peso-=modificador_peso;
+// 								break;
+// 								
+// 							case DOWN_LEFT:
+// 								conexion[y][x].arista[UP_RIGHT].peso-=modificador_peso;
+// 								break;
+// 						}
+                    }
+                    if(conexion[i][j].arista[posicion].peso>MAX_VALUE)
+						conexion[i][j].arista[posicion].peso=MAX_VALUE;
+					if( conexion[i][j].arista[posicion].peso<0)
+						conexion[i][j].arista[posicion].peso=0;
+
+                    
+
+                
+					//cout << "Peso en "<<i<<" "<<j<<" "<< posicion<<" "<< conexion[i][j].arista[posicion].peso<<endl;
+				}
+            }
+        }
+    }
+}
+void kimbus::move_kibus()
+{
+
+		
+		selected=IMG_Load("resources/sprites/outline.png");
+		
+		mouseTile.x=0;
+		mouseTile.y=0;
+		if(!selected)
+		{
+			cout << "No se pudo cargar recurso"<< SDL_GetError()<<endl;
+			SDL_Quit();
+			exit(1);
+		}
+		
+		int click=false,tile=false,left_click=false;
+		int done=false;
+		
+		
+		button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20);
+		button treebtn("resources/sprites/treebtn.png",homebtn.getX()+homebtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
+		button grassbtn("resources/sprites/grassbtn.png",treebtn.getX()+treebtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
+		button tGrassbtn("resources/sprites/tallgrassbtn.png",grassbtn.getX()+grassbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
+		
+		button rockbtn("resources/sprites/rockbtn.png",20,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
+		button herobtn("resources/sprites/herobtn.png",rockbtn.getX()+rockbtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+TILE_SIZE+25);
+		
+		//slider de porcentaje, ancho,valor inicial, posicion X, posicion Y
+		slider porcentaje(251,30,tGrassbtn.getX()+tGrassbtn.getWidth()/2+10,tGrassbtn.getY()+10,30,80);
+		button randombtn("resources/sprites/randombtn.png", porcentaje.getX()+porcentaje.getRealWidth()+10,HEIGHT-(TILE_SIZE*3)+20);
+		button clearbtn("resources/sprites/clearbtn.png",randombtn.getX()+randombtn.getWidth()/2,HEIGHT-(TILE_SIZE*3)+20);
+		button startbtn("resources/sprites/comenzar.png",randombtn.getX()+randombtn.getWidth(),HEIGHT-(TILE_SIZE*3)+20);
+		
+		button map_1("resources/sprites/1.png",tGrassbtn.getX()+tGrassbtn.getWidth()/2+20,tGrassbtn.getY()+35);
+		button map_2("resources/sprites/2.png",map_1.getX()+map_1.getWidth()/2+10,tGrassbtn.getY()+35);
+		button map_3("resources/sprites/3.png",map_2.getX()+map_2.getWidth()/2+10,tGrassbtn.getY()+35);
+		button map_default("resources/sprites/4.png",map_3.getX()+map_3.getWidth()/2+10,tGrassbtn.getY()+35);
+		
+		
+		//bresenham(posH.x,posH.y,pos.x,pos.y);
+		//initialiceHeat();
+		
+		
+		while(!done)
+		{
+			
+			drawmap();
+			
+			while( SDL_PollEvent( &event ) )
+			{
+				switch(event.type)
+				{
+					case SDL_QUIT:
+						SDL_Quit();
+						break;
+						
+					case SDL_MOUSEMOTION:
+						mouse_x = event.motion.x;
+						mouse_y = event.motion.y;
+						if(click==true)
+						{
+							if(( mouse_x > 0 ) && (mouse_x < WIDTH ) && ( mouse_y > 0 ) && ( mouse_y < HEIGHT-(TILE_SIZE*3) ))
+							{
+								
+								mouseTile.x=mouse_x/TILE_SIZE;
+								mouseTile.y=mouse_y/TILE_SIZE;
+								mouseTile.x=mouseTile.x*TILE_SIZE;
+								mouseTile.y=mouseTile.y*TILE_SIZE;
+								
+							}
+						}
+						
+						
+						break;
+						
+					case SDL_MOUSEBUTTONDOWN:
+						if( event.button.button == SDL_BUTTON_LEFT )
+						{
+							if(click==true)
+							{
+								if(( mouse_x > 0 ) && (mouse_x < WIDTH ) && ( mouse_y > 0 ) && ( mouse_y < HEIGHT-(TILE_SIZE*3) ))
+								{
+									mouse_x = event.button.x;
+									mouse_y = event.button.y;
+									mouseTile.x=mouse_x/TILE_SIZE;
+									mouseTile.x*=TILE_SIZE;
+									mouseTile.y=mouse_y/TILE_SIZE;
+									mouseTile.y*=TILE_SIZE;
+									setTile(click,tile,&mouseTile);
+									
+									//                            initialiceHeat();
+								}
+							}
+						}
+						
+						break;
+				}
+			}
+			
+
+			
+			
+			
+			
+			
+			if(herobtn.handleEvents(event)==CLICK)
+			{
+				
+				selectedTile.x=herobtn.getX();
+				selectedTile.y=herobtn.getY();
+				tile=HERO;
+				click=true;
+				//bresenham(posH.x,posH.y,pos.x,pos.y);
+				
+				
+				
+			}
+			tile=HERO;
+			
+			
+			if(startbtn.handleEvents(event)==CLICK)
+			{
+				done=true;
+				//bresenham(posH.x,posH.y,pos.x,pos.y);
+				//savemap();
+			}
+			
+			
+			
+			
+			
+			addToScreen(mapsurface,0,0,NULL);
+			addToScreen(textbox,0,HEIGHT-(TILE_SIZE*3),NULL);
+			//addToScreen(homebtn.getImage(),homebtn.getX(),homebtn.getY(),homebtn.getFrame());
+			
+			addToScreen(startbtn.getImage(),startbtn.getX(),startbtn.getY(),startbtn.getFrame());
+			
+			addToScreen(herobtn.getImage(),herobtn.getX(),herobtn.getY(),herobtn.getFrame());
+			
+			
+			addToScreen(gold.getSurface(),posH.x*TILE_SIZE,posH.y*TILE_SIZE,gold.getFrame());
+			
+			//SDL_FreeSurface(porcentaje_slider);
+			//porcentaje.setValue(porcentaje.getValue()+1);
+			//porcentaje.calculateValue();
+			
+			
+			
+			//porcentaje.setValue(porcentaje.getValue()+1);
+			if(click==true)
+			{
+				addToScreen(selected,selectedTile.x,selectedTile.y,NULL);
+				addToScreen(selected,mouseTile.x,mouseTile.y,NULL);
+			}
+			
+			
+			
+			updateScreen();
+			SDL_Delay(50);
+			//quit=true;
+			
+		}
+		SDL_FreeSurface(selected);
+	
+}
 
 void kimbus::initializeMap()
 {
@@ -706,14 +1304,14 @@ void kimbus::initializeMap()
         if(map_2.handleEvents(event)==CLICK)
         {
             loadmap(2);
-  //          initialiceHeat();
+            //          initialiceHeat();
             drawmap();
         }
 
         if(map_3.handleEvents(event)==CLICK)
         {
             loadmap(3);
-    //        initialiceHeat();
+            //        initialiceHeat();
             drawmap();
         }
 
@@ -1129,8 +1727,24 @@ void kimbus::drawMessage(int tipo)
     //SDL_FreeSurface(messagebox);
     //SDL_FreeSurface(texto);
 
+}
 
+
+void kimbus::resetMap()
+{
+    int i,j;
+    for(i=0; i<MAP_HEIGHT; i++)
+    {
+        for(j=0; j<MAP_WIDTH; j++)
+        {
+            conexion[i][j].setVisitado(false);
+			for(int posicion=0;posicion<8;posicion++)
+				conexion[i][j].arista[posicion].utilizado=false;
+			
+        }
+    }
 
 }
+
 
 
