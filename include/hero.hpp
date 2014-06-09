@@ -117,7 +117,8 @@ public:
     void clearRecorrido();
     Mapa recorrido[17][22];
 	int cuentaConexiones();
-
+	vector <arista> conexiones;
+	
 
 
 protected:
@@ -140,7 +141,6 @@ protected:
     int obstaculo;
     bool returning;
     bool banderin;
-    vector <arista> conexiones;
 
     //int frame_index[MAX_STATE][MAX_FRAMES];
 

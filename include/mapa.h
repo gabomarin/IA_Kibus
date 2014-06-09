@@ -40,6 +40,7 @@ struct arista
 {
     SDL_Rect nodo1;
     SDL_Rect nodo2;
+	int posicion;
 };
 
 

@@ -812,7 +812,8 @@ void kimbus::mainloop()
 
 
         }
-        int conexiones=gold.cuentaConexiones();
+        int conexiones=gold.conexiones.size();
+		cout << conexiones<<endl<<endl;
         
         
         if(num_iteraciones==1)
@@ -847,22 +848,40 @@ void kimbus::mainloop()
 void kimbus::altera_pesos(int modificador_peso, int tipo)
 {
     int i,j, posicion;
-    for(i=0; i<17; i++)
-    {
-        for(j=0; j<22; j++)
-        {
-            for (posicion=0; posicion<8; posicion++)
-            {
-
-                if(gold.recorrido[i][j].arista[posicion].conectax!=-1 && gold.recorrido[i][j].arista[posicion].conectay!=-1)
-                {
-                    if(tipo==CASTIGO)
-                    {
-                        conexion[i][j].arista[posicion].peso+=modificador_peso;
-						int x,y;
-						
-						x=conexion[i][j].arista[posicion].conectax;
-						y=conexion[i][j].arista[posicion].conectay;
+	
+	struct arista temporal;
+	
+	while(!gold.conexiones.empty())
+	{
+		temporal=gold.conexiones.back();
+		if(tipo==PREMIO)
+		{
+			conexion[temporal.nodo1.y][temporal.nodo1.x].arista[temporal.posicion].peso-=modificador_peso;
+		}
+		else
+		{
+			conexion[temporal.nodo1.y][temporal.nodo1.x].arista[temporal.posicion].peso+=modificador_peso;
+		}
+		gold.conexiones.pop_back();
+	}
+	
+	
+//     for(i=0; i<17; i++)
+//     {
+//         for(j=0; j<22; j++)
+//         {
+//             for (posicion=0; posicion<8; posicion++)
+//             {
+// 
+//                 if(gold.recorrido[i][j].arista[posicion].conectax!=-1 && gold.recorrido[i][j].arista[posicion].conectay!=-1)
+//                 {
+//                     if(tipo==CASTIGO)
+//                     {
+//                         conexion[i][j].arista[posicion].peso+=modificador_peso;
+// 						int x,y;
+// 						
+// 						x=conexion[i][j].arista[posicion].conectax;
+// 						y=conexion[i][j].arista[posicion].conectay;
 // 						switch(posicion)
 // 						{
 // 							
@@ -900,13 +919,13 @@ void kimbus::altera_pesos(int modificador_peso, int tipo)
 // 								break;
 // 						}
                     }
-                    else
-                    {   
-						conexion[i][j].arista[posicion].peso-=modificador_peso;
-						
-						int x,y;
-						x=conexion[i][j].arista[posicion].conectax;
-						y=conexion[i][j].arista[posicion].conectay;
+//                     else
+//                     {   
+// 						conexion[i][j].arista[posicion].peso-=modificador_peso;
+// 						
+// 						int x,y;
+// 						x=conexion[i][j].arista[posicion].conectax;
+// 						y=conexion[i][j].arista[posicion].conectay;
 // 						switch(posicion)
 // 						{
 // 							case HERO_UP:
@@ -942,21 +961,21 @@ void kimbus::altera_pesos(int modificador_peso, int tipo)
 // 								conexion[y][x].arista[UP_RIGHT].peso-=modificador_peso;
 // 								break;
 // 						}
-                    }
-                    if(conexion[i][j].arista[posicion].peso>MAX_VALUE)
-						conexion[i][j].arista[posicion].peso=MAX_VALUE;
-					if( conexion[i][j].arista[posicion].peso<0)
-						conexion[i][j].arista[posicion].peso=0;
+//                     }
+//                     if(conexion[i][j].arista[posicion].peso>MAX_VALUE)
+// 						conexion[i][j].arista[posicion].peso=MAX_VALUE;
+// 					if( conexion[i][j].arista[posicion].peso<0)
+// 						conexion[i][j].arista[posicion].peso=0;
 
                     
 
                 
-					//cout << "Peso en "<<i<<" "<<j<<" "<< posicion<<" "<< conexion[i][j].arista[posicion].peso<<endl;
-				}
-            }
-        }
-    }
-}
+// 					//cout << "Peso en "<<i<<" "<<j<<" "<< posicion<<" "<< conexion[i][j].arista[posicion].peso<<endl;
+// 				}
+//             }
+//         }
+//     }
+// }
 void kimbus::move_kibus()
 {
 
