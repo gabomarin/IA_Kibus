@@ -549,12 +549,13 @@ SDL_Rect kimbus::primero_mejor()
 	y=gold.getY()/HERO_HEIGHT;
 	int peso_actual;
 	int mejor,i;
-	mejor=0;
+	mejor=-1;
 	
 	for(i=0;i<8;i++)
 	{
 		//cout << "peso  x"<<x<<" y"<<y<< " i"<<i<<" "<<conexion[y][x].arista[i].peso<<endl;
-		if(conexion[y][x].arista[i].peso<conexion[y][x].arista[mejor].peso)
+		
+		if(conexion[y][x].arista[i].utilizado==false)
 		{
 			int tempx,tempy;
 			tempx=conexion[y][x].arista[i].conectax;
@@ -562,9 +563,13 @@ SDL_Rect kimbus::primero_mejor()
 			if(tempx!=-1 && tempy!=-1)
 			
 			{
-				if(conexion[y][x].arista[i].utilizado==false)
+				
+				if(map.at(tempy).at(tempx)!='A' && map.at(tempy).at(tempx)!='R')
+				
 				{
-					if(map.at(tempy).at(tempx)!='A' && map.at(tempy).at(tempx)!='R')
+					if(mejor==-1)
+						mejor=i;
+					else if(conexion[y][x].arista[i].peso<conexion[y][x].arista[mejor].peso)
 					{
 						mejor=i;
 					}
@@ -592,6 +597,7 @@ SDL_Rect kimbus::primero_mejor()
 		gold.setX(movimientos.back().x*TILE_SIZE);
 		gold.setY(movimientos.back().y*TILE_SIZE);
 		movimientos.pop_back();
+		
 		
 		//cout<< "entre"<<endl;
 	}

@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/gabriel/projects/sdl_engine/include/bee.hpp
-hero.hpp
-/home/gabriel/projects/sdl_engine/include/hero.hpp
-
 /home/gabriel/projects/sdl_engine/include/button.hpp
 string
 -
@@ -103,24 +99,6 @@ boost/lexical_cast.hpp
 /home/gabriel/projects/sdl_engine/include/timer.hpp
 SDL/SDL.h
 -
-
-/home/gabriel/projects/sdl_engine/main.cpp
-iostream
--
-SDL/SDL.h
--
-cstdlib
--
-include/kimbus.h
-/home/gabriel/projects/sdl_engine/include/kimbus.h
-
-/home/gabriel/projects/sdl_engine/src/bee.cpp
-../include/bee.hpp
-/home/gabriel/projects/sdl_engine/include/bee.hpp
-
-/home/gabriel/projects/sdl_engine/src/hero.cpp
-../include/hero.hpp
-/home/gabriel/projects/sdl_engine/include/hero.hpp
 
 /home/gabriel/projects/sdl_engine/src/kimbus.cpp
 ../include/kimbus.h
