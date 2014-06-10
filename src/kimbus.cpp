@@ -342,11 +342,6 @@ void kimbus::setHome()
 void kimbus::recorrido_entrenado()
 {
 	
-	
-	
-	
-	
-	
 	int num_iteraciones=0;
     button homebtn("resources/sprites/home.png",20,HEIGHT-(TILE_SIZE*3)+20),backbtn("resources/sprites/back.png",100,HEIGHT-(TILE_SIZE*3)+20);
     slider velocidad(120,20,20,600,1,40);
@@ -516,22 +511,7 @@ void kimbus::recorrido_entrenado()
             //SDL_WM_SetCaption(caption.c_str(),NULL);
             SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
         }
-        // 		}
-        //
-        // 		else
-        // 		{
-        // 		int vel_multiplicacion= velocidad.getValue()/10+1;
-        // 			if( fps.get_ticks() < 1500 / (FRAMES_PER_SECOND*vel_multiplicacion) )
-        // 			{
-        //
-        // 				SDL_Delay( ( 1500 / (FRAMES_PER_SECOND *vel_multiplicacion)) - fps.get_ticks() );
-        // 			}
-        // 		//}
 
-        // cout <<nLoop <<endl;
-
-
-        //SDL_Delay(100);
 
 
 
@@ -561,7 +541,6 @@ SDL_Rect kimbus::primero_mejor()
 			tempx=conexion[y][x].arista[i].conectax;
 			tempy=conexion[y][x].arista[i].conectay;
 			if(tempx!=-1 && tempy!=-1)
-			
 			{
 				
 				if(map.at(tempy).at(tempx)!='A' && map.at(tempy).at(tempx)!='R')
@@ -572,19 +551,10 @@ SDL_Rect kimbus::primero_mejor()
 					else if(conexion[y][x].arista[i].peso<conexion[y][x].arista[mejor].peso)
 					{
 						mejor=i;
-					}
-					
+					}	
 				}
-				
-					
 			}
-			
-				
-			
-		}
-		
-		
-		
+		}		
 	}
 	
 	if(conexion[y][x].arista[mejor].conectax==-1 && conexion[y][x].arista[mejor].conectay==-1)
@@ -612,6 +582,7 @@ SDL_Rect kimbus::primero_mejor()
 		movimientos.push_back(temp);
 		gold.setX(temp.x*TILE_SIZE);
 		gold.setY(temp.y*TILE_SIZE);
+		
 	}
 		
 
@@ -818,7 +789,8 @@ void kimbus::mainloop()
 
 
         }
-        int conexiones=gold.cuentaConexiones();
+        int conexiones=gold.conexiones.size();
+		cout << conexiones<<endl<<endl;
         
         
         if(num_iteraciones==1)
@@ -853,116 +825,24 @@ void kimbus::mainloop()
 void kimbus::altera_pesos(int modificador_peso, int tipo)
 {
     int i,j, posicion;
-    for(i=0; i<17; i++)
-    {
-        for(j=0; j<22; j++)
-        {
-            for (posicion=0; posicion<8; posicion++)
-            {
-
-                if(gold.recorrido[i][j].arista[posicion].conectax!=-1 && gold.recorrido[i][j].arista[posicion].conectay!=-1)
-                {
-                    if(tipo==CASTIGO)
-                    {
-                        conexion[i][j].arista[posicion].peso+=modificador_peso;
-						int x,y;
-						
-						x=conexion[i][j].arista[posicion].conectax;
-						y=conexion[i][j].arista[posicion].conectay;
-// 						switch(posicion)
-// 						{
-// 							
-// 							case HERO_UP:
-// 								conexion[y][x].arista[HERO_DOWN].peso+=modificador_peso;
-// 								break;
-// 								
-// 							case HERO_DOWN:
-// 								conexion[y][x].arista[HERO_UP].peso+=modificador_peso;
-// 								break;
-// 								
-// 							case HERO_LEFT:
-// 								conexion[y][x].arista[HERO_RIGHT].peso+=modificador_peso;
-// 								break;
-// 								
-// 							case HERO_RIGHT:
-// 								conexion[y][x].arista[HERO_LEFT].peso+=modificador_peso;
-// 								break;
-// 								
-// 								
-// 							case UP_LEFT:
-// 								conexion[y][x].arista[DOWN_RIGHT].peso+=modificador_peso;
-// 								break;
-// 								
-// 							case DOWN_RIGHT:
-// 								conexion[y][x].arista[UP_LEFT].peso+=modificador_peso;
-// 								break;
-// 								
-// 							case UP_RIGHT:
-// 								conexion[y][x].arista[DOWN_LEFT].peso+=modificador_peso;
-// 								break;
-// 								
-// 							case DOWN_LEFT:
-// 								conexion[y][x].arista[UP_RIGHT].peso+=modificador_peso;
-// 								break;
-// 						}
-                    }
-                    else
-                    {   
-						conexion[i][j].arista[posicion].peso-=modificador_peso;
-						
-						int x,y;
-						x=conexion[i][j].arista[posicion].conectax;
-						y=conexion[i][j].arista[posicion].conectay;
-// 						switch(posicion)
-// 						{
-// 							case HERO_UP:
-// 								conexion[y][x].arista[HERO_DOWN].peso-=modificador_peso;
-// 								break;
-// 								
-// 							case HERO_DOWN:
-// 								conexion[y][x].arista[HERO_UP].peso-=modificador_peso;
-// 								break;
-// 								
-// 							case HERO_LEFT:
-// 								conexion[y][x].arista[HERO_RIGHT].peso-=modificador_peso;
-// 								break;
-// 								
-// 							case HERO_RIGHT:
-// 								conexion[y][x].arista[HERO_LEFT].peso-=modificador_peso;
-// 								break;
-// 								
-// 								
-// 							case UP_LEFT:
-// 								conexion[y][x].arista[DOWN_RIGHT].peso-=modificador_peso;
-// 								break;
-// 								
-// 							case DOWN_RIGHT:
-// 								conexion[y][x].arista[UP_LEFT].peso-=modificador_peso;
-// 								break;
-// 								
-// 							case UP_RIGHT:
-// 								conexion[y][x].arista[DOWN_LEFT].peso-=modificador_peso;
-// 								break;
-// 								
-// 							case DOWN_LEFT:
-// 								conexion[y][x].arista[UP_RIGHT].peso-=modificador_peso;
-// 								break;
-// 						}
-                    }
-                    if(conexion[i][j].arista[posicion].peso>MAX_VALUE)
-						conexion[i][j].arista[posicion].peso=MAX_VALUE;
-					if( conexion[i][j].arista[posicion].peso<0)
-						conexion[i][j].arista[posicion].peso=0;
-
-                    
-
-                
-					//cout << "Peso en "<<i<<" "<<j<<" "<< posicion<<" "<< conexion[i][j].arista[posicion].peso<<endl;
-				}
-            }
-        }
-    }
+	
+	struct arista temporal;
+	
+	while(!gold.conexiones.empty())
+	{
+		temporal=gold.conexiones.back();
+		if(tipo==PREMIO)
+		{
+			conexion[temporal.nodo1.y][temporal.nodo1.x].arista[temporal.posicion].peso-=modificador_peso;
+		}
+		else
+		{
+			conexion[temporal.nodo1.y][temporal.nodo1.x].arista[temporal.posicion].peso+=modificador_peso;
+		}
+		gold.conexiones.pop_back();
+	}	
 }
+
 void kimbus::move_kibus()
 {
 

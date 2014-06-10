@@ -393,6 +393,7 @@ void hero::clearRecorrido()
             }
         }
     }
+    conexiones.clear();
 }
 
 int hero:: handle_events(vector <string> &map, Mapa conexion[17][22] )
@@ -439,7 +440,12 @@ int hero:: handle_events(vector <string> &map, Mapa conexion[17][22] )
     recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].conectay= direccion.y;
 	recorrido[y_/HERO_HEIGHT][x_/HERO_WIDTH].arista[posicion].utilizado=true;
 	
-
+	aux.nodo1.x=x_/HERO_WIDTH;
+	aux.nodo1.y=y_/HERO_HEIGHT;
+	aux.nodo2.x=direccion.x;
+	aux.nodo2.y=direccion.y;
+	aux.posicion=posicion;
+	conexiones.push_back(aux);
     direccion.x *= HERO_WIDTH;
     direccion.y *= HERO_HEIGHT;
     x_=direccion.x;

@@ -61,7 +61,7 @@
 #define PREMIO 1
 
 #define MAX_HEAT 254
-#define MAX_ITERACIONES 1000
+#define MAX_ITERACIONES 3000
 
 
 #define PROPAGACION 0
@@ -111,6 +111,7 @@ private:
     SDL_Rect mouseTile;
     int maximo_historico, minimo_historico, media_historica;
 	vector <SDL_Rect> movimientos;
+	struct arista anterior;
 
 
 
@@ -147,7 +148,7 @@ public:
     void resetMap();
     void altera_pesos(int modificador_peso, int tipo);
 	void move_kibus();
-     SDL_Rect  primero_mejor();
+    SDL_Rect  primero_mejor();
 
 
 
