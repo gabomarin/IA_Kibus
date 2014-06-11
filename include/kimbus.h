@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <string>
-#include <cstdlib>
 #include <SDL/SDL.h>
 #include <vector>
 #include <fstream>
@@ -33,28 +32,20 @@
 #include "timer.hpp"
 #include "button.hpp"
 #include "slider.hpp"
-#include "functions.hpp"
 
-
-#define TILE_SIZE 32 	//tamaño de cada cuadro de la cuadricula
-#define MAP_HEIGHT 17
-#define MAP_WIDTH 22
+#define TILE_SIZE 48 	//tamaño de cada cuadro de la cuadricula
+#define MAP_HEIGHT 11
+#define MAP_WIDTH 18
 
 #define WIDTH MAP_WIDTH*TILE_SIZE
-#define HEIGHT (MAP_HEIGHT*TILE_SIZE)+(TILE_SIZE*3)
+#define HEIGHT (MAP_HEIGHT*TILE_SIZE)+TILE_SIZE*3
 #define BPP 24
 
 #define HOME 1
 #define GRASS 2
 #define TALL_GRASS 3
-#define FLAG_1 4
-#define FLAG_2 5
-#define FLAG_3 6
-
-
 #define TREE 4
 #define ROCK 5
-#define HERO 6
 
 
 
@@ -82,25 +73,7 @@ private:
 	ifstream map_file;
 	posicion pos;
     SDL_Surface* rock;
-	int startx,starty;
-    SDL_Rect posH;
-	hero gold;
-    SDL_Surface* water3;
-    SDL_Surface* water2;
-    SDL_Surface* water1;
 	
-	SDL_Surface* redAlpha;
-	SDL_Surface *messagebox;
-	SDL_Surface *texto;
-	TTF_Font *font;
-	SDL_Rect position;
-	
-	SDL_Rect selectedTile;
-	SDL_Surface * selected;
-	
-	
-	int mouse_x,mouse_y;
-	SDL_Rect mouseTile;
 
 	
 	
@@ -116,8 +89,8 @@ public:
 	SDL_Surface * getScreen();
 	void addToScreen(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
 	void updateScreen();
-	bool mainloop();
-	bool loadmap(int opc);
+	void mainloop();
+	bool loadmap();
 	void drawmap();
 	
 	bool loadTiles();
@@ -127,11 +100,6 @@ public:
 	void setTile(int click, int tile, SDL_Rect* tilePos);
 	posicion getHome();
 	void savemap();
-	void bresenham(int x1,int y1,int x2,int y2);
-    void clearmap();
-	void addToMap(SDL_Surface * surface, int x, int y,SDL_Rect *clip);
-	
-
 	
 	
 	

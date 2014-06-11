@@ -3,7 +3,6 @@
 
 CMakeFiles/sdl_engine.dir/main.o
  /home/gabriel/projects/sdl_engine/include/button.hpp
- /home/gabriel/projects/sdl_engine/include/functions.hpp
  /home/gabriel/projects/sdl_engine/include/hero.hpp
  /home/gabriel/projects/sdl_engine/include/kimbus.h
  /home/gabriel/projects/sdl_engine/include/slider.hpp
@@ -13,12 +12,10 @@ CMakeFiles/sdl_engine.dir/src/button.o
  /home/gabriel/projects/sdl_engine/include/button.hpp
  /home/gabriel/projects/sdl_engine/src/button.cpp
 CMakeFiles/sdl_engine.dir/src/hero.o
- /home/gabriel/projects/sdl_engine/include/functions.hpp
  /home/gabriel/projects/sdl_engine/include/hero.hpp
  /home/gabriel/projects/sdl_engine/src/hero.cpp
 CMakeFiles/sdl_engine.dir/src/kimbus.o
  /home/gabriel/projects/sdl_engine/include/button.hpp
- /home/gabriel/projects/sdl_engine/include/functions.hpp
  /home/gabriel/projects/sdl_engine/include/hero.hpp
  /home/gabriel/projects/sdl_engine/include/kimbus.h
  /home/gabriel/projects/sdl_engine/include/slider.hpp

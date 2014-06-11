@@ -91,8 +91,8 @@ int button::handleEvents(SDL_Event event)
 		mouse_x = event.motion.x; 
 		mouse_y = event.motion.y;
 		
-		//cout << mouse_x;
-		//cout << mouse_y;
+		cout << mouse_x;
+		cout << mouse_y;
 		//If the mouse is over the button 
 		if( ( mouse_x > x ) && (mouse_x < x + (image->w/2) ) && ( mouse_y > y ) && ( mouse_y < y + (image->h) ) ) 
 		{ //Set the button sprite 
@@ -117,7 +117,7 @@ int button::handleEvents(SDL_Event event)
 		//If the left mouse button was pressed 
 		if( event.button.button == SDL_BUTTON_LEFT ) 
 		{
-			//cout <<"Has hecho click "<< endl;
+			cout <<"Has hecho click "<< endl;
 			//Get the mouse offsets
 			mouse_x = event.button.x;
 			mouse_y = event.button.y; 
