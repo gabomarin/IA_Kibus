@@ -61,7 +61,7 @@
 #define PREMIO 1
 
 #define MAX_HEAT 254
-#define MAX_ITERACIONES 3000
+#define MAX_ITERACIONES 1000
 
 
 #define PROPAGACION 0

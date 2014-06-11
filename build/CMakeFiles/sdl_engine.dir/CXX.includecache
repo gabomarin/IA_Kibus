@@ -120,7 +120,3 @@ cstdlib
 cstring
 -
 
-/home/gabriel/projects/sdl_engine/src/timer.cpp
-../include/timer.hpp
-/home/gabriel/projects/sdl_engine/include/timer.hpp
-

@@ -375,6 +375,7 @@ void kimbus::recorrido_entrenado()
 	move_kibus();
 	gold.setX((posH.x*HERO_WIDTH));
 	gold.setY((posH.y*HERO_HEIGHT));
+	
     while(!quit)
     {
         fps.start();
@@ -530,16 +531,16 @@ SDL_Rect kimbus::primero_mejor()
 	int peso_actual;
 	int mejor,i;
 	mejor=-1;
-	
+	vector <int > candidatos;
 	for(i=0;i<8;i++)
 	{
 		//cout << "peso  x"<<x<<" y"<<y<< " i"<<i<<" "<<conexion[y][x].arista[i].peso<<endl;
-		
+		int tempx,tempy;
+		tempx=conexion[y][x].arista[i].conectax;
+		tempy=conexion[y][x].arista[i].conectay;
 		if(conexion[y][x].arista[i].utilizado==false)
 		{
-			int tempx,tempy;
-			tempx=conexion[y][x].arista[i].conectax;
-			tempy=conexion[y][x].arista[i].conectay;
+			
 			if(tempx!=-1 && tempy!=-1)
 			{
 				
@@ -548,21 +549,29 @@ SDL_Rect kimbus::primero_mejor()
 				{
 					if(mejor==-1)
 						mejor=i;
-					else if(conexion[y][x].arista[i].peso<conexion[y][x].arista[mejor].peso)
+					else if(conexion[y][x].arista[i].peso<=conexion[y][x].arista[mejor].peso)
 					{
 						mejor=i;
 					}	
 				}
 			}
-		}		
+		}
+		else
+		{
+			if(map.at(tempy).at(tempx)!='A' && map.at(tempy).at(tempx)!='R')
+			{
+				candidatos.push_back(i);
+			}
+		}
 	}
 	
-	if(conexion[y][x].arista[mejor].conectax==-1 && conexion[y][x].arista[mejor].conectay==-1)
+	if(conexion[y][x].arista[mejor].conectax<=0 && conexion[y][x].arista[mejor].conectay<=0)
 	{
+		cout << "entre"<< endl;
 		
 		int tempx=conexion[y][x].arista[mejor].conectax;
 		int tempy=conexion[y][x].arista[mejor].conectay;
-		conexion[y][x].arista[mejor].utilizado=true;
+		
 		
 		gold.setX(movimientos.back().x*TILE_SIZE);
 		gold.setY(movimientos.back().y*TILE_SIZE);
@@ -834,6 +843,8 @@ void kimbus::altera_pesos(int modificador_peso, int tipo)
 		if(tipo==PREMIO)
 		{
 			conexion[temporal.nodo1.y][temporal.nodo1.x].arista[temporal.posicion].peso-=modificador_peso;
+			if(conexion[temporal.nodo1.y][temporal.nodo1.x].arista[temporal.posicion].peso<0)
+				conexion[temporal.nodo1.y][temporal.nodo1.x].arista[temporal.posicion].peso=0;
 		}
 		else
 		{
